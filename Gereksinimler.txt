@@ -1,0 +1,29 @@
+1. dönem
+	Vize : 
+		1. Üye Kayıt olma 
+		2. Üye giriş yapma
+		3. İstek Öneri Şikayet Gönderimi 
+		4. Profil Bilgileri Güncelleme
+	Final :
+		1. Eğitmen Paneli Yönetimleri 
+		2. Ders Ekleme
+		3. Ders Silme
+		4. Ders Arama
+
+2. dönem
+	Vize : 
+		1. Üye yorum yapma
+		2. Dersleri Kategorilere Ayırma
+		3. Üye soru ekleme
+		4. Ders Puanlama
+	
+	Final : 
+		1. Kamera Erişim izni
+		2. Ders dikkat oranı takibi 
+		3. Admin Paneli Yönetimleri
+		4. Yüz takibi sistemi entegrasyonu
+
+HTML5 CSS3 ReactJS
+NodeJS ExpressJs (RestAPI)
+MongoDB
+Git
