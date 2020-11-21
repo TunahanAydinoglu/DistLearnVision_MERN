@@ -1,6 +1,6 @@
 1. dönem
 	Vize : 
-		1. Üye Kayıt olma 
+		1. Üye Kayıt olma
 		2. Üye giriş yapma
 		3. İstek Öneri Şikayet Gönderimi 
 		4. Profil Bilgileri Güncelleme
