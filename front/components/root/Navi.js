@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 
-import Logo from "../toolbox/Logo";
-import Menu from "../toolbox/Menu";
-import SearchInput from "../toolbox/SearchInput"
-import { SignInButton, SignUpButton } from "../toolbox/SignButton";
+import Logo from "../toolbox/navItems/Logo";
+import Menu from "../toolbox/navItems/Menu";
+import SearchInput from "../toolbox/navItems/SearchInput"
+import { SignInButton, SignUpButton } from "../toolbox/navItems/SignButton";
 import styles from "./navi.module.css";
 
 

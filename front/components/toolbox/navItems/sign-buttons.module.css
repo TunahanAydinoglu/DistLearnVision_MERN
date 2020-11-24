@@ -3,12 +3,10 @@
   align-items: center;
   justify-content: center;
   margin-left: 10px;
-  color: "#0f7c90";
 
   button {
     border: 1px solid #0f7c90;
     border-radius: 8%;
-
     width: 100px;
     height: 40px;
     padding: 0 12px;
@@ -17,9 +15,11 @@
     letter-spacing: -0.02rem;
     font-size: 1.2rem;
     background-color: transparent;
+    color: #0f7c90;
 
-    &:hover{
+    &:hover {
       cursor: pointer;
+      color: #094c59;
     }
     &:focus {
       outline: none;
@@ -48,8 +48,11 @@
     font-size: 1.2rem;
     background-color: transparent;
 
-    &:hover{
+    &:hover {
       cursor: pointer;
+      background-color: #094c59;
+      border: 1px solid #094c59;
+      border-radius: 8%;
     }
     &:focus {
       outline: none;

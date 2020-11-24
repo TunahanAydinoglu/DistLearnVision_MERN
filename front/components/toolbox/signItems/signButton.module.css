@@ -1,0 +1,19 @@
+.signButton {
+  font-size: 1.6rem;
+  font-weight: 700;
+  height: 4.8rem;
+  width: 100%;
+  background-color: #ec5252;
+  color: #fff;
+  border: 1px solid transparent;
+  border-radius: 1rem;
+  margin-top: 0.9rem;
+
+  &:focus {
+    outline: none;
+  }
+  &:hover {
+    cursor: pointer;
+    background-color: #992337;
+  }
+}

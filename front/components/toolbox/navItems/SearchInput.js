@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import * as Icons from '../icons'
+import * as Icons from '../../icons'
 import styles from "./search-input.module.css";
 
 
