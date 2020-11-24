@@ -1,0 +1,5 @@
+.navi{
+    display: flex;
+  margin: 10px 15px;
+    align-items: center;
+}

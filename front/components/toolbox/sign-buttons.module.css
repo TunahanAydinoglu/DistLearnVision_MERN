@@ -1,0 +1,58 @@
+.signinButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
+  color: "#0f7c90";
+
+  button {
+    border: 1px solid #0f7c90;
+    border-radius: 8%;
+
+    width: 100px;
+    height: 40px;
+    padding: 0 12px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02rem;
+    font-size: 1.2rem;
+    background-color: transparent;
+
+    &:hover{
+      cursor: pointer;
+    }
+    &:focus {
+      outline: none;
+    }
+  }
+}
+.signupButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
+  background: #0f7c90;
+  border: 1px solid #0f7c90;
+  border-radius: 8%;
+
+  button {
+    border: 1px solid #0f7c90;
+    border-radius: 8%;
+    color: white;
+    width: 100px;
+    height: 40px;
+    padding: 0 12px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02rem;
+    font-size: 1.2rem;
+    background-color: transparent;
+
+    &:hover{
+      cursor: pointer;
+    }
+    &:focus {
+      outline: none;
+    }
+  }
+}
