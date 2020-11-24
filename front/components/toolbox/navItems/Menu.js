@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import styles from "./menu.module.css";
-import * as Icons from "../icons";
+import * as Icons from "../../icons";
 
 class Menu extends Component {
   render() {
