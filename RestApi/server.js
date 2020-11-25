@@ -22,19 +22,6 @@ app.use(express.json());
 
 const PORT = process.env.PORT;
 
-// app.get("/api/questions", (req, res) => {
-//   res.send("Questiions Home Page");
-// });
-// app.get("/api/questions/delete", (req, res) => {
-//   res.send("Questiions Delete Page");
-// });
-// app.get("/api/auth", (req, res) => {
-//   res.send("Questiions Auth Page");
-// });
-// app.get("/api/auth/register", (req, res) => {
-//   res.send("Questiions Auth Register Page");
-// });
-
 // Routers Middleware
 app.use("/api", routers);
 //ErrorHandler

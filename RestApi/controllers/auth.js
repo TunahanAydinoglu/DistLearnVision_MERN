@@ -9,12 +9,8 @@ const {
 const sendEmail = require("../helpers/libraries/sendEmail");
 
 const register = asyncErrorWrapper(async (req, res, next) => {
-  // //POST DATA
-  // const name = "Tunahan Aydinoglu";
-  // const email = "tuna@gmail.com";
-  // const password = "12367";
 
-  console.log(req.body);
+
   const data = req.body;
   const { name, email, password, role } = data;
 
