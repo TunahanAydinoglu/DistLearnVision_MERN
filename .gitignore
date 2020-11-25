@@ -1,2 +1,6 @@
+api
 node_modules
+.next
+.idea
 env
+config.env

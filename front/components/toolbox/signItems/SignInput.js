@@ -9,7 +9,6 @@ function SignInput({ icon, name, placeholder, type, minlength, maxlength }) {
         {icon}
       </span>
       <input
-        className={styles.signInput}
         name={name}
         placeholder={placeholder}
         type={type}

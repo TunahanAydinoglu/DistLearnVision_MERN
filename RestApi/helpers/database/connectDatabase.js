@@ -6,11 +6,9 @@ const connectDatabase = () => {
       useNewUrlParser: true,
     })
     .then(() => {
-      console.log("MongoDb Connection Success");
+      console.log("Mongodb Connection Success");
     })
-    .catch((err) => {
-      console.log(err);
-    });
+    .catch((err) => console.log(err));
 };
 
 module.exports = connectDatabase;

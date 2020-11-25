@@ -1,25 +1,28 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
 
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
   name: {
     type: String,
-    required: [true, "Please provide a name!"],
+    required: [true, "Please provide a name"],
   },
   email: {
     type: String,
-    required: [true, "Please provide a email!"],
+    required: [true, "Plase provide a email"],
     unique: true,
     match: [
       /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
       "Please provide a valid email",
     ],
   },
-  role:{
-      type: String,
-      default: "user",
-      enum:["user", "admin"],
+  role: {
+    type: String,
+    default: "user",
+    enum: ["user", "admin"],
   },
   password: {
     type: String,
@@ -54,5 +57,50 @@ const UserSchema = new Schema({
   resetPasswordToken: { type: String },
   resetPasswordExpire: { type: Date },
 });
+//UserSchema Methods
+UserSchema.methods.generateJwtFromUser = function () {
+  const { JWT_SECRET_KEY, JWT_EXPIRE } = process.env;
+  const payload = {
+    id: this._id,
+    name: this.name,
+  };
 
-module.exports = mongoose.model("User",UserSchema);
+  const token = jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: JWT_EXPIRE });
+
+  return token;
+};
+
+UserSchema.methods.getResetPasswordTokenFromUser = function () {
+  const { RESET_PASSWORD_EXPIRE } = process.env;
+
+  const randomHexString = crypto.randomBytes(16).toString("hex"); //random hex string created
+
+  const resetPasswordToken = crypto
+    .createHash("SHA256")
+    .update(randomHexString)
+    .digest("hex");
+
+  this.resetPasswordToken = resetPasswordToken;
+  this.resetPasswordExpire = Date.now() + parseInt(RESET_PASSWORD_EXPIRE);
+
+  return resetPasswordToken;
+};
+
+//Pre Hooks
+UserSchema.pre("save", function (next) {
+  //Parola degismemisse
+  if (!this.isModified("password")) {
+    next();
+  }
+  bcrypt.genSalt(10, (err, salt) => {
+    if (err) next(err);
+    bcrypt.hash(this.password, salt, (err, hash) => {
+      if (err) next(err);
+      // Store hash in your password DB.
+      this.password = hash;
+      next();
+    });
+  });
+});
+
+module.exports = mongoose.model("User", UserSchema);
