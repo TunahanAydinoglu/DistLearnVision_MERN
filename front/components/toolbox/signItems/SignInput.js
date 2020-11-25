@@ -1,13 +1,12 @@
 import React from "react";
 
 import styles from "./signInput.module.css";
-import * as Icons from "../../icons";
 
-function SignInput({ child, name, placeholder, type, minlength, maxlength }) {
+function SignInput({ icon, name, placeholder, type, minlength, maxlength }) {
   return (
     <div className={styles.signInput}>
       <span>
-        <Icons.Profile />
+        {icon}
       </span>
       <input
         className={styles.signInput}
