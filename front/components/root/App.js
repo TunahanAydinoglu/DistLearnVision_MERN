@@ -1,13 +1,13 @@
-import Navi from "./Navi";
-import SignPage from "../toolbox/signItems/SignPage";
+import Footer from "./components/Footer";
+import Navi from "./components/Navi";
+import SignPage from "./SignPage";
 
 function App() {
-  let oturumAc = "Oturum Ac";
-  
   return (
-    <div >
-      <Navi/>
-      <SignPage/>
+    <div>
+      <Navi />
+      <SignPage />
+      <Footer/>
     </div>
   );
 }

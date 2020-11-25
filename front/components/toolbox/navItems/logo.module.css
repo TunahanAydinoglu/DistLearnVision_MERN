@@ -3,6 +3,7 @@
   font-weight: 800;
   display: flex;
   width: 5.7rem;
+  margin:0 2rem;
 
   a {
     display: inline-block;
