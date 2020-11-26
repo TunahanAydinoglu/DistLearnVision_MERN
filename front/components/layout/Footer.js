@@ -7,13 +7,15 @@ class Footer extends React.Component {
       <footer className={styles.footer}>
         <div>
           <ul>
-            <li>Süleyman Demirel Üniversitesi</li>
+            <li>
+              <h2>Süleyman Demirel Üniversitesi</h2>
+            </li>
             <li>Bilgisayar Mühendisliği</li>
             <li>Bitirme Projesi</li>
           </ul>
           <ul>
             <li>
-              <h2>Hakkımızda :</h2>
+              <h2>Biz kimiz</h2>
             </li>
             <li>
               <a>Asım Sinan Yüksel</a>
@@ -26,10 +28,10 @@ class Footer extends React.Component {
             </li>
           </ul>
           <p>
-            Lorem Ipsum, dizgi ve baskı endüstrisinde kullanılan mıgır
-            metinlerdir. Lorem Ipsum, adı bilinmeyen bir matbaacının bir hurufat
-            numune kitabı oluşturmak üzere bir yazı galerisini alarak
-            karıştırdığı 1500'lerden ayıncılık yazılımları ile popüler olmuştur.
+            <h2>Dist Learn Vision</h2>
+            <span>
+              Projemiz uzaktan öğretim sertifikasyon sistemlerinde güven endeksini arttırmak için katılımcıların odaklanma oranlarına göre eğitim tamamlama sonucundaki sertifikasyon programını tamamlamarına olanak sağlıyoruz.
+            </span>
           </p>
         </div>
       </footer>

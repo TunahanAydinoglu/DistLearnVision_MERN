@@ -4,6 +4,10 @@
   align-items: center;
   height: 7.3rem;
 
+  .space{
+    flex-grow: 1;
+  }
+ 
   box-shadow: 0 2px 4px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.08);
   z-index: 1010;
 }

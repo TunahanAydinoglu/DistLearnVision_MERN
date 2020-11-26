@@ -12,8 +12,8 @@ function SignInput({ icon, name, placeholder, type, minlength, maxlength }) {
         name={name}
         placeholder={placeholder}
         type={type}
-        min={minlength}
-        max={maxlength}
+        minLength={minlength}
+        maxLength={maxlength}
       />
     </div>
   );
