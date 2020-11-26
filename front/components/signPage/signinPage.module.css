@@ -1,4 +1,4 @@
-.signPage {
+.signinPage {
   display: block;
   width: 38rem;
   margin: 3rem auto;
@@ -7,11 +7,11 @@
   .header {
     display: block;
     font-size: 3rem;
-    font-weight: 700;
+    font-weight: 600;
     text-align: center;
     padding: 1.7rem 1.1rem;
     margin-bottom: 1.7rem;
-    width: 90%;
+    width: 100%;
     border-bottom: 1px solid rgba(128, 128, 128, 0.753);
   }
 
@@ -37,7 +37,7 @@
       }
       span {
         color: rgba(0, 119, 145, 1);
-
+        
         font-weight: bold;
 
         &:hover {

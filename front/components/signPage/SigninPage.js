@@ -1,20 +1,20 @@
 import React, { Component } from "react";
 import SignButton from "../toolbox/signItems/SignButton";
 import SignInput from "../toolbox/signItems/SignInput";
-import styles from "./signPage.module.css";
+import styles from "./signinPage.module.css";
 import * as Icons from "../icons";
 
-class SignPage extends Component {
+class SigninPage extends Component {
   render() {
     return (
-      <div className={styles.signPage}>
+      <div className={styles.signinPage}>
         <center>
           <div className={styles.header}>Dist Learn Vision</div>
         </center>
 
         <form>
           <SignInput
-            icon={<Icons.ProfileFill />}
+            icon={<Icons.Email />}
             name={"email"}
             placeholder={"E-posta"}
             type={"email"}
@@ -40,4 +40,4 @@ class SignPage extends Component {
   }
 }
 
-export default SignPage;
+export default SigninPage;

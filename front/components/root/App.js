@@ -1,12 +1,12 @@
-import Footer from "./components/Footer";
-import Navi from "./components/Navi";
-import SignPage from "./SignPage";
+import Footer from "../layout/Footer";
+import Navi from "../layout/Navi";
+import ProfileUpdate from "../profile/ProfileUpdate";
 
 function App() {
   return (
     <div>
       <Navi />
-      <SignPage />
+      <ProfileUpdate></ProfileUpdate>
       <Footer/>
     </div>
   );

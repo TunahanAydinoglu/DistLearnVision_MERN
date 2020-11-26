@@ -1,0 +1,11 @@
+.profileInput{
+    border: 1px solid #8a92a3;
+    width: 100%;
+    height: 4.4rem;
+    font-size: 1.9rem;
+    padding: 1rem;
+    color: #29303b;
+    border-radius:2px;
+    line-height: 1.43;
+    font-weight: 400;
+}

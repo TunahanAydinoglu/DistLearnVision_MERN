@@ -8,7 +8,7 @@ class SearchInput extends Component {
         return (
             <form className={styles.searchForm}>
                 <span><Icons.Search/></span>
-                <input type="text" placeholder="Udemy tam bir zirtapoz"></input>
+                <input type="text" placeholder="Kurslarınızı buradan arayabilirsiniz"></input>
             </form>
         );
     }

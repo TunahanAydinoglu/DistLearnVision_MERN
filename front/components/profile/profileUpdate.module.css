@@ -1,0 +1,121 @@
+.profileUpdate {
+  display: flex;
+  width: 73%;
+  height: 80%;
+  border: 1px solid #dedfe0;
+  margin: 2rem auto;
+
+  .profileNavi {
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    width: 23%;
+    height: 100%;
+
+    h2{
+      margin:2rem 0 1.5rem 0;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 700;
+      min-height: 1.7rem;
+    }
+    ul {
+      display: block;
+      list-style-type: none;
+      width: 100%;
+
+
+      li {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        input {
+          display: flex;
+          align-items: flex-start;
+          width: 100%;
+          color: #007791;
+          font-weight: 400;
+          font-size: 1.7rem;
+          height: 3rem;
+          padding: 0.3rem 1.5rem;
+          background-color: transparent;
+
+          &:hover {
+            color: #fff;
+            background-color: #8a92a3;
+          }
+          &:focus {
+            color: #fff;
+            background-color: #8a92a3;
+            outline: none;
+          }
+        }
+      }
+    }
+    .img {
+      width: 12rem;
+      height: 12rem;
+      margin: auto;
+      img {
+        max-width: 98%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+    }
+  }
+
+  .update {
+    display: block;
+    border-left: 1px solid #dedfe0;
+    width: 100%;
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 10%;
+    padding: 4rem;
+    h2 {
+      font-size: 1.8rem;
+      font-weight: 600;
+    }
+    p {
+      font-size: 1.4rem;
+    }
+  }
+  .inputDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 0 2rem 4rem;
+    height: 70%;
+    width: 100%;
+    border-top: 1px solid #dedfe0;
+    border-bottom: 1px solid #dedfe0;
+    div {
+      width: 80%;
+      input {
+        width: 85%;
+        margin-top: 1.3rem;
+      }
+    }
+
+    p{
+      font-size: 1.5rem;
+      line-height: 1.43;
+    }
+  }
+  .button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 10%;
+    padding-top: 3rem;
+    input {
+      width: 10rem;
+    }
+  }
+}

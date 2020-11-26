@@ -1,0 +1,50 @@
+.signupPage {
+    display: block;
+    width: 38rem;
+    margin: 3rem auto;
+    align-items: center;
+  
+    .header {
+      display: block;
+      font-size: 2.2rem;
+      font-weight: 500;
+      padding: 1.7rem 1.1rem;
+      margin-bottom: 1.7rem;
+      width: 100%;
+      border-bottom: 1px solid rgba(128, 128, 128, 0.753);
+    }
+  
+    .token {
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin-bottom: 10rem;
+  
+      p {
+        display: block;
+        text-align: center;
+        padding: 2rem 0;
+  
+        a {
+          color: rgba(0, 119, 145, 1);
+  
+          font-weight: 500;
+  
+          &:hover {
+            cursor: pointer;
+            color: rgba(0, 119, 145, 0.7);
+          }
+        }
+        span {
+          color: rgba(0, 119, 145, 1);
+          
+          font-weight: bold;
+  
+          &:hover {
+            cursor: pointer;
+            color: rgba(0, 119, 145, 0.8);
+          }
+        }
+      }
+    }
+  }
+  

@@ -1,6 +1,7 @@
 export { default as ArrowBottom } from './ArrowBottom'
 export { default as BookmarkFill } from './BookmarkFill'
 export { default as Bookmark } from './Bookmark'
+export { default as Email } from './Email'
 export { default as Emoji } from './Emoji'
 export { default as Explore } from './Explore'
 export { default as ExplorerFill } from './ExplorerFill'
