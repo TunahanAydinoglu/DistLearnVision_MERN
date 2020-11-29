@@ -10,7 +10,6 @@ const sendEmail = require("../helpers/libraries/sendEmail");
 
 const register = asyncErrorWrapper(async (req, res, next) => {
 
-
   const data = req.body;
   const { name, email, password, role } = data;
 
@@ -23,7 +22,8 @@ const register = asyncErrorWrapper(async (req, res, next) => {
   });
   sendJwtToClient(user, res);
 });
-const getUser = (req, res, next) => {
+
+const getUser = asyncErrorWrapper(async (req, res, next) => {
   res.json({
     success: true,
     data: {
@@ -31,7 +31,7 @@ const getUser = (req, res, next) => {
       name: req.user.name,
     },
   });
-};
+});
 
 const login = asyncErrorWrapper(async (req, res, next) => {
   const { email, password } = req.body;
