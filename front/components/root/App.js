@@ -1,12 +1,12 @@
 import Footer from "../layout/Footer";
 import Navi from "../layout/Navi";
-import ProfileUpdate from "../profile/ProfileUpdate";
+import SignUpPage from "../signPage/SignUpPage";
 
 function App() {
   return (
     <div>
       <Navi />
-      <ProfileUpdate></ProfileUpdate>
+      <SignUpPage></SignUpPage>
       <Footer/>
     </div>
   );

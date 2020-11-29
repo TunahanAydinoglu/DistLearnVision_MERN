@@ -15,7 +15,7 @@ const getSingleUser = asyncErrorWrapper(async (req, res, next) => {
 
   const user = req.myCheckData;
 
-  return res.status(200).json({ success: true, data: user });
+  return res.status(200).json(user);
 });
 
 module.exports = { getSingleUser, getAllUsers };
