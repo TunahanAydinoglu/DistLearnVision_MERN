@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cors": "2.8.5",
     "axios": "^0.21.0",
     "classnames": "^2.2.6",
     "isomorphic-unfetch": "^3.1.0",

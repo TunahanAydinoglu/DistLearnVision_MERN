@@ -8,13 +8,7 @@ const admin = require("./admin");
 // /api
 const router = express.Router();
 
-router.use(
-  cors({
-    origin: ["http://localhost:3000"],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+router.use(cors());
 router.use("/questions", question);
 router.use("/auth", auth);
 router.use("/users", user);
