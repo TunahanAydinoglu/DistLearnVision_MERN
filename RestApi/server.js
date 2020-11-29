@@ -15,7 +15,6 @@ dotenv.config({
 connectDatabase();
 
 //localhost:5000//api/questions
-
 const app = express();
 
 //Express - Body Middleware

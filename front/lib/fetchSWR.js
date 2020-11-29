@@ -8,11 +8,9 @@ async function fetcherPost(url = "", data = {}) {
     redirect: "follow",
     headers: {
       "content-type": "application/json",
-      // 'Content-Type': 'application/x-www-form-urlencoded',
     },
     body: JSON.stringify(data), // body data type must match "Content-Type" header
-  }).then(response => response.json());
-  console.log(response);
+  }).then(response => response.json()).catch(err=>console.log(err));
   return response; // parses JSON response into native JavaScript objects
 }
 

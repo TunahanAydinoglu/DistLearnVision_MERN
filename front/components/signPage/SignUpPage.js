@@ -1,9 +1,7 @@
 import React, { Component } from "react";
-import useSWR from "swr";
 import { useForm } from "react-hook-form";
 
 import SignButton from "../toolbox/signItems/SignButton";
-import SignInput from "../toolbox/signItems/SignInput";
 import * as Icons from "../icons";
 import styles from "./signupPage.module.css";
 
@@ -23,13 +21,41 @@ const SignUpPage = () => {
         method="POST"
         onSubmit={handleSubmit((data) => {
           fetcherPost(url, data);
-          console.log(url+data.name);
         })}
       >
-        <input ref={register} name="name" placeholder="Tam Adınız" />
-        <input ref={register} name="email" placeholder="email" />
-        <input ref={register} name="password" placeholder="password" />
-
+        <div className={styles.signInput}>
+          <span><Icons.ProfileFill/></span>
+          <input
+            ref={register}
+            name="name"
+            placeholder="Tam Adınız"
+            type="text"
+            minLength="2"
+            maxLength="20"
+          />
+        </div>
+        <div className={styles.signInput}>
+          <span> <Icons.Email/> </span>
+          <input
+            ref={register}
+            name="email"
+            placeholder="E-Posta"
+            type="email"
+            minLength="2"
+            maxLength="20"
+          />
+        </div>
+        <div className={styles.signInput}>
+          <span> <Icons.Password/> </span>
+          <input
+            ref={register}
+            name="password"
+            placeholder="şifreniz"
+            type="password"
+            minLength="2"
+            maxLength="20"
+          />
+        </div>
         <SignButton child={"Kayıt Ol"} />
       </form>
       <div className={styles.token}>
