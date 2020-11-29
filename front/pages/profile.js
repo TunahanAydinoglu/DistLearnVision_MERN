@@ -1,14 +1,13 @@
 import React from "react";
 import ProfileUpdate from "../components/profile/ProfileUpdate";
 import App from "../components/root/App";
-import SigninPage from "../components/signPage/SignInPage";
 
-function HomePage() {
+function Profile() {
   return (
     <div>
-      <App child={<SigninPage />}></App>
+      <App child={<ProfileUpdate />}></App>
     </div>
   );
 }
 
-export default HomePage;
+export default Profile;

@@ -4,11 +4,14 @@ import { useForm } from "react-hook-form";
 import SignButton from "../toolbox/signItems/SignButton";
 import * as Icons from "../icons";
 import styles from "./signupPage.module.css";
+import { useRouter } from "next/router";
+
 
 import { fetcherPost } from "../../lib/fetchSWR";
 
 const SignUpPage = () => {
   let url = "http://localhost:5000/api/auth/register";
+  const router = useRouter();
 
   const { register, handleSubmit, errors } = useForm();
   return (
@@ -21,6 +24,7 @@ const SignUpPage = () => {
         method="POST"
         onSubmit={handleSubmit((data) => {
           fetcherPost(url, data);
+          //Route
         })}
       >
         <div className={styles.signInput}>
@@ -28,7 +32,7 @@ const SignUpPage = () => {
           <input
             ref={register}
             name="name"
-            placeholder="Tam Adınız"
+            placeholder="Ad Soyad"
             type="text"
             minLength="2"
             maxLength="20"
@@ -50,7 +54,7 @@ const SignUpPage = () => {
           <input
             ref={register}
             name="password"
-            placeholder="şifreniz"
+            placeholder="Şifre"
             type="password"
             minLength="2"
             maxLength="20"
@@ -58,6 +62,7 @@ const SignUpPage = () => {
         </div>
         <SignButton child={"Kayıt Ol"} />
       </form>
+      <button onClick={()=>router.push("/profile")}>Road Final</button>
       <div className={styles.token}>
         <p>
           Zaten bir hesabınız var mı? <span>Oturum Aç</span>
