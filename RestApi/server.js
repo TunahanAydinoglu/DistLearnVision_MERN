@@ -4,6 +4,7 @@ const routers = require("./routers/index");
 const connectDatabase = require("./helpers/database/connectDatabase");
 const customErrorHandler = require("./middlewares/errors/customErrorHandler");
 const path = require("path");
+const cors = require("cors");
 
 //Environment Variables
 dotenv.config({
@@ -14,13 +15,14 @@ dotenv.config({
 connectDatabase();
 
 //localhost:5000//api/questions
-
 const app = express();
 
 //Express - Body Middleware
 app.use(express.json());
 
 const PORT = process.env.PORT;
+
+app.use(cors());
 
 // Routers Middleware
 app.use("/api", routers);

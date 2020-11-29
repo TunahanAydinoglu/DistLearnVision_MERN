@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const {
   register,
   getUser,
@@ -15,6 +16,7 @@ const profileImageUpload = require("../middlewares/libraries/profileImageUpload"
 // api/auth
 const router = express.Router();
 
+router.use(cors());
 router.post("/register", register);
 router.get("/profile", getAccessToRoutes, getUser);
 router.post("/login", login);

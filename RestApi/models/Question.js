@@ -5,21 +5,21 @@ const Schema = mongoose.Schema;
 
 const QuestionSchema = new Schema({
   title: {
-    type: "string",
+    type: String,
     required: [true, "Please provide a title"],
     minlength: [10, "Please provide a title minumum length 10 characters"],
     unique: true,
   },
   content: {
-    type: "string",
+    type: String,
     required: [true, "Please provide a content"],
     minlength: [10, "Please provide a content minumum length 10 characters"],
   },
   slug: {
-    type: "string",
+    type: String,
   },
   createdAt: {
-    type: "date",
+    type: Date,
     default: Date.now(),
   },
   user: { type: mongoose.Schema.ObjectId, required: true, ref: "User" },
