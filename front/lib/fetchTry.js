@@ -1,6 +1,6 @@
 import cookie from "js-cookie";
-
 const fetcherGet = (url) => fetch(url).then((res) => res.json());
+var resp = {};
 async function getProfile() {
   let id = getCookie("id");
   let url = "http://localhost:5000/api/users/" + id;
@@ -29,8 +29,6 @@ const fetchProfile = async () => {
 };
 
 async function loginPost(url = "", data = {}) {
-  const router = useRouter();
-
   // Default options are marked with *
   const response = await fetch(url, {
     method: "POST", // *GET, POST, PUT, DELETE, etc.
@@ -45,25 +43,25 @@ async function loginPost(url = "", data = {}) {
     .then((response) => response.json())
     .then((res) => {
       authenticate(res);
-      setTimeout(() => {
-        router.push("/");
-      }, 300);
     })
     .catch((err) => console.log(err));
-  console.log(response);
-  return response;
 }
 async function fetcherPost(url = "", data = {}) {
-  fetch(url, {
-    method: "POST",
-    mode: "cors",
+  // Default options are marked with *
+  const response = await fetch(url, {
+    method: "POST", // *GET, POST, PUT, DELETE, etc.
+    mode: "cors", // or without this line
     redirect: "follow",
     headers: {
       "content-type": "application/json",
+      // 'Content-Type': 'application/x-www-form-urlencoded',
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify(data), // body data type must match "Content-Type" header
   })
     .then((response) => response.json())
+    .then((res) => {
+      authenticate(res);
+    })
     .catch((err) => console.log(err));
 }
 async function fetcherPut(data = {}) {
@@ -162,5 +160,4 @@ export {
   fetcherPost,
   fetcherPut,
   getCookie,
-  authenticate,
 };

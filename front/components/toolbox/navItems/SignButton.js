@@ -1,24 +1,26 @@
 import React, { Component } from "react";
-import styles from "./sign-buttons.module.css"
+import styles from "./sign-buttons.module.css";
+import { useRouter } from "next/router";
 
-class SignInButton extends Component {
-  render() {
-    return (
-        <div className={styles.signinButton}>
-          <button>Oturum Ac</button>
-        </div>
-    );
-  }
-}
-class SignUpButton extends Component {
-  render() {
-    return (
-        <div className={styles.signupButton}>
-          <button>Kayit Ol</button>
-        </div>
-    );
-  }
+
+function SignInButton() {
+  const router = useRouter();
+
+  return (
+    <div className={styles.signinButton}>
+      <button onClick={() => router.push("/login")}>Oturum Ac</button>
+    </div>
+  );
 }
 
+function SignUpButton() {
+  const router = useRouter();
 
-export {SignInButton,SignUpButton};
+  return (
+    <div className={styles.signupButton}>
+      <button onClick={() => router.push("/signup")}>Kayit Ol</button>
+    </div>
+  );
+}
+
+export { SignInButton, SignUpButton };

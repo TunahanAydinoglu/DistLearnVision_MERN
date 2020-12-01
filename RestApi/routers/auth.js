@@ -28,6 +28,6 @@ router.post(
 );
 router.post("/forgotPassword", forgotPassword);
 router.put("/resetPassword", resetPassword);
-router.put("/edit", getAccessToRoutes, editDetails);
+router.put("/edit/:id", editDetails);
 
 module.exports = router;

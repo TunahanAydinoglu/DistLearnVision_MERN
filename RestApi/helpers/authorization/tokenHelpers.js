@@ -11,25 +11,21 @@ const sendJwtToClient = (user, res) => {
       secure: NODE_ENV === "development" ? false : true,
     })
     .json({
-      success: true,
       access_token: token,
-      data: {
-        name: user.name,
-        email: user.email,
-      },
+      name: user.name,
+      email: user.email,
+      id: user.id,
     });
   //Response
 };
 
 const isTokenIncluded = (req) => {
-  return (
-    req.headers.authorization && req.headers.authorization.startsWith("Bearer:")
-  );
+  return req.headers.authorization && req.headers.authorization;
 };
 
 const getAccessTokenFromHeader = (req) => {
   const authorization = req.headers.authorization;
-  const access_token = authorization.split(" ")[1];
+  const access_token = authorization;
   return access_token;
 };
 

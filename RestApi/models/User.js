@@ -48,7 +48,7 @@ const UserSchema = new Schema({
   },
   profile_image: {
     type: String,
-    default: "default.jpg",
+    default: "https://icon-library.net/images/default-profile-icon/default-profile-icon-24.jpg",
   },
   blocked: {
     type: Boolean,

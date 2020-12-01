@@ -1,11 +1,11 @@
 import React from "react";
 import App from "../components/root/App";
-import MainPage from "../components/root/MainPage";
+import Contact from "../components/contact/Contact";
 
 function HomePage() {
   return (
     <div>
-      <App child={<MainPage />}></App>
+      <App child={<Contact />}></App>
     </div>
   );
 }

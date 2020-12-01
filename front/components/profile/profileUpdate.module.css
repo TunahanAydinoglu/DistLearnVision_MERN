@@ -118,4 +118,16 @@
       width: 10rem;
     }
   }
+
+
+}
+
+.deneme{
+  display:block;
+  font-size:50px;
+  width:500px;
+  height:500px;
+  color:blue;
+  background-color:grey;
+
 }

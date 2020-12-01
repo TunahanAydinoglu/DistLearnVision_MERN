@@ -1,11 +1,11 @@
 import React from "react";
 
 import styles from "./profileUpdate.module.css";
-import ProfileInput from "../toolbox/profile/ProfileInput";
-import SignButton from "../toolbox/signItems/SignButton";
-import { useRouter } from "next/router";
+import ProfileInput from "../../toolbox/profile/ProfileInput";
+import SignButton from "../../toolbox/signItems/SignButton";
+import ProfileNavi from "./ProfileNavi";
 
-function ProfileUpdate() {
+function ProfileMain() {
   //useState fetch
   const [data, dataSet] = React.useState([]);
   const [dataLoading, dataLoadingSet] = React.useState(true);
@@ -23,45 +23,10 @@ function ProfileUpdate() {
     getData();
   }, []);
   //useState/////
-  let router = useRouter();
+
   return (
     <div>
-      {!data && <div></div>}
-      {data && (
-        <div className={styles.profileUpdate}>
-          <div className={styles.profileNavi}>
-            <div className={styles.img}>
-              <img src={data.profile_image} />
-            </div>
-            <h2>{data.name}</h2>
-            <ul>
-              <li>
-                <input
-                  type="button"
-                  onClick={() => router.push("/profile")}
-                  value="Profil"
-                />
-              </li>
-              <li>
-                <input
-                  type="button"
-                  onClick={() => router.push("/profilephoto")}
-                  value="Fotoğraf"
-                />
-              </li>
-              <li>
-                <input type="button" value="Hesap" />
-              </li>
-              <li>
-                <input type="button" value="Dersler" />
-              </li>
-            </ul>
-          </div>
-          <div className={styles.update}>
-            <div className={styles.info}>
-              <h2>Kişisel Profiliniz</h2>
-              <p>(Bilgiler Değiştirilemez)</p>
-            </div>
+      
             <div className={styles.inputDiv}>
               <div>
                 <p>Temel Bilgiler:</p>
@@ -90,13 +55,10 @@ function ProfileUpdate() {
               </div>
             </div>
             <div className={styles.button}>
-              <SignButton child="Kaydet" />
+              {/* <SignButton child="Kaydet" /> */}
             </div>
           </div>
-        </div>
-      )}
-    </div>
   );
 }
 
-export default ProfileUpdate;
+export default ProfileMain;
