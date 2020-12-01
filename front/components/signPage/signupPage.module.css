@@ -34,7 +34,7 @@
           color: rgba(0, 119, 145, 0.7);
         }
       }
-      span {
+      .span {
         color: rgba(0, 119, 145, 1);
 
         font-weight: bold;

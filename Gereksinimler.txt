@@ -4,6 +4,7 @@
 		2. Üye giriş yapma
 		3. İstek Öneri Şikayet Gönderimi 
 		4. Profil Bilgileri Güncelleme
+1. dönem
 	Final :
 		1. Eğitmen Paneli Yönetimleri 
 		2. Ders Ekleme

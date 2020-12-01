@@ -9,7 +9,6 @@ const {
 const sendEmail = require("../helpers/libraries/sendEmail");
 
 const register = asyncErrorWrapper(async (req, res, next) => {
-
   const data = req.body;
   const { name, email, password, role } = data;
 
@@ -25,11 +24,8 @@ const register = asyncErrorWrapper(async (req, res, next) => {
 
 const getUser = asyncErrorWrapper(async (req, res, next) => {
   res.json({
-    success: true,
-    data: {
-      id: req.user.id,
-      name: req.user.name,
-    },
+    id: req.user.id,
+    name: req.user.name,
   });
 });
 
@@ -148,14 +144,14 @@ const resetPassword = asyncErrorWrapper(async (req, res, next) => {
 });
 const editDetails = asyncErrorWrapper(async (req, res, next) => {
   const editInfirmations = req.body;
+  const {id} = req.params;
 
-  const user = await User.findByIdAndUpdate(req.user.id, editInfirmations, {
+  const user = await User.findByIdAndUpdate(id, editInfirmations, {
     new: true,
     runValidators: true,
   });
 
-  return res.status(200).json({success: true,data: user});
-
+  return res.status(200).json({ success: true, data: user });
 });
 
 module.exports = {

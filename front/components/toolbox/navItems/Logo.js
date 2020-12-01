@@ -1,16 +1,21 @@
-import React, { Component } from 'react';
+import React from "react";
 import styles from "./logo.module.css";
+import { useRouter } from "next/router";
 
-class Logo extends Component {
-    render() {
-        return (
-            <div className={styles.logo}>
-            <a href="#">
-                Dist Learn Vision
-            </a>
-            </div>
-        );
-    }
-}
+
+function Logo() {
+    let router = useRouter();
+    return (
+      <div className={styles.logo}>
+        <a
+          onClick={() => {
+            router.push("/");
+          }}
+        >
+          Dist Learn Vision
+        </a>
+      </div>
+    );
+  }
 
 export default Logo;

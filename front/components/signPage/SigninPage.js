@@ -1,11 +1,11 @@
-import React, { Component } from "react";
+import React from "react";
 import SignButton from "../toolbox/signItems/SignButton";
 import styles from "./signinPage.module.css";
 import * as Icons from "../icons";
 import { useRouter } from "next/router";
 
 import { useForm } from "react-hook-form";
-import { fetcherPost } from "../../lib/fetchSWR";
+import { authenticate } from "../../lib/fetchSWR";
 
 const SigninPage = () => {
   let url = "http://localhost:5000/api/auth/login";
@@ -19,9 +19,24 @@ const SigninPage = () => {
 
       <form
         method="POST"
-        onSubmit={handleSubmit((data) => {
-          fetcherPost(url, data);
-          router.push("/profile");
+        onSubmit={handleSubmit(async (data) => {
+          const res = await fetch(url, {
+            method: "POST",
+            mode: "cors",
+            redirect: "follow",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: JSON.stringify(data),
+          });
+          const response = await res.json();
+          authenticate(await response);
+          console.log(response);
+          if (response.success === false) {
+            alert("Kullanıcı bilgilerini kontrol ediniz.");
+          } else {
+            router.push("/");
+          }
         })}
       >
         <div className={styles.signInput}>
@@ -33,8 +48,8 @@ const SigninPage = () => {
             name="email"
             placeholder="E-Posta"
             type="email"
+            required="true"
             minLength="2"
-            maxLength="20"
           />
         </div>
         <div className={styles.signInput}>
@@ -46,18 +61,19 @@ const SigninPage = () => {
             name="password"
             placeholder="Şifre"
             type="password"
-            minLength="2"
-            maxLength="20"
+            minLength="7"
+            required="true"
+            maxLength="30"
           />
         </div>
-        <SignButton children={"Oturum Aç"} />
+        <SignButton child={"Oturum Aç"} />
       </form>
       <div className={styles.token}>
         <p>
           veya <a>Şifremi unuttum</a>
         </p>
         <p>
-          Hesabınız yok mu? <span>Kayıt Ol</span>
+          Hesabınız yok mu? <a className={styles.span} onClick={()=>router.push("/signup")}>Kayıt Ol</a>
         </p>
       </div>
     </div>

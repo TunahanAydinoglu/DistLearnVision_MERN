@@ -1,11 +1,14 @@
 import React from "react";
+import { useForm } from "react-hook-form";
 
-import styles from "./profileUpdate.module.css";
+import styles from "./profilePhoto.module.css";
 import ProfileInput from "../toolbox/profile/ProfileInput";
 import SignButton from "../toolbox/signItems/SignButton";
+import { fetcherPut } from "../../lib/fetchSWR";
 import { useRouter } from "next/router";
 
-function ProfileUpdate() {
+function ProfilePhoto() {
+  const { register, handleSubmit, errors } = useForm();
   //useState fetch
   const [data, dataSet] = React.useState([]);
   const [dataLoading, dataLoadingSet] = React.useState(true);
@@ -23,7 +26,8 @@ function ProfileUpdate() {
     getData();
   }, []);
   //useState/////
-  let router = useRouter();
+  const router = useRouter();
+
   return (
     <div>
       {!data && <div></div>}
@@ -59,39 +63,33 @@ function ProfileUpdate() {
           </div>
           <div className={styles.update}>
             <div className={styles.info}>
-              <h2>Kişisel Profiliniz</h2>
-              <p>(Bilgiler Değiştirilemez)</p>
+              <h2>Fotoğraf</h2>
+              <p>Profil Fotoğrafınızı Değiştirebilirsiniz</p>
             </div>
-            <div className={styles.inputDiv}>
-              <div>
-                <p>Temel Bilgiler:</p>
-                <div>
-                  <ProfileInput
-                    name={"email"}
-                    placeholder={data.email}
-                    readOnly={true}
-                  />
-                  <ProfileInput
-                    name={"name"}
-                    readOnly={true}
-                    placeholder={data.name}
-                  />
-                  <ProfileInput
-                    name={"role"}
-                    placeholder={data.role}
-                    readOnly={true}
-                  />
-                  <ProfileInput
-                    name={"createdAt"}
-                    placeholder={data.createdAt}
-                    readOnly={true}
-                  />
-                </div>
+            <form
+              method="PUT"
+              onSubmit={handleSubmit((data) => {
+                fetcherPut(data);
+                //Route
+              })}
+            >
+              <div className={styles.inputDiv}>
+                <img src={data.profile_image} />
+                <input
+                  ref={register}
+                  name="profile_image"
+                  placeholder="Fotoğraf url'i giriniz"
+                  type="text"
+                />
               </div>
-            </div>
-            <div className={styles.button}>
-              <SignButton child="Kaydet" />
-            </div>
+              <div className={styles.button}>
+                <SignButton child="Kaydet" />
+              </div>
+              <p>
+                (Kaydettikten sonra profilinizin güncellenmesi için çıkış
+                yapmanız gerekir)
+              </p>
+            </form>
           </div>
         </div>
       )}
@@ -99,4 +97,4 @@ function ProfileUpdate() {
   );
 }
 
-export default ProfileUpdate;
+export default ProfilePhoto;

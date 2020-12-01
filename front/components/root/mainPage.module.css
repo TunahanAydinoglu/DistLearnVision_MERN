@@ -1,0 +1,12 @@
+.mainPage{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow-x:hidden;
+
+    img{
+        height:100vh;
+        filter: grayscale(30%);
+        opacity: 0.85;
+    }
+}
