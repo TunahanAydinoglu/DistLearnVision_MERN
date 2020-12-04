@@ -1,0 +1,14 @@
+.logo {
+  font-size: 1.9rem;
+  font-weight: 800;
+  display: flex;
+  width: 5.7rem;
+  margin:0 2rem;
+
+  a {
+    display: inline-block;
+    text-decoration: none;
+    color: var(--c-primary);
+    line-height:1.6rem;
+  }
+}

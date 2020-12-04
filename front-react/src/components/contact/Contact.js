@@ -79,7 +79,7 @@ const Contact = () => {
           required={req}
           maxLength="350"
           rows="8"
-          cols="49"
+          cols="52"
         ></textarea>
         <SignButton child={"Gönder"} />
       </form>
