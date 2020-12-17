@@ -1,0 +1,80 @@
+.popup {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  color: var(--text);
+  .form-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid grey;
+    width: 43rem;
+    height: 5rem;
+    padding: 2rem 1rem;
+    font-size: 2rem;
+    font-weight: 600;
+    border-radius: 0.65rem;
+
+    span {
+      margin-right: 1.3rem;
+      margin-left: 2rem;
+      height: 2rem;
+    }
+
+    input {
+      font-size: 2rem;
+      border: none;
+      outline: none;
+      &:focus {
+        outline: none;
+      }
+      width: 100%;
+    }
+    margin-bottom: 1.5rem;
+  }
+  .submit-button {
+    width: 100%;
+    height: 5.2rem;
+    color: var(--white);
+    background-color: var(--a);
+    font-size: 1.5rem;
+    font-weight: 500;
+    border-radius: 0.65rem;
+    &:hover {
+      background-color: var(--a-hover);
+      cursor: pointer;
+    }
+  }
+  .login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-grow: 1;
+
+    color: black;
+  }
+
+  .register {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-grow: 1;
+
+    color: black;
+  }
+  .vertical-line {
+    display: block;
+    width: 2px;
+    height: 50rem;
+    background-color: var(--text);
+    margin: 0.5rem 2rem;
+  }
+
+  .myAlert{
+    font-size: 2rem;
+    font-weight: 500;
+    color: var(--primary);
+  }
+}

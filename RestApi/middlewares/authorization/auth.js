@@ -1,50 +1,115 @@
-const CustomError = require("../../helpers/errors/CustomError");
-const asyncErrorWrapper = require("express-async-handler");
-const User = require("../../models/User");
 const jwt = require("jsonwebtoken");
-const {
-  isTokenIncluded,
-  getAccessTokenFromHeader,
-} = require("../../helpers/authorization/tokenHelpers");
+const errorWrapper = require("../../helpers/error/errorWrapper");
+const User = require("../../models/User");
+const Question = require("../../models/Question");
+const Episode = require("../../models/Episode");
+const Answer = require("../../models/Answer");
 
-const getAccessToRoutes = (req, res, next) => {
-  //Token
-  //   const { JWT_SECRET_KEY } = process.env;
+const CustomError = require("../../helpers/error/customError");
+
+const getAccessToRoute = errorWrapper(async (req, res, next) => {
+  console.log(req.headers);
+  // Is Token Included
   if (!isTokenIncluded(req)) {
-    // 401 Unauthorize
-    // 403 Forbidden
     return next(
-      new CustomError("You are not authorize to access this route", 403)
+      new CustomError("You are not authorized to access this page", 403)
     );
   }
-  console.log(req.headers.authorization);
+
+  // Get Token From Header
+
   const accessToken = getAccessTokenFromHeader(req);
-  jwt.verify(accessToken, process.env.JWT_SECRET_KEY, (err, decoded) => {
+
+  // Control If Token Valid
+  jwt.verify(accessToken, process.env.JWT_SECRET_KEY, (err, decodedToken) => {
     if (err) {
       return next(
         new CustomError("You are not authorized to access this page", 401)
       );
     }
     req.user = {
-      id: decoded.id,
-      name: decoded.name,
+      id: decodedToken.id,
+      name: decodedToken.name,
     };
-    // console.log(decoded);
-
     next();
   });
+});
+const getAdminAccess = errorWrapper(async (req, res, next) => {
+  const user = await User.findById(req.user.id);
+
+  if (user.role !== "admin") {
+    return next(new CustomError("Only admins can access this route", 403));
+  }
+  return next();
+});
+const getTeacherAccess = errorWrapper(async (req, res, next) => {
+  const user = await User.findById(req.user.id);
+
+  if (user.role !== "teacher") {
+    return next(new CustomError("Only teacher can access this route", 403));
+  }
+  return next();
+});
+const getLessonOwnerAccess = errorWrapper(async (req, res, next) => {
+  const userId = req.user.id;
+  const lessonId = req.params.id;
+
+  const lesson = req.myLesson;
+  if (lesson.user != userId) {
+    return next(new CustomError("Only owner can handle this operation", 403));
+  }
+  return next();
+});
+const getEpisodeOwnerAccess = errorWrapper(async (req, res, next) => {
+  const userId = req.user.id;
+  const episodeId = req.params.id;
+
+  const episode = await Episode.findById(episodeId);
+
+  if (episode.user != userId) {
+    return next(new CustomError("Only owner can handle this operation", 403));
+  }
+  return next();
+});
+const getQuestionOwnerAccess = errorWrapper(async (req, res, next) => {
+  const userId = req.user.id;
+  const questionId = req.params.id;
+
+  const question = await Question.findById(questionId);
+
+  if (question.user != userId) {
+    return next(new CustomError("Only owner can handle this operation", 403));
+  }
+  return next();
+});
+
+const getAnswerOwnerAccess = errorWrapper(async (req, res, next) => {
+  const userId = req.user.id;
+  const answerId = req.params.answer_id;
+
+  const answer = await Answer.findById(answerId);
+
+  if (answer.user != userId) {
+    return next(new CustomError("Only owner can handle this operation", 403));
+  }
+  return next();
+});
+
+const getAccessTokenFromHeader = (req) => {
+  const accessToken = req.headers.authorization;
+
+  return accessToken;
+};
+const isTokenIncluded = (req) => {
+  return req.headers.authorization;
 };
 
-const getAdminAccess = asyncErrorWrapper(async (req, res, next) => {
-  const { id } = req.user;
-
-  const user = await User.findById(id);
-  if (user.role !== "admin") {
-    return next(new CustomError("Only admin can access this page", 403));
-  }
-  next();
-});
 module.exports = {
-  getAccessToRoutes,
+  getAccessToRoute,
   getAdminAccess,
+  getTeacherAccess,
+  getLessonOwnerAccess,
+  getQuestionOwnerAccess,
+  getAnswerOwnerAccess,
+  getEpisodeOwnerAccess,
 };

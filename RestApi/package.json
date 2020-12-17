@@ -1,32 +1,38 @@
 {
-  "name": "dlv-rest-api",
+  "name": "question-answer-api",
   "version": "1.0.0",
-  "description": "Dist Learn Vision",
+  "description": "Question & Answer - Rest Api",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js",
+    "dev": "nodemon server"
   },
   "keywords": [
     "express",
+    "mongodb",
     "rest",
     "api"
   ],
-  "author": "tuna",
+  "author": "Mustafa Murat Coşkun",
   "license": "MIT",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "express-async-handler": "^1.1.4",
+    "express-mongo-sanitize": "^1.3.2",
+    "express-rate-limit": "^5.0.0",
+    "helmet": "^3.21.2",
+    "hpp": "^0.2.3",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.10.11",
+    "mongoose": "^5.8.9",
     "multer": "^1.4.2",
-    "nodemailer": "^6.4.16",
-    "slugify": "^1.4.6"
+    "nodemailer": "^6.4.2",
+    "slugify": "^1.3.6",
+    "xss-clean": "^0.1.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.6"
+    "nodemon": "^2.0.2"
   }
 }

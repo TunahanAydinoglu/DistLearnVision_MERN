@@ -1,0 +1,13 @@
+.logo {
+  font-size: 2rem;
+  font-weight: 800;
+  display: flex;
+  width: 5.7rem;
+  margin:0 2rem;
+  a{
+    display: inline-block;
+    text-decoration: none;
+    line-height:1.7rem;
+    color: var(--c-text);
+  }
+}

@@ -1,27 +1,64 @@
 const User = require("../models/User");
-const CustomError = require("../helpers/errors/CustomError");
-const asyncErrorWrapper = require("express-async-handler");
+const errorWrapper = require("../helpers/error/errorWrapper");
+const CustomError = require("../helpers/error/customError");
 
-const blockUser = asyncErrorWrapper(async (req, res, next) => {
-  const { id } = req.params;
 
-  const user = await User.findById(id);
 
-  user.blocked = !user.blocked;
-
-  await user.save();
-
-  return res
+const getAllUsers = errorWrapper(async(req,res,next) => {    
+    return res
     .status(200)
-    .json({ success: true, message: "User Blocked : " + user.blocked });
+    .json(res.advanceQueryResults);
 });
-const deleteUser = asyncErrorWrapper(async (req, res, next) => {
-  const { id } = req.params;
+const getSingleUser = errorWrapper(async(req,res,next) => {
+    
+    const {id} = req.params;
+    
+    const user = await User.findById(id);
 
-  const user = await User.findById(id);
-
-  await user.remove();
-
-  return res.status(200).json({ success: true, message: "User deleted" });
+    return res
+    .status(200)
+    .json({
+        success : true,
+        data : user
+    });
 });
-module.exports = { blockUser, deleteUser };
+const deleteUser = errorWrapper(async (req,res,next) => {
+    const {id} = req.params;
+
+    const user = await User.findById(id);
+
+    await user.remove();
+
+    return res.status(200)
+    .json({
+        success : true,
+        data: {}
+    });
+
+
+});
+const getBlockUser = errorWrapper(async(req,res,next) => {
+
+    const {id} = req.params;
+    
+    const user = await User.findById(id);
+   
+    await User.updateOne({_id : user._id},{blocked : !user.blocked});
+
+    return res
+    .status(200)
+    .json({
+        success : true,
+        message : "User Blocked Successfully"
+    });
+
+});
+
+module.exports = {
+    getAllUsers,
+    getSingleUser,
+    deleteUser,
+    getBlockUser
+
+}
+

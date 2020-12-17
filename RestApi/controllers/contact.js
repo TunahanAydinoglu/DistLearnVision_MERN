@@ -1,8 +1,7 @@
 const Contact = require("../models/Contact");
-const CustomError = require("../helpers/errors/CustomError");
-const asyncErrorWrapper = require("express-async-handler");
+const errorWrapper = require("../helpers/error/errorWrapper");
 
-const contact = asyncErrorWrapper(async (req, res, next) => {
+const contact = errorWrapper(async (req, res, next) => {
   const data = req.body;
 
   const { name, email, subject, content } = data;

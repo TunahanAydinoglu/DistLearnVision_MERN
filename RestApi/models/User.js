@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
+const crypto = require("crypto");
+const Schema = mongoose.Schema;
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const crypto = require("crypto");
-
-const Schema = mongoose.Schema;
+const Question = require("./Question");
 
 const UserSchema = new Schema({
   name: {
@@ -12,7 +12,7 @@ const UserSchema = new Schema({
   },
   email: {
     type: String,
-    required: [true, "Plase provide a email"],
+    required: true,
     unique: true,
     match: [
       /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
@@ -21,8 +21,8 @@ const UserSchema = new Schema({
   },
   role: {
     type: String,
+    enum: ["user", "admin", "teacher"],
     default: "user",
-    enum: ["user", "admin"],
   },
   password: {
     type: String,
@@ -34,7 +34,7 @@ const UserSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-  title: {
+  job: {
     type: String,
   },
   about: {
@@ -48,32 +48,32 @@ const UserSchema = new Schema({
   },
   profile_image: {
     type: String,
-    default: "https://icon-library.net/images/default-profile-icon/default-profile-icon-24.jpg",
+    default: "default_profile.jpg",
   },
   blocked: {
     type: Boolean,
     default: false,
   },
-  resetPasswordToken: { type: String },
-  resetPasswordExpire: { type: Date },
+  resetPasswordToken: {
+    type: String,
+  },
+  resetPasswordExpire: {
+    type: Date,
+  },
 });
-//UserSchema Methods
-UserSchema.methods.generateJwtFromUser = function () {
+UserSchema.methods.getTokenFromUserModel = function () {
   const { JWT_SECRET_KEY, JWT_EXPIRE } = process.env;
+
   const payload = {
     id: this._id,
     name: this.name,
   };
-
   const token = jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: JWT_EXPIRE });
 
   return token;
 };
-
-UserSchema.methods.getResetPasswordTokenFromUser = function () {
-  const { RESET_PASSWORD_EXPIRE } = process.env;
-
-  const randomHexString = crypto.randomBytes(16).toString("hex"); //random hex string created
+UserSchema.methods.getResetPasswordToken = function () {
+  const randomHexString = crypto.randomBytes(15).toString("hex");
 
   const resetPasswordToken = crypto
     .createHash("SHA256")
@@ -81,14 +81,12 @@ UserSchema.methods.getResetPasswordTokenFromUser = function () {
     .digest("hex");
 
   this.resetPasswordToken = resetPasswordToken;
-  this.resetPasswordExpire = Date.now() + parseInt(RESET_PASSWORD_EXPIRE);
+  this.resetPasswordExpire =
+    Date.now() + parseInt(process.env.RESET_PASSWORD_EXPIRE);
 
   return resetPasswordToken;
 };
-
-//Pre Hooks
 UserSchema.pre("save", function (next) {
-  //Parola degismemisse
   if (!this.isModified("password")) {
     next();
   }
@@ -96,11 +94,14 @@ UserSchema.pre("save", function (next) {
     if (err) next(err);
     bcrypt.hash(this.password, salt, (err, hash) => {
       if (err) next(err);
-      // Store hash in your password DB.
       this.password = hash;
       next();
     });
   });
 });
-
+UserSchema.post("remove", async function (next) {
+  const result = await Question.deleteMany({
+    user: this._id,
+  });
+});
 module.exports = mongoose.model("User", UserSchema);
