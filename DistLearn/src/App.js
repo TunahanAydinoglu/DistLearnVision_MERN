@@ -6,6 +6,7 @@ import Contact from "./components/contact/Contact";
 import AboutUs from "./components/aboutUs/AboutUs";
 import Lessons from "./components/lessons/Lessons";
 import MainPage from "./components/mainPage/MainPage";
+import Watch from "./components/watch/Watch";
 
 function App() {
   return (
@@ -16,7 +17,9 @@ function App() {
           <Route path="/iletisim">
             <Contact />
           </Route>
-
+          <Route path="/izle">
+            <Watch />
+          </Route>
           <Route path="/hakkimizda">
             <AboutUs />
           </Route>
