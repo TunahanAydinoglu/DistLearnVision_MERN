@@ -14,7 +14,9 @@ const {
   editLesson,
   deleteLesson,
   likeLesson,
+  dislikeLesson,
   undoLikeLesson,
+  undoDislikeLesson,
 } = require("../controllers/lesson");
 
 const {
@@ -44,6 +46,12 @@ router.get(
   "/:id/undo_like",
   [getAccessToRoute, checkLessonExist],
   undoLikeLesson
+);
+router.get("/:id/dislike", [getAccessToRoute, checkLessonExist], dislikeLesson);
+router.get(
+  "/:id/undo_dislike",
+  [getAccessToRoute, checkLessonExist],
+  undoDislikeLesson
 );
 
 router.post("/add", getAccessToRoute, addNewLesson);

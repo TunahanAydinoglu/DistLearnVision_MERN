@@ -1,18 +1,26 @@
 import Axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./updateProfile.scss";
 import { getCookie } from "../../helpers/auth";
 
 export default function UpdateProfile(props) {
   const user = props.user;
 
-  const [name, setName] = useState(user.name);
-  const [email, setEmail] = useState(user.email);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [website, setWebsite] = useState(user.website);
   const [job, setJob] = useState(user.job);
   const [place, setPlace] = useState(user.place);
   const [about, setAbout] = useState(user.about);
 
+  useEffect(() => {
+    setName(user.name);
+    setEmail(user.email);
+    setWebsite(user.setWebsite);
+    setJob(user.job);
+    setPlace(user.place);
+    setAbout(user.about);
+  }, []);
 
   function handleSubmitUpdate(e) {
     let urlUpdate = "http://localhost:5000/api/auth/updateDetails";
@@ -31,7 +39,7 @@ export default function UpdateProfile(props) {
       headers: {
         Authorization: token,
       },
-    }).then(()=>(alert("Guncelleme Basarili")));
+    }).then(() => alert("Guncelleme Basarili"));
   }
 
   return (

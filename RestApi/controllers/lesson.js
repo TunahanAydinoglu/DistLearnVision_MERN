@@ -62,11 +62,10 @@ const deleteLesson = errorWrapper(async (req, res, next) => {
   });
 });
 const likeLesson = errorWrapper(async (req, res, next) => {
-  
   const lesson = req.myLesson;
 
   if (lesson.likes.includes(req.user.id)) {
-    return next(new CustomError("You already liked this question", 400));
+    return next(new CustomError("You already liked this lesson", 400));
   }
   lesson.likes.push(req.user.id);
   lesson.likeCount += 1;
@@ -80,18 +79,54 @@ const likeLesson = errorWrapper(async (req, res, next) => {
 });
 
 const undoLikeLesson = errorWrapper(async (req, res, next) => {
-
   const lesson = req.myLesson;
 
   if (!lesson.likes.includes(req.user.id)) {
     return next(
-      new CustomError("You can not undo like operation for this question", 400)
+      new CustomError("You can not undo like operation for this lesson", 400)
     );
   }
   const index = lesson.likes.indexOf(req.user.id);
 
   lesson.likes.splice(index, 1);
   lesson.likeCount -= 1;
+
+  await lesson.save();
+
+  res.status(200).json({
+    success: true,
+    data: lesson,
+  });
+});
+const dislikeLesson = errorWrapper(async (req, res, next) => {
+  const lesson = req.myLesson;
+
+  if (lesson.dislikes.includes(req.user.id)) {
+    return next(new CustomError("You already liked this lesson", 400));
+  }
+  lesson.dislikes.push(req.user.id);
+  lesson.dislikeCount += 1;
+
+  await lesson.save();
+
+  return res.status(200).json({
+    success: true,
+    data: lesson,
+  });
+});
+
+const undoDislikeLesson = errorWrapper(async (req, res, next) => {
+  const lesson = req.myLesson;
+
+  if (!lesson.dislikes.includes(req.user.id)) {
+    return next(
+      new CustomError("You can not undo like operation for this lesson", 400)
+    );
+  }
+  const index = lesson.dislikes.indexOf(req.user.id);
+
+  lesson.dislikes.splice(index, 1);
+  lesson.dislikeCount -= 1;
 
   await lesson.save();
 
@@ -109,4 +144,6 @@ module.exports = {
   deleteLesson,
   likeLesson,
   undoLikeLesson,
+  dislikeLesson,
+  undoDislikeLesson,
 };

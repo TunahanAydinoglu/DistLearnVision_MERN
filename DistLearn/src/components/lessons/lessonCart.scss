@@ -8,12 +8,12 @@
   height: 39rem;
   width: 28rem;
   background-color: var(--white);
- 
+
   img {
     padding: 1px;
     width: 99%;
     margin: auto;
-    &:hover{
+    &:hover {
       cursor: pointer;
     }
   }
@@ -30,7 +30,7 @@
       display: inline;
       color: var(--text);
       margin: 0.5rem;
-      &:hover{
+      &:hover {
         cursor: pointer;
       }
     }
@@ -48,18 +48,51 @@
       flex-direction: row;
       height: 3rem;
       padding: 0;
-      svg{
-      font-size: 2rem;
-      &:hover{
-        cursor: pointer;
+      svg {
+        font-size: 2rem;
+        &:hover {
+          cursor: pointer;
+        }
       }
+      .like {
+        color: rgba(0, 0, 255, 0.5);
+        margin: 0 1rem;
       }
-      .like{
-        color: rgba(0,0,255,0.5);
-        margin:0 1rem;
+      .dislike {
+        margin-right: 1rem;
+        color: rgba(255, 0, 0, 0.6);
       }
-      .dislike{
-        color:rgba(255,0,0,0.6)
+
+      .dropdown {
+        position: relative;
+        display: inline-block;
+
+        .dropdown-content {
+          display: none;
+          position: absolute;
+          background-color: #f9f9f9;
+          min-width: 160px;
+          box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+          padding: 12px 16px;
+          z-index: 1;
+          ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            li {
+              font-size: 1.5rem;
+              padding-bottom: 0.5rem;
+              &:hover {
+                cursor: pointer;
+                background-color: #f9f9f9;
+              }
+            }
+          }
+        }
+      }
+
+      .dropdown:hover .dropdown-content {
+        display: block;
       }
     }
     .cart-footer {

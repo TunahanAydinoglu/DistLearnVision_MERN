@@ -14,7 +14,7 @@ const LessonSchema = new Schema({
     required: [true, "Please provide a content"],
     minlength: [10, "Please provide content at least 10 characters"],
   },
-  instructor:{
+  instructor: {
     type: String,
     required: [true, "Please provide a instructor"],
     minlength: [5, "Please provide instructor at least 5 characters"],
@@ -40,6 +40,17 @@ const LessonSchema = new Schema({
     min: 0,
   },
   likes: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: "User",
+    },
+  ],
+  dislikeCount: {
+    type: Number,
+    default: 0,
+    min: 0,
+  },
+  dislikes: [
     {
       type: mongoose.Schema.ObjectId,
       ref: "User",
@@ -85,6 +96,9 @@ LessonSchema.pre("save", function (next) {
 
 LessonSchema.virtual("likesCount").get(function () {
   return this.likes.length;
+});
+LessonSchema.virtual("dislikesCount").get(function () {
+  return this.dislikes.length;
 });
 
 LessonSchema.methods.makeSlug = function () {

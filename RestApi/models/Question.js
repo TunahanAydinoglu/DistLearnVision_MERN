@@ -30,6 +30,17 @@ const QuestionSchema = new Schema({
             ref : "User"
         }
     ],
+    dislikeCount : {
+        type : Number,
+        default : 0,
+        min: 0
+    },
+    dislikes : [
+        {
+            type : mongoose.Schema.ObjectId,
+            ref : "User"
+        }
+    ],
     
     user : {
         type : mongoose.Schema.ObjectId,
@@ -66,6 +77,10 @@ QuestionSchema.pre("save",function(next){
 QuestionSchema.virtual("likesCount").get(function() {
 
     return this.likes.length;
+});
+QuestionSchema.virtual("DislikesCount").get(function() {
+
+    return this.dislikes.length;
 });
 
 QuestionSchema.methods.makeSlug = function(){

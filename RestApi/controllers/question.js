@@ -91,6 +91,46 @@ const undoLikeQuestion = errorWrapper(async (req, res, next) => {
     data: question,
   });
 });
+const dislikeQuestion = errorWrapper(async (req, res, next) => {
+  const { id } = req.params;
+
+  const question = await Question.findById(id);
+
+  if (question.dislikes.includes(req.user.id)) {
+    return next(new CustomError("You already liked this question", 400));
+  }
+  question.dislikes.push(req.user.id);
+  question.dislikeCount += 1;
+
+  await question.save();
+
+  return res.status(200).json({
+    success: true,
+    data: question,
+  });
+});
+const undoDislikeQuestion = errorWrapper(async (req, res, next) => {
+  const { id } = req.params;
+
+  const question = await Question.findById(id);
+
+  if (!question.dislikes.includes(req.user.id)) {
+    return next(
+      new CustomError("You can not undo like operation for this question", 400)
+    );
+  }
+  const index = question.dislikes.indexOf(req.user.id);
+
+  question.dislikes.splice(index, 1);
+  question.dislikeCount -= 1;
+
+  await question.save();
+
+  res.status(200).json({
+    success: false,
+    data: question,
+  });
+});
 
 module.exports = {
   askNewQuestion,
@@ -100,4 +140,6 @@ module.exports = {
   deleteQuestion,
   likeQuestion,
   undoLikeQuestion,
+  dislikeQuestion,
+  undoDislikeQuestion,
 };
