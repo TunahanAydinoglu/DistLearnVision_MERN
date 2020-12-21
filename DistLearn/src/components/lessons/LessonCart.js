@@ -1,33 +1,40 @@
 import "./lessonCart.scss";
-import { StarSolid } from "../icons/index";
-import pic from "../../assets/img/lessonPic.jpg";
+import { LikeFa, DislikeFa } from "../icons/index";
+import Axios from "axios";
+import { useEffect, useState } from "react";
 
-const LessonCart = () => {
+const LessonCart = (props) => {
+  const [category, setCategory] = useState("");
+  const [img, setImg] = useState("");
+  let lesson = props.lesson;
+
+  useEffect(() => {
+    let lp = "";
+    let url = "http://localhost:5000/api/categories/" + lesson.category;
+    Axios.get(url)
+      .then((res) => res.data.data)
+      .then((data) => {
+        setCategory(data);
+        lp = "http://localhost:5000/categories/" + data.image;
+        setImg(lp);
+      });
+  }, []);
   return (
     <div className="lesson-cart">
-      <img alt="asd" src={pic} />
+      <img alt="asd" src={img} />
       <div className="cart-content">
-        <h4>Web Development</h4>
-        <a href="/">Bastan sona React Gelistirme Egitimi Gelistirme Egitimi Gelistirme Egitimi</a>
-        <ul>
-          <li className="dolu">
-            <StarSolid />
-          </li>
-          <li className="dolu">
-            <StarSolid />
-          </li>
-          <li className="dolu">
-            <StarSolid />
-          </li>
-          <li className="dolu">
-            <StarSolid />
-          </li>
-          <li className="bos">
-            <StarSolid />
-          </li>
-        </ul>
+        <h4>{category.title}</h4>
+        <a href="/">{lesson.content}</a>
+        <div className="icons">
+          <span className="like">
+            <LikeFa />({lesson.likeCount})
+          </span>
+          <span className="dislike">
+            <DislikeFa />({lesson.DislikeCount})
+          </span>
+        </div>
         <div className="cart-footer">
-          <span>Tunahan Aydinoglu</span>
+          <span>{lesson.instructor}</span>
         </div>
       </div>
     </div>

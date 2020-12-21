@@ -50,7 +50,7 @@ function Header() {
             </nav>
           </div>
           <div className="header-right">
-            <Icons.SearchFa />
+            <Link to="/dersler"><Icons.SearchFa /></Link>
             <span className="line"></span>
             {valid ? (
               <div className="valid">

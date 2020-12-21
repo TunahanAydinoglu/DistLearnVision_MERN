@@ -14,6 +14,16 @@ const LessonSchema = new Schema({
     required: [true, "Please provide a content"],
     minlength: [10, "Please provide content at least 10 characters"],
   },
+  instructor:{
+    type: String,
+    required: [true, "Please provide a instructor"],
+    minlength: [5, "Please provide instructor at least 5 characters"],
+  },
+  content: {
+    type: String,
+    required: [true, "Please provide a content"],
+    minlength: [5, "Please provide content at least 5 characters"],
+  },
   url: {
     type: String,
     required: [true, "Please provide a content"],

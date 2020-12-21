@@ -7,11 +7,15 @@
   justify-content: flex-start;
   height: 39rem;
   width: 28rem;
-  background-color: var(--card);
+  background-color: var(--white);
+ 
   img {
     padding: 1px;
     width: 99%;
     margin: auto;
+    &:hover{
+      cursor: pointer;
+    }
   }
   .cart-content {
     box-sizing: border-box;
@@ -26,28 +30,36 @@
       display: inline;
       color: var(--text);
       margin: 0.5rem;
+      &:hover{
+        cursor: pointer;
+      }
     }
     a {
       display: flex;
       align-items: center;
-      text-align: center;
       font-weight: 500;
       flex-grow: 1;
       font-size: 1.7rem;
       color: var(--text-hover);
       text-decoration: none;
     }
-    ul {
+    .icons {
       display: flex;
       flex-direction: row;
-      list-style-type: none;
-      height: 2rem;
+      height: 3rem;
       padding: 0;
-      .dolu {
-        color: var(--star);
+      svg{
+      font-size: 2rem;
+      &:hover{
+        cursor: pointer;
       }
-      .bos {
-        color: var(--star-o);
+      }
+      .like{
+        color: rgba(0,0,255,0.5);
+        margin:0 1rem;
+      }
+      .dislike{
+        color:rgba(255,0,0,0.6)
       }
     }
     .cart-footer {

@@ -1,3 +1,100 @@
-div {
-  box-sizing: border-box;
+.lessons {
+  .wrapper {
+    display: flex;
+    flex-direction: row;
+    padding: 3rem;
+
+    .lessons-carts {
+      display: flex;
+      flex: 0 0 75%;
+      max-width: 75%;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      .lesson-cart {
+        width: 23%;
+        margin: 2rem;
+      }
+    }
+
+    aside {
+      display: flex;
+      flex: 0 0 25%;
+      max-width: 25%;
+      .aside {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 2rem;
+        width: 80%;
+        border: 2px solid #f3f3f3;
+        font-size: 2rem;
+        .search {
+          width: 90%;
+          padding-left: 2rem;
+          border-bottom: 1px solid var(--text);
+          .input-wrapper {
+            font-size: 2.5rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.3rem 0.8rem;
+            height: 3rem;
+            width: 80%;
+            border: 1px solid var(--text);
+            &:hover {
+              cursor: pointer;
+            }
+            label {
+              display: flex;
+              &:hover {
+                cursor: pointer;
+              }
+            }
+            input {
+              outline: none;
+              border: none;
+              width: 100%;
+            }
+          }
+
+          padding-bottom: 4rem;
+        }
+
+        .categories {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          width: 90%;
+          padding-left: 2rem;
+
+          ul {
+            display: flex;
+            flex-direction: column;
+            padding-left: 1rem;
+            align-items: flex-start;
+            list-style: none;
+            height: auto;
+            width: 100%;
+            &:hover {
+            }
+
+            li {
+              width: 80%;
+              color: var(--text);
+              border-top: 1px solid #f3f3f3;
+              border-bottom: 1px solid #f3f3f3;
+              margin-bottom: 0.8rem;
+              font-weight: 500;
+              line-height: 3rem;
+              &:hover {
+                cursor: pointer;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
