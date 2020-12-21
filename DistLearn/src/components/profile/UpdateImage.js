@@ -6,7 +6,7 @@ import "./updateImage.scss";
 export default function UpdateImage(props) {
   const [path, setPath] = useState('Geçerli formatlar ".jpg, .jpeg, .png"');
   const [token, setToken] = useState("");
-  useEffect((token) => {
+  useEffect(() => {
     setToken(getCookie("token"));
   }, []);
   const [image, setImage] = useState(null);
@@ -22,7 +22,7 @@ export default function UpdateImage(props) {
         "Authorization": token,
         "Accept": "application/json",
       },
-    });
+    }).then(()=>alert("Fotografiniz guncellenmistir."));
   }
   return (
     <div className="updateProfile">
@@ -40,6 +40,7 @@ export default function UpdateImage(props) {
             name="profile_image"
             id="profile_image"
             type="file"
+            hidden={true}
             required
             onChange={(e) => {
               setPath(e.target.files[0].name);

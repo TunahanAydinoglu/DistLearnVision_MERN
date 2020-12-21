@@ -30,23 +30,23 @@ const categoryQueryMiddleware = function(model,options){
 
         query = categorySortHelper(query,req);
 
-        let pagination;
+        // let pagination;
 
-        // Paginate Category
+        // // Paginate Category
 
-        const paginationResult = await paginationHelper(model,query,req);
+        // const paginationResult = await paginationHelper(model,query,req);
 
-        query = paginationResult.query;
+        // query = paginationResult.query;
 
-        pagination = paginationResult.pagination;
+        // pagination = paginationResult.pagination;
         
         const advanceQueryResults = await query;
-        console.log(pagination);
+        // console.log(pagination);
         
         res.advanceQueryResults = {
             success : true,
             count : advanceQueryResults.length,
-            pagination : pagination,
+            // pagination : pagination,
             data : advanceQueryResults
         };
         next();

@@ -43,10 +43,10 @@ const Profile = () => {
               </div>
               <div className="navi">
                 <ul>
-                  <Link to="/">
+                  <Link to="/profil">
                     <li>Profil</li>
                   </Link>
-                  <Link to="/updateImage">
+                  <Link to="/profil/updateImage">
                     <li>Fotograf</li>
                   </Link>
                   <li>Hesabı Sil</li>
@@ -55,11 +55,11 @@ const Profile = () => {
             </div>
             <div className="form-panel">
               <Switch>
-                <Route path="/updateImage">
-                  <UpdateProfile user={user} />
+                <Route path="/profil/updateImage">
+                  <UpdateImage image={user.profile_image} />
                 </Route>
-                <Route path="/">
-                  <UpdateImage image={user.profile_image}/>
+                <Route path="/profil">
+                  <UpdateProfile user={user} />
                 </Route>
               </Switch>
             </div>

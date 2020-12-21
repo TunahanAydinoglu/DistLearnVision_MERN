@@ -61,7 +61,7 @@ router.get(
   ],
   getSingleCategory
 );
-router.post("/add", getAccessToRoute, addNewCategory);
+router.post("/add", [getAccessToRoute,getAdminAccess], addNewCategory);
 
 router.put(
   "/:id/edit",

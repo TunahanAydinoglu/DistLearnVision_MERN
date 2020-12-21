@@ -1,5 +1,6 @@
 api
 /node_modules
+node_modules
 /.pnp
 .pnp.js
 .next
@@ -12,3 +13,4 @@ config.env
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+package-lock.json

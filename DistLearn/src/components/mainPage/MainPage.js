@@ -1,22 +1,39 @@
+import Axios from "axios";
+import React, { Component } from "react";
+import MainCard from "./MainCard";
+import "./mainPage.scss";
 
-const MainPage = () =>{
+export default class MainPage extends Component {
+  state = {
+    categories: [],
+  };
 
-    return(
-        <div className="mainpage">
-            <h2>En İyi Kurslarımıza Göz Atın</h2>
-            <h4>Kategorilerinin en sevilen kurslarını sizler için seçtik</h4>
-            <ul>
-                <li>Tasarim</li>
-                <li>Web Geliştirme</li>
-                <li>Mobil Geliştirme</li>
-                <li>Masaüstü Geliştirme</li>
-                <li>Animasyon</li>
-                <li>Siber Güvenlik</li>
-                <li><a href="#design" data-option-value=".design">Tasarim</a></li>
-            </ul>
-            
-        </div>
-    )
+  componentDidMount() {
+    const url = "http://localhost:5000/api/categories";
+    let arr = [];
+    Axios.get(url)
+      .then((res) => res.data.data)
+      .then((data) => data.map((c) => arr.push(c)))
+      .then(() => this.setState({ categories: arr }));
+  }
+  render() {
+    let categories = this.state.categories;
+    return (
+      <div className="mainpage">
+        <h2>Yeni birşeyler öğrenmeye ne dersiniz!</h2>
+        <h4>
+          En sevilen kategorileri sizler için seçtik
+          {console.log(categories)}
+        </h4>
+
+        <ul>
+          {categories.map((c) => (
+            <li key={c._id}>
+              <MainCard category={c} />
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  }
 }
-
-export default MainPage;

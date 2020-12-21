@@ -8,7 +8,6 @@ const Answer = require("../../models/Answer");
 const CustomError = require("../../helpers/error/customError");
 
 const getAccessToRoute = errorWrapper(async (req, res, next) => {
-  console.log(req.headers);
   // Is Token Included
   if (!isTokenIncluded(req)) {
     return next(

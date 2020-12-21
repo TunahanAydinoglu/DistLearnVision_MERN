@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Popup from "../toolbox/Popup";
 import { getCookie, signout } from "../../helpers/auth";
+import { Link } from "react-router-dom";
 
 import "./header.scss";
 import * as Icons from "../icons/index";
@@ -34,16 +35,16 @@ function Header() {
             <nav>
               <ul>
                 <li>
-                  <a href="/">ANASAYFA</a>
+                  <Link to="/">ANASAYFA</Link>
                 </li>
                 <li>
-                  <a href="/">DERSLER</a>
+                  <Link to="/dersler">DERSLER</Link>
                 </li>
                 <li>
-                  <a href="/">HAKKIMIZDA</a>
+                  <Link to="/hakkimizda">HAKKIMIZDA</Link>
                 </li>
                 <li>
-                  <a href="/"> İLETİŞİM </a>
+                  <Link to="/iletisim"> İLETİŞİM </Link>
                 </li>
               </ul>
             </nav>
@@ -53,10 +54,10 @@ function Header() {
             <span className="line"></span>
             {valid ? (
               <div className="valid">
-                <a href="/">
+                <Link to="/profil">
                   <Icons.Profile />
                   Profil
-                </a>
+                </Link>
                 <span>/</span>
                 <a href="/" onClick={() => signout()}>
                   Çıkış Yap
@@ -65,13 +66,13 @@ function Header() {
               </div>
             ) : (
               <div className="valid">
-                <a href="/" onClick={togglePopup}>
+                <Link to="/" onClick={togglePopup}>
                   Giriş Yap
-                </a>
+                </Link>
                 /
-                <a href="/" onClick={togglePopup}>
+                <Link to="/" onClick={togglePopup}>
                   Kayıt Ol
-                </a>
+                </Link>
               </div>
             )}
           </div>
