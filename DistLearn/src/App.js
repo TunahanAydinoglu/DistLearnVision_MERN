@@ -10,7 +10,7 @@ import Watch from "./components/watch/Watch";
 
 function App() {
   return (
-    <div className="light">
+    <div className="light" >
       <Router>
         <Header />
         <Switch>
