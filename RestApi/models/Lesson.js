@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const slugify = require("slugify");
+const Category = require("./Category");
 
 const LessonSchema = new Schema({
   title: {
@@ -72,26 +73,41 @@ const LessonSchema = new Schema({
     ref: "Category",
     required: true,
   },
-  question: [
+  questions: [
     {
       type: mongoose.Schema.ObjectId,
       ref: "Question",
     },
   ],
-  episode: [
+  episodes: [
     {
       type: mongoose.Schema.ObjectId,
       ref: "Episode",
     },
   ],
+  episodeCount  : {
+    type:Number,
+    default : 0
+},
 });
 
 // Pre Save Method
-LessonSchema.pre("save", function (next) {
+LessonSchema.pre("save",async function (next) {
   if (!this.isModified("title")) next();
 
-  this.slug = this.makeSlug();
-  next();
+  try {
+    let category_id = this.category;
+    console.log(category_id)
+    const category = await Category.findById(category_id);
+
+    category.lessons.push(this.id);
+    category.lessonCount += 1;
+    await category.save();
+    this.slug = this.makeSlug();
+    next();
+  } catch (err) {
+    next(err);
+  }
 });
 
 LessonSchema.virtual("likesCount").get(function () {
@@ -100,7 +116,14 @@ LessonSchema.virtual("likesCount").get(function () {
 LessonSchema.virtual("dislikesCount").get(function () {
   return this.dislikes.length;
 });
+LessonSchema.post("remove", async function () {
+  const category = await Category.findById(this.category);
 
+  category.lessons.splice(category.lessons.indexOf(this._id), 1);
+  category.lessonCount -= 1;
+
+  await category.save();
+});
 LessonSchema.methods.makeSlug = function () {
   return slugify(this.title, {
     replacement: "-",

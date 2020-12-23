@@ -1,20 +1,18 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const slugify = require("slugify");
+const Lesson = require("./Lesson");
 
 const QuestionSchema = new Schema({
     title : {
         type : String,
         required:[true,"Please provide a title"],
-        minlength : [10,"Please provide title at least 10 characters"],
-        unique : true
+        minlength : [5,"Please provide title at least 5 characters"],
     },
     content : {
         type : String,
         required : [true,"Please provide a content"],
-        minlength : [20,"Please provide content at least 20 characters"]
+        minlength : [5,"Please provide content at least 5 characters"]
     },
-    slug : String,
     createdAt : {
         type : Date,
         default : Date.now
@@ -66,11 +64,35 @@ const QuestionSchema = new Schema({
 });
 
 // Pre Save Method
-QuestionSchema.pre("save",function(next){
-    if (!this.isModified("title")) next();
+QuestionSchema.pre("save",async function(next){
+    if (this.isModified("title")){
+        this.slug = this.makeSlug();
+    };
+    if (this.isModified("user")) {
+        try {
+            const question = await Question.findById(this.question);
     
-    this.slug = this.makeSlug();
+            question.answers.push(this.id);
+            question.answerCount += 1;
+            await question.save();
+            console.log(question);
+        }
+        catch(err) {
+            console.log(err);
+        }
+    };
     next();
+});
+QuestionSchema.post("remove",async function(){
+    
+    
+    const lesson = await Lesson.findById(this.lesson);
+
+    lesson.questions.splice(lesson.questions.indexOf(this._id),1);
+    lesson.questionCount -= 1;
+    
+    await lesson.save();
+    
 
 });
 
@@ -83,13 +105,6 @@ QuestionSchema.virtual("DislikesCount").get(function() {
     return this.dislikes.length;
 });
 
-QuestionSchema.methods.makeSlug = function(){
-    return slugify(this.title,{
-        replacement: '-',   
-        remove: /[*+~.()'"!:@]/g,
-        lower: true,
-    });
-};
 module.exports  = mongoose.model("Question",QuestionSchema);
 
 

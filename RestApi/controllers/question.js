@@ -3,12 +3,26 @@ const Question = require("../models/Question");
 const errorWrapper = require("../helpers/error/errorWrapper");
 const CustomError = require("../helpers/error/customError");
 
+// const getAllQuestions = errorWrapper(async (req, res, next) => {
+//   return res.status(200).json(res.advanceQueryResults);
+// });
+
 const getAllQuestions = errorWrapper(async (req, res, next) => {
-  return res.status(200).json(res.advanceQueryResults);
+  const { lesson_id } = req.params;
+  const lesson = await Lesson.findById(lesson_id).populate("questions");
+
+  const questions = lesson.questions;
+
+  res.status(200).json({
+    success: true,
+    questionCount: questions.length,
+    data: questions,
+  });
 });
+
 const askNewQuestion = errorWrapper(async (req, res, next) => {
   const user_id = req.user.id;
-
+  const { lesson_id } = req.params;
   const information = req.body;
 
   const question = await Question.create({

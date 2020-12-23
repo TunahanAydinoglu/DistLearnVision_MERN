@@ -29,16 +29,17 @@ const router = express.Router();
 // Ask New Question
 // Permissions - Only Logged In Users
 
-router.get(
-  "/",
-  questionQueryMiddleware(Question, {
-    population: {
-      path: "user",
-      select: "name profile_image",
-    },
-  }),
-  getAllQuestions
-);
+// router.get(
+//   "/",
+//   questionQueryMiddleware(Question, {
+//     population: {
+//       path: "user",
+//       select: "name profile_image",
+//     },
+//   }),
+//   getAllQuestions
+// );
+router.get("/",getAllQuestions);
 
 router.get(
   "/:id",

@@ -1,15 +1,30 @@
-import React from "react";
 import Iframe from "react-iframe";
+import { useEffect, useState } from "react";
+import Axios from 'axios'
 
 import "./watch.scss";
 
 function Watch() {
+
+const [episodes, setEpisodes] = useState([])
+const [video, setVideo] = useState("")
+
+  useEffect(() => {
+   let id = window.location.search.split("=")[1];
+   let arr=[];
+    let url = "http://localhost:5000/api/lessons/"+id+"/episodes";
+    let urlLesson = "http://localhost:5000/api/lessons/"+id;
+   Axios.get(urlLesson).then(res=>res.data.data).then(data=>setVideo(data.url))
+
+   Axios.get(url).then(res => res.data.data).then(data => data.map(c => arr.push(c))).then(()=>setEpisodes(arr))
+  }, []);
+
   return (
     <div className="watch">
       <div className="left">
         <div className="video">
           <Iframe
-            url="https://www.youtube.com/embed/0578heSEY38"
+            url={video}
             width="100%"
             height="100%"
             id="myId"
@@ -26,42 +41,14 @@ function Watch() {
           <h2>Ders İçerikleri</h2>
           <div className="episodes">
             <ul>
-              <li>
-                <h5>1. Bolum </h5>
-                <span>Sql Injection dersleri cs s shkjdf s</span>
-              </li>{" "}
-              <li>
-                <h5>1. Bolum </h5>
-                <span>Sql Injection dersleri cs s shkjdf s</span>
-              </li>{" "}
-              <li>
-                <h5>1. Bolum </h5>
-                <span>Sql Injection dersleri cs s shkjdf s</span>
-              </li>{" "}
-              <li>
-                <h5>1. Bolum </h5>
-                <span>Sql Injection dersleri cs s shkjdf s</span>
-              </li>{" "}
-              <li>
-                <h5>1. Bolum </h5>
-                <span>Sql Injection dersleri cs s shkjdf s</span>
-              </li>{" "}
-              <li>
-                <h5>1. Bolum </h5>
-                <span>Sql Injection dersleri cs s shkjdf s</span>
-              </li>{" "}
-              <li>
-                <h5>1. Bolum </h5>
-                <span>Sql Injection dersleri cs s shkjdf s</span>
-              </li>{" "}
-              <li>
-                <h5>1. Bolum </h5>
-                <span>Sql Injection dersleri cs s shkjdf s</span>
-              </li>{" "}
-              <li>
-                <h5>1. Bolum </h5>
-                <span>Sql Injection dersleri cs s shkjdf s</span>
-              </li>
+              {
+                episodes.map((episode,i) => (
+                  <li key={episode._id} onClick={()=>setVideo(episode.url)} className={video===episode.url && "active"}>
+                    <h5>{i+1}. Bölüm</h5>
+                    <span>{episode.title}</span>
+                  </li>
+                ))
+              }
             </ul>
           </div>
         </div>

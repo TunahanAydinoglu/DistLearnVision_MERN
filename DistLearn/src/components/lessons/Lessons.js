@@ -11,11 +11,11 @@ function Lessons() {
   const searchHandle = (e) => {
     e.preventDefault();
     let arr = [];
-    let search = url+"?search="+e.target.value
+    let search = url + "?search=" + e.target.value;
     Axios.get(search)
-    .then((res) => res.data.data)
-    .then((data) => data.map((a) => arr.push(a)))
-    .then(() => setLessons(arr));
+      .then((res) => res.data.data)
+      .then((data) => data.map((a) => arr.push(a)))
+      .then(() => setLessons(arr));
   };
   useEffect(() => {
     let arr = [];
@@ -23,7 +23,7 @@ function Lessons() {
       .then((res) => res.data.data)
       .then((data) => data.map((a) => arr.push(a)))
       .then(() => setLessons(arr));
-  },[]);
+  }, []);
   return (
     <div className="lessons">
       <div className="wrapper">

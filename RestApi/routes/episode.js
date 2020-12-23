@@ -6,7 +6,7 @@ const {
 } = require("../middlewares/database/databaseErrorHelpers");
 
 const {
-  addNewEpisode,
+  addNewEpisodeToLesson,
   getAllEpisodes,
   getSingleEpisode,
   editEpisode,
@@ -20,29 +20,31 @@ const {
 
 const episodeQueryMiddleware = require("../middlewares/query/episodeQueryMiddleware");
 
-const router = express.Router();
+const router = express.Router({mergeParams:true});
 
 // Permissions - Only Logged In Users
-router.get(
-  "/",
-  episodeQueryMiddleware(Episode, {
-    population: [
-      {
-        path: "user",
-        select: "name profile_image",
-      },
-      {
-        path: "lesson",
-        select: "title url",
-      },
-    ],
-  }),
-  getAllEpisodes
-);
+// router.get(
+//   "/",
+//   episodeQueryMiddleware(Episode, {
+//     population: [
+//       {
+//         path: "user",
+//         select: "name profile_image",
+//       },
+//       {
+//         path: "lesson",
+//         select: "title url",
+//       },
+//     ],
+//   }),
+//   getAllEpisodes
+// );
+
+router.get("/",getAllEpisodes);
 
 router.get("/:id", checkEpisodeExist, getSingleEpisode);
 
-router.post("/add", getAccessToRoute, addNewEpisode);
+router.post("/", getAccessToRoute, addNewEpisodeToLesson);
 
 router.put(
   "/:id/edit",

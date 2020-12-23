@@ -3,6 +3,7 @@ import { LikeFa, DislikeFa, ArrowBottom } from "../icons/index";
 import Axios from "axios";
 import { getCookie } from "../../helpers/auth";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const LessonCart = (props) => {
   let lesson = props.lesson;
@@ -10,6 +11,8 @@ const LessonCart = (props) => {
   const [img, setImg] = useState("");
   const [like, setLike] = useState(lesson.likeCount);
   const [dislike, setDislike] = useState(lesson.dislikeCount);
+  const [locate, setLocate] = useState("");
+
   const likeHandler = () => {
     let config = {
       headers: {
@@ -59,6 +62,8 @@ const LessonCart = (props) => {
   };
 
   useEffect(() => {
+    let locateHelper = "/izle?id=" + lesson._id;
+    setLocate(locateHelper);
     let lp = "";
     let url = "http://localhost:5000/api/categories/" + lesson.category;
     Axios.get(url)
@@ -74,7 +79,7 @@ const LessonCart = (props) => {
       <img alt="asd" src={img} />
       <div className="cart-content">
         <h4>{category.title}</h4>
-        <a href="/">{lesson.content}</a>
+        <Link to={locate}>{lesson.content}</Link>
         <div className="icons">
           <span className="like">
             <span onClick={likeHandler}>

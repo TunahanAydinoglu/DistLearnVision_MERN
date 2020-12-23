@@ -1,19 +1,28 @@
 const Episode = require("../models/Episode");
 
 const errorWrapper = require("../helpers/error/errorWrapper");
+const Lesson = require("../models/Lesson");
 
 const getAllEpisodes = errorWrapper(async (req, res, next) => {
-  return res.status(200).json(res.advanceQueryResults);
-});
-const addNewEpisode = errorWrapper(async (req, res, next) => {
   const { lesson_id } = req.params;
+  const lesson = await Lesson.findById(lesson_id).populate("episodes");
+
+  const episodes = lesson.episodes;
+
+  res.status(200).json({
+    success: true,
+    episodeCount: episodes.length,
+    data: episodes,
+  });
+});
+const addNewEpisodeToLesson = errorWrapper(async (req, res, next) => {
   const user_id = req.user.id;
-  lesson = lesson_id || req.myLesson;
+  const lesson_id = req.myLesson.id;
   const information = req.body;
 
   const episode = await Episode.create({
     ...information,
-    lesson: lesson,
+    lesson: lesson_id,
     user: user_id,
   });
   res.status(200).json({
@@ -58,7 +67,7 @@ const deleteEpisode = errorWrapper(async (req, res, next) => {
 });
 
 module.exports = {
-  addNewEpisode,
+  addNewEpisodeToLesson,
   getAllEpisodes,
   getSingleEpisode,
   editEpisode,

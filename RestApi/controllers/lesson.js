@@ -9,6 +9,7 @@ const getAllLesson = errorWrapper(async (req, res, next) => {
 
 const addNewLesson = errorWrapper(async (req, res, next) => {
   const information = req.body;
+  
 
   const lesson = await Lesson.create({
     ...information,
@@ -22,8 +23,7 @@ const addNewLesson = errorWrapper(async (req, res, next) => {
 });
 
 const getSingleLesson = errorWrapper(async (req, res, next) => {
-  const { id } = req.params;
-
+  
   const lesson = req.myLesson.populate({
     path: "user",
     select: "name profile_image",

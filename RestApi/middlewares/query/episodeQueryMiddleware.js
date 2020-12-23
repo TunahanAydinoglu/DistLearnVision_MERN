@@ -12,6 +12,8 @@ const {
 
 const episodeQueryMiddleware = function (model, options) {
   return errorWrapper(async function (req, res, next) {
+
+    console.log(req.params);
     // Initial Query
     let query = model.find({});
 

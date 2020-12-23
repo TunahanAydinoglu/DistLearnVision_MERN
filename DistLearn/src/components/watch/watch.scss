@@ -46,6 +46,8 @@
           list-style-type: none;
           width: 100%;
 
+          
+
           li {
             display: flex;
             flex-direction: column;
@@ -63,6 +65,9 @@
               display: inline;
               margin-bottom: 0.7rem;
             }
+          }
+          .active{
+            background-color: #dedfe0;
           }
         }
       }
