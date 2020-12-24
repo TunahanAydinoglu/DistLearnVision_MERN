@@ -1,10 +1,11 @@
 header {
-  position: relative;
+  position: fixed;
   background-color: var(--black);
   color: var(--white);
   width: 100%;
   padding: 0 1.5rem;
-  height: auto;
+  height: 8rem;
+  z-index: 5;
   &:hover {
     color: var(--white);
   }

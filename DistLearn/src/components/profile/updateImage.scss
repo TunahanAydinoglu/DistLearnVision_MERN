@@ -1,37 +1,53 @@
-.update-image {
-  font-size: 2.3rem;
-  color: var(--text);
-  box-sizing: border-box;
-  display: flex;
-  margin: 1rem;
-  border: 1px solid grey;
-  border-radius: 2px;
-  width: 80%;
-  height: 6rem;
-  align-items: center;
-
-  label {
+.updateProfile {
+ 
+  .user-image {
     display: flex;
-    width: 100%;
-    justify-content: space-between;
-    height: 100%;
-    span {
+    align-items: center;
+    justify-content: center;
+    padding: 4rem;
+    margin: 1rem 1rem 8rem 1rem;
+    border: 1px solid var(--border);
+    width: 50rem;
+    img {
+      width: 60%;
+      height: auto;
+    }
+  }
+  .update-image {
+    font-size: 2.3rem;
+    color: var(--text);
+    box-sizing: border-box;
+    display: flex;
+    margin: 1rem;
+    border: 1px solid grey;
+    border-radius: 2px;
+    width: 80%;
+    height: 6rem;
+    align-items: center;
+
+    label {
       display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 1rem 2rem;
-    }
-    .select-button {
+      width: 100%;
+      justify-content: space-between;
       height: 100%;
-      border-left: 1px solid grey;
-    }
-
-    &:hover {
-      cursor: pointer;
-
+      span {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem 2rem;
+      }
       .select-button {
-        color: var(--white);
-        background-color: var(--a);
+        height: 100%;
+        border-left: 1px solid grey;
+      }
+
+      &:hover {
+        cursor: pointer;
+
+        .select-button {
+          color: var(--white);
+          background-color: var(--a);
+        }
       }
     }
   }

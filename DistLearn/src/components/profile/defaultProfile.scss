@@ -1,4 +1,4 @@
-.updateProfile {
+.default-profile {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -26,24 +26,18 @@
       .form-item {
         display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
         margin-bottom: 2rem;
         width: 80%;
-        label {
-          width: 80%;
-          font-size: 2rem;
-          font-weight: 500;
-          margin-bottom: 0.5rem;
+        border-bottom: 1px solid var(--text);
+
+        .title-span {
+          padding: 1rem 2rem 0.7rem 0.5rem;
         }
-        input {
-          padding: 0.5rem;
-          width: 80%;
-          height: 4rem;
-        }
-        textarea {
-          padding: 0.5rem;
-          width: 80%;
-          height: 7rem;
+        .value-span {
+          margin: 1rem 0 1rem 1rem;
+          font-size: 1.9rem;
+          color: var(--text);
         }
       }
     }

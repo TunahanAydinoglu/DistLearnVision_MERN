@@ -16,18 +16,23 @@ export default function UpdateImage(props) {
     fd.append("profile_image", image);
     let url = "http://localhost:5000/api/auth/upload";
 
-    axios.post(url, fd, {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-        "Authorization": token,
-        "Accept": "application/json",
-      },
-    }).then(()=>alert("Fotografiniz guncellenmistir."));
+    axios
+      .post(url, fd, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+          Authorization: token,
+          Accept: "application/json",
+        },
+      })
+      .then(() => alert("Fotografiniz guncellenmistir."));
   }
   return (
     <div className="updateProfile">
       <h2>Fotoğraf</h2>
       <h3>Profil fotoğrafınızı bu alanda güncelleyebilirsiniz</h3>
+      <div className="user-image">
+        <img src={props.image} />
+      </div>
       <form className="update-form" onSubmit={handleSubmitImageUpdate}>
         <div className="items">
           <div className="update-image">

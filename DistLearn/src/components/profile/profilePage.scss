@@ -46,6 +46,10 @@
             padding: 0;
             list-style-type: none;
             font-size: 1.7rem;
+            .active{
+              background-color: var(--a);
+              color: var(--white);
+            }
             li {
               padding: 0.5rem 1.5rem;
               font-weight: 400;

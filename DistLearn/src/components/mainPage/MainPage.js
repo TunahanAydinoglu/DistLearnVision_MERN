@@ -32,6 +32,11 @@ export default class MainPage extends Component {
               <MainCard category={c} />
             </li>
           ))}
+           {categories.map((c) => (
+            <li key={c._id}>
+              <MainCard category={c} />
+            </li>
+          ))}
         </ul>
       </div>
     );

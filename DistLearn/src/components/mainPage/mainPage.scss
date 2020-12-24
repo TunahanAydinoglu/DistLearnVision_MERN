@@ -1,5 +1,6 @@
 .mainpage{
     display: flex;
+    position: relative;
     flex-direction: column;
     align-items: center;
 
@@ -7,12 +8,10 @@
         list-style: none;
         display: flex;
         flex-wrap: wrap;
-        height: 100%;
         width: 100%;
         li{
             width: 24%;
             padding: 1rem 3rem;
-            height: 100%;
         }
     }
 }
