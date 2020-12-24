@@ -4,6 +4,8 @@ import Axios from "axios";
 import { getCookie } from "../../helpers/auth";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
 
 const LessonCart = (props) => {
   let lesson = props.lesson;
@@ -21,7 +23,10 @@ const LessonCart = (props) => {
     };
     let url = "http://localhost:5000/api/lessons/" + lesson._id;
     Axios.get(url + "/like", config).then(() => {
-      alert("Begeniniz alindi tesekkurler");
+      toast.success("Beğeniniz eklendi :) ", {
+        position: "bottom-right",
+        autoClose: 4000,
+      });
       setLike(like + 1);
     });
   };
@@ -33,7 +38,10 @@ const LessonCart = (props) => {
     };
     let url = "http://localhost:5000/api/lessons/" + lesson._id;
     Axios.get(url + "/undo_like", config).then(() => {
-      alert("Begeniniz kaldirildi");
+      toast.error("Beğeniniz geri alındı :(", {
+        position: "bottom-right",
+        autoClose: 4000,
+      });
       setLike(like - 1);
     });
   };
@@ -44,7 +52,10 @@ const LessonCart = (props) => {
         Authorization: getCookie("token"),
       },
     }).then(() => {
-      alert("Dislike eklendi");
+      toast.error("Disslike eklendi :(", {
+        position: "bottom-right",
+        autoClose: 4000,
+      });
       setDislike(dislike + 1);
     });
   };
@@ -56,7 +67,10 @@ const LessonCart = (props) => {
         Authorization: getCookie("token"),
       },
     }).then(() => {
-      alert("Dislikeniniz geri alindi");
+      toast.warn("Disslike geri alındı :) ", {
+        position: "bottom-right",
+        autoClose: 4000,
+      });
       setDislike(dislike - 1);
     });
   };
@@ -109,6 +123,7 @@ const LessonCart = (props) => {
           <span>{lesson.instructor}</span>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };
