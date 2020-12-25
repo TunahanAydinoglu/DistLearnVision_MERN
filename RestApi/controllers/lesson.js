@@ -7,20 +7,29 @@ const getAllLesson = errorWrapper(async (req, res, next) => {
   return res.status(200).json(res.advanceQueryResults);
 });
 
-const getLessonByCategoryId = errorWrapper(async (req,res,next) =>{
-      const {category_id} = req.params;
-      const lessons = await Lesson.find({category:category_id});
+const getLessonByCategoryId = errorWrapper(async (req, res, next) => {
+  const { category_id } = req.params;
+  const lessons = await Lesson.find({ category: category_id });
 
-      res.status(200).json({
-        success:true,
-        data:lessons
-      })
-} 
-)
+  res.status(200).json({
+    success: true,
+    data: lessons,
+  });
+});
+
+
+const getLessonByUserId = errorWrapper(async (req, res, next) => {
+  const { user_id } = req.params;
+  const lessons = await Lesson.find({ user: user_id });
+
+  res.status(200).json({
+    success: true,
+    data: lessons,
+  });
+});
 
 const addNewLesson = errorWrapper(async (req, res, next) => {
   const information = req.body;
-  
 
   const lesson = await Lesson.create({
     ...information,
@@ -34,7 +43,6 @@ const addNewLesson = errorWrapper(async (req, res, next) => {
 });
 
 const getSingleLesson = errorWrapper(async (req, res, next) => {
-  
   const lesson = req.myLesson.populate({
     path: "user",
     select: "name profile_image",
@@ -157,5 +165,6 @@ module.exports = {
   undoLikeLesson,
   dislikeLesson,
   undoDislikeLesson,
-  getLessonByCategoryId
+  getLessonByCategoryId,
+  getLessonByUserId
 };

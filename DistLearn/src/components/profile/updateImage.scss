@@ -1,5 +1,13 @@
 .updateProfile {
  
+  .header-wrapper-div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border-bottom: 1px solid var(--text);
+    width: 100%;
+  }
   .user-image {
     display: flex;
     align-items: center;

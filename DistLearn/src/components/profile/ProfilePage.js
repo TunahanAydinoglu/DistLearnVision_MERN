@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import UpdateProfile from "./UpdateProfile";
 import UpdateImage from "./UpdateImage";
 import DefaultProfile from "./DefaultProfile";
-import InstructorPage from "./InstructorPage";
+import InstructorPage from "./instructor/InstructorPage";
 
 const ProfilePage = () => {
   const [user, setUser] = useState({});
@@ -104,7 +104,7 @@ const ProfilePage = () => {
                   <UpdateImage image={image} />
                 </Route>
                 <Route path="/profil/egitmen">
-                  <InstructorPage />
+                  <InstructorPage user={user}/>
                 </Route>
                 <Route path="/profil/">
                   <DefaultProfile user={user} />

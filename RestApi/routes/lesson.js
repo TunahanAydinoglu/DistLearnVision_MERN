@@ -4,7 +4,9 @@ const episode = require("./episode");
 const Lesson = require("../models/Lesson");
 
 const {
-  checkLessonExist, checkCategoryExist,
+  checkLessonExist,
+  checkCategoryExist,
+  checkUserExist,
 } = require("../middlewares/database/databaseErrorHelpers");
 
 const {
@@ -17,7 +19,8 @@ const {
   dislikeLesson,
   undoLikeLesson,
   undoDislikeLesson,
-  getLessonByCategoryId
+  getLessonByCategoryId,
+  getLessonByUserId,
 } = require("../controllers/lesson");
 
 const {
@@ -39,9 +42,9 @@ router.get(
   }),
   getAllLesson
 );
-
 router.get("/:id", checkLessonExist, getSingleLesson);
-router.get("/category/:category_id",checkCategoryExist,getLessonByCategoryId);
+router.get("/category/:category_id", checkCategoryExist, getLessonByCategoryId);
+router.get("/user/:user_id", checkUserExist, getLessonByUserId);
 router.get("/:id/like", [getAccessToRoute, checkLessonExist], likeLesson);
 router.get(
   "/:id/undo_like",

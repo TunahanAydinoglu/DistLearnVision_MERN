@@ -28,8 +28,10 @@ export default function UpdateImage(props) {
   }
   return (
     <div className="updateProfile">
-      <h2>Fotoğraf</h2>
+     <div className="header-wrapper-div">
+     <h2>Fotoğraf</h2>
       <h3>Profil fotoğrafınızı bu alanda güncelleyebilirsiniz</h3>
+     </div>
       <div className="user-image">
         <img src={props.image} />
       </div>

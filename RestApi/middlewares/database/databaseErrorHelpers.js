@@ -106,12 +106,13 @@ const checkLessonAndQuestionExist = errorWrapper(async (req, res, next) => {
   next();
 });
 const checkUserExist = errorWrapper(async (req, res, next) => {
-  const { id } = req.params;
+  const user_id = req.params.id || req.params.user_id;
 
-  const user = await User.findById(id);
+  const user = await User.findById(user_id);
+  console.log("check user exist")
 
   if (!user) {
-    return next(new CustomError(`User Not Found with Id : ${answer_id}`, 404));
+    return next(new CustomError(`User Not Found with Id : ${user_id}`, 404));
   }
   next();
 });

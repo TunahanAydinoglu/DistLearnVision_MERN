@@ -45,7 +45,7 @@ export default function DefaultProfile(props) {
   return (
     <div className="default-profile">
       <h2>Profil Sayfası</h2>
-      <h3>Profil bilgilerinizi buradan güncelleyebilirsiniz</h3>
+      <h3>Profil bilgilerinizi buradan inceleyebilirsiniz</h3>
       <div className="update-form">
         <div className="items">
           <div className="form-item">

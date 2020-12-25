@@ -58,7 +58,7 @@ function Header() {
                   <Icons.Profile />
                   Profil
                 </Link>
-                <span>/</span>
+                <span>&nbsp;|</span>
                 <a href="/" onClick={() => signout()}>
                   Çıkış Yap
                   <Icons.ArrowBottom />
