@@ -76,7 +76,7 @@ function Watch() {
                 <li
                   key={episode._id}
                   onClick={() => setVideo(episode.url)}
-                  className={video === episode.url && "active"}
+                  className={video === episode.url?"active":null}
                 >
                   <h5>{i + 1}. Bölüm</h5>
                   <span>{episode.title}</span>

@@ -58,7 +58,6 @@ const checkEpisodeExist = errorWrapper(async (req, res, next) => {
 const checkLessonExist = errorWrapper(async (req, res, next) => {
   
   const lesson_id = req.params.id || req.params.lesson_id;
-
   const lesson = await Lesson.findById(lesson_id);
 
   if (!lesson) {

@@ -55,13 +55,15 @@ const ProfilePage = () => {
               <div className="navi">
                 <ul>
                   <Link to="/profil" onClick={() => changePage("profile")}>
-                    <li className={active === "profile" && "active"}>Profil</li>
+                    <li className={active === "profile" ? "active" : null}>
+                      Profil
+                    </li>
                   </Link>
                   <Link
                     to="/profil/guncelleme"
                     onClick={() => changePage("update")}
                   >
-                    <li className={active === "update" && "active"}>
+                    <li className={active === "update" ? "active" : null}>
                       Profil Düzenle
                     </li>
                   </Link>
@@ -69,7 +71,9 @@ const ProfilePage = () => {
                     to="/profil/fotograf"
                     onClick={() => changePage("photo")}
                   >
-                    <li className={active === "photo" && "active"}>Fotograf</li>
+                    <li className={active === "photo" ? "active" : null}>
+                      Fotograf
+                    </li>
                   </Link>
 
                   {role !== "user" ? (
@@ -77,12 +81,16 @@ const ProfilePage = () => {
                       to="/profil/egitmen"
                       onClick={() => changePage("instructor")}
                     >
-                      <li className={active === "instructor" && "active"}>Eğitmen Paneli</li>
+                      <li className={active === "instructor" ? "active" : null}>
+                        Eğitmen Paneli
+                      </li>
                     </Link>
                   ) : null}
 
                   <Link to="/profil" onClick={() => changePage("account")}>
-                    <li className={active === "account" && "active"} >Hesabı Sil</li>
+                    <li className={active === "account" ? "active" : null}>
+                      Hesabı Sil
+                    </li>
                   </Link>
                 </ul>
               </div>

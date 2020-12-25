@@ -7,6 +7,17 @@ const getAllLesson = errorWrapper(async (req, res, next) => {
   return res.status(200).json(res.advanceQueryResults);
 });
 
+const getLessonByCategoryId = errorWrapper(async (req,res,next) =>{
+      const {category_id} = req.params;
+      const lessons = await Lesson.find({category:category_id});
+
+      res.status(200).json({
+        success:true,
+        data:lessons
+      })
+} 
+)
+
 const addNewLesson = errorWrapper(async (req, res, next) => {
   const information = req.body;
   
@@ -146,4 +157,5 @@ module.exports = {
   undoLikeLesson,
   dislikeLesson,
   undoDislikeLesson,
+  getLessonByCategoryId
 };

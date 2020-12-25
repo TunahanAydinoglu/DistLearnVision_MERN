@@ -9,7 +9,10 @@ const CustomError = require("../helpers/error/customError");
 
 const getAllQuestions = errorWrapper(async (req, res, next) => {
   const { lesson_id } = req.params;
-  const lesson = await Lesson.findById(lesson_id).populate("questions");
+
+  const lesson = await req.myLesson.populate("questions");
+
+  console.log(lesson)
 
   const questions = lesson.questions;
 
@@ -27,7 +30,7 @@ const askNewQuestion = errorWrapper(async (req, res, next) => {
 
   const question = await Question.create({
     ...information,
-    lesson: req.myLesson,
+    lesson: lesson_id,
     user: user_id,
   });
   res.status(200).json({

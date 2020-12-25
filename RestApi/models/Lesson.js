@@ -97,17 +97,17 @@ LessonSchema.pre("save",async function (next) {
 
   try {
     let category_id = this.category;
-    console.log(category_id)
     const category = await Category.findById(category_id);
 
     category.lessons.push(this.id);
     category.lessonCount += 1;
-    await category.save();
     this.slug = this.makeSlug();
-    next();
+    await category.save();
   } catch (err) {
-    next(err);
+    console.log(err)
   }
+  next(err);
+
 });
 
 LessonSchema.virtual("likesCount").get(function () {

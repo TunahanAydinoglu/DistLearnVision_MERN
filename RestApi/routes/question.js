@@ -24,7 +24,7 @@ const {
 const questionQueryMiddleware = require("../middlewares/query/questionQueryMiddleware");
 const answerQueryMiddleware = require("../middlewares/query/answerQueryMiddleware");
 
-const router = express.Router();
+const router = express.Router({mergeParams:true});
 
 // Ask New Question
 // Permissions - Only Logged In Users

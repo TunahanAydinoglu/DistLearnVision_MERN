@@ -6,12 +6,35 @@ import Axios from "axios";
 
 function Lessons() {
   const [lessons, setLessons] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [active, setActive] = useState("1");
+
   let url = "http://localhost:5000/api/lessons";
+
+  const changeCategory = async (selected) => {
+    await setActive(selected);
+    let catUrl = "http://localhost:5000/api/lessons/category/";
+    if (selected === "1") {
+      catUrl = url;
+    } else {
+      catUrl = catUrl + selected;
+    }
+    let arr = [];
+    Axios.get(catUrl)
+      .then((res) => res.data.data)
+      .then((data) => data.map((a) => arr.push(a)))
+      .then(() => setLessons(arr));
+  };
 
   const searchHandle = (e) => {
     e.preventDefault();
     let arr = [];
-    let search = url + "?search=" + e.target.value;
+    let search = "";
+    if (e.target.value === "") {
+      search = url;
+    } else {
+      search = url + "?search=" + e.target.value;
+    }
     Axios.get(search)
       .then((res) => res.data.data)
       .then((data) => data.map((a) => arr.push(a)))
@@ -23,13 +46,20 @@ function Lessons() {
       .then((res) => res.data.data)
       .then((data) => data.map((a) => arr.push(a)))
       .then(() => setLessons(arr));
+
+    let categoryUrl = "http://localhost:5000/api/categories";
+    let cat = [];
+    Axios.get(categoryUrl)
+      .then((res) => res.data.data)
+      .then((data) => data.map((c) => cat.push(c)))
+      .then(() => setCategories(cat));
   }, []);
   return (
     <div className="lessons">
       <div className="wrapper">
         <div className="lessons-carts">
-          {lessons.map((lesson) => (
-            <LessonCart lesson={lesson} />
+          {lessons.map((lesson, i) => (
+            <LessonCart key={i} lesson={lesson} />
           ))}
         </div>
         <aside>
@@ -52,14 +82,21 @@ function Lessons() {
             <div className="categories">
               <h2>Kategoriler</h2>
               <ul>
-                <li>Tasarim</li>
-                <li>Web Gelistirme</li>
-                <li>Tasarim</li>
-                <li>Finans</li>
-                <li>Tasarim</li>
-                <li>Tasarim</li>
-                <li>Tasarim</li>
-                <li>Tasarim</li>
+                <li
+                  className={active === "1" ? "active" : null}
+                  onClick={() => changeCategory("1")}
+                >
+                  Tüm Categoriler
+                </li>
+                {categories.map((c, i) => (
+                  <li
+                    key={i}
+                    className={active === c._id ? "active" : null}
+                    onClick={() => changeCategory(c._id)}
+                  >
+                    {c.title}
+                  </li>
+                ))}
               </ul>
             </div>
           </div>

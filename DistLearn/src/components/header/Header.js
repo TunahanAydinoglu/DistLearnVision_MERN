@@ -69,7 +69,7 @@ function Header() {
                 <Link to="/" onClick={togglePopup}>
                   Giriş Yap
                 </Link>
-                /
+                &nbsp;|
                 <Link to="/" onClick={togglePopup}>
                   Kayıt Ol
                 </Link>

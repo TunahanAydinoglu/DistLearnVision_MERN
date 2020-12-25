@@ -20,7 +20,7 @@ const Navi = () => {
           </li>
         </ul>
         <div className="input-search">
-        <i class="fas fa-search"></i>
+        <i className="fas fa-search"></i>
         <input type="text" placeholder=" Egitim Ara..."/>
         </div>
 

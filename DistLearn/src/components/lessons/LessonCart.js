@@ -90,7 +90,7 @@ const LessonCart = (props) => {
   }, []);
   return (
     <div className="lesson-cart">
-      <img alt="asd" src={img} />
+      <img alt="" src={img} />
       <div className="cart-content">
         <h4>{category.title}</h4>
         <Link to={locate}>{lesson.content}</Link>
@@ -107,11 +107,11 @@ const LessonCart = (props) => {
             </span>
             ({dislike})
           </span>
-          <div class="dropdown">
+          <div className="dropdown">
             <span>
               <ArrowBottom />
             </span>
-            <div class="dropdown-content">
+            <div className="dropdown-content">
               <ul>
                 <li onClick={undoLikeHandler}>Like geri al</li>
                 <li onClick={undoDislikeHandler}>Dislike geri al</li>

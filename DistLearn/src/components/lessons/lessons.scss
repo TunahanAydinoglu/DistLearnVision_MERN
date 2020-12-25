@@ -79,7 +79,12 @@
             width: 100%;
             &:hover {
             }
-
+            .active {
+              border-left: 1px solid grey;
+              border-right: 1px solid grey;
+              font-weight: 600;
+              text-align: center;
+            }
             li {
               width: 80%;
               color: var(--text);
@@ -90,6 +95,9 @@
               line-height: 3rem;
               &:hover {
                 cursor: pointer;
+                transition: 150ms;
+                font-weight: 600;
+                text-align: center;
               }
             }
           }
