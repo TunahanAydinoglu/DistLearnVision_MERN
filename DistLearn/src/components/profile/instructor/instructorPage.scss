@@ -12,37 +12,109 @@
     flex-direction: column;
     border-bottom: 1px solid var(--text);
     width: 100%;
-    h2{
+    h2 {
       margin: 0;
     }
   }
 
-  table {
-    width: 80%;
-    max-width: 80%;
-    border-collapse: collapse;
+  .table {
+    width: 100%;
+    height: 65vh;
+    max-height: 65vh;
     display: block;
-    height: 60vh;
-    overflow-y: scroll;
     margin: auto;
     margin-top: 5rem;
     margin-bottom: 3rem;
-    border-top: 1px solid var(--text);
-    border-bottom: 1px solid var(--text);
-    border-left: 1px solid var(--text);
-
-    th {
-      padding: 1rem 3rem;
-      border-right: 1px solid;
-    }
-
-    td {
-      padding: 1rem 3rem;
-      border-right: 1px solid;
-      border-bottom: 1px dashed var(--text);
-    }
+    overflow-y: auto;
+    overflow-x: hidden;
     .thead-tr {
-      border-bottom: 1px solid black;
+      display: grid;
+      grid-column: auto;
+      grid-template-columns: 40% 35% auto;
+    }
+    .tr-tr {
+      display: grid;
+      grid-column: auto;
+      grid-template-columns: 40% 35% auto;
+      line-height: 3rem;
+      text-align: center;
+    }
+    .td {
+      padding: 1rem 3rem;
+      border-bottom: 1px dashed var(--text);
+      & + .td {
+        border-left: 1px solid var(--text);
+      }
+    }
+    .th {
+      text-align: center;
+      font-weight: bold;
+      padding: 1rem 0rem;
+      border-bottom: 1px solid var(--text);
+      & + .th {
+        border-left: 1px solid var(--text);
+      }
+    }
+    .td-title {
+      flex: 1 1 30%;
+    }
+    .td-category {
+      flex: 1 1 30%;
+      align-items: center;
+      justify-content: center;
+      align-content: center;
+    }
+    .td-setting {
+      flex: 1 1 30%;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      font-size: 2rem;
+
+      span {
+        font-weight: 500;
+        color: grey;
+        margin-left: 2rem;
+      }
+      .dropdown {
+        position: relative;
+        display: inline-block;
+
+        .dropdown-content {
+          display: none;
+          position: absolute;
+          background-color: #f9f9f9;
+          min-width: 13rem;
+          box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+          padding: 12px 8px;
+          z-index: 99;
+
+          ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            li {
+              font-size: 1.5rem;
+              padding-bottom: 0.5rem;
+
+              & + li {
+                border-top: 1px dashed var(--text);
+                margin-top: 0.5rem;
+                padding-top: 0.5rem;
+              }
+              &:hover {
+                cursor: pointer;
+                color: #7496a1;
+                background-color: #f9f9f9;
+              }
+            }
+          }
+        }
+      }
+      .dropdown:hover .dropdown-content {
+        display: flex;
+        z-index: 1;
+      }
     }
   }
 }
