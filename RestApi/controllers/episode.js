@@ -3,16 +3,13 @@ const Episode = require("../models/Episode");
 const errorWrapper = require("../helpers/error/errorWrapper");
 const Lesson = require("../models/Lesson");
 
-
-
 const getAllEpisodes = errorWrapper(async (req, res, next) => {
   const { lesson_id } = req.params;
   const lesson = await Lesson.findById(lesson_id).populate("episodes");
 
-  const episodes= await lesson.episodes.sort(function (a, b) {
+  const episodes = await lesson.episodes.sort(function (a, b) {
     return a.ranking - b.ranking;
   });
-
 
   res.status(200).json({
     success: true,
@@ -22,7 +19,7 @@ const getAllEpisodes = errorWrapper(async (req, res, next) => {
 });
 const addNewEpisodeToLesson = errorWrapper(async (req, res, next) => {
   const user_id = req.user.id;
-  const lesson_id = req.param.id|| req.params.lesson_id;
+  const lesson_id = req.param.id || req.params.lesson_id;
   const information = req.body;
 
   const episode = await Episode.create({
@@ -46,11 +43,11 @@ const getSingleEpisode = errorWrapper(async (req, res, next) => {
 
 const editEpisode = errorWrapper(async (req, res, next) => {
   const { id } = req.params;
-  const { title, content, url } = req.body;
+  const { ranking, title, url } = req.body;
   let episode = await Episode.findById(id);
 
+  episode.ranking = ranking;
   episode.title = title;
-  episode.content = content;
   episode.url = url;
 
   episode = await episode.save();

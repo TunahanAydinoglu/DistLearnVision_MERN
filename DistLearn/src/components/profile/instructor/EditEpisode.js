@@ -10,7 +10,6 @@ function EditEpisode(props) {
   const lesson = props.lesson;
   const url = "http://localhost:5000/api/lessons/" + lesson + "/episodes/";
   const token = getCookie("token");
-  const MySwal = withReactContent(Swal);
   const [display, setDisplay] = useState("none");
 
   useEffect(() => {
@@ -37,8 +36,8 @@ function EditEpisode(props) {
       title: e.target[1].value,
       url: e.target[2].value,
     };
-
-    MySwal.fire({
+    console.log(item)
+    Swal.fire({
       title: "Değişiklikleri kaydetmek istiyor musunuz?",
       showDenyButton: true,
       confirmButtonText: `Kaydet`,
@@ -50,8 +49,8 @@ function EditEpisode(props) {
             Authorization: token,
           },
         })
+          .then(() => getItems())
           .then(() => Swal.fire("Kaydedildi!", "", "success"))
-          .then(() => getItems)
           .catch(errorPop);
       } else if (result.isDenied) {
         Swal.fire("Değişiklikler kayıt edilmedi.", "", "info");
