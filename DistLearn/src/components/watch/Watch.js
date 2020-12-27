@@ -13,11 +13,12 @@ function Watch() {
   const id = window.location.search.split("=")[1];
 
   useEffect(() => {
-    getLessonById();
-    getEpisodesByLesson();
-  }, []);
-  const getLessonById = () => {
-    let urlLesson = "http://localhost:5000/api/lessons/" + id;
+    getLessonById(id);
+    getEpisodesByLesson(id);
+  }, [id]);
+
+  const getLessonById = (lessonId) => {
+    let urlLesson = "http://localhost:5000/api/lessons/" + lessonId;
     Axios.get(urlLesson)
       .then((res) => res.data.data)
       .then((data) => {
@@ -25,9 +26,9 @@ function Watch() {
         setLessonData(data);
       });
   };
-  const getEpisodesByLesson = () => {
+  const getEpisodesByLesson = (lessonId) => {
     let arr = [];
-    let url = "http://localhost:5000/api/lessons/" + id + "/episodes";
+    let url = "http://localhost:5000/api/lessons/" + lessonId + "/episodes";
     Axios.get(url)
       .then((res) => res.data.data)
       .then((data) => data.map((c) => arr.push(c)))

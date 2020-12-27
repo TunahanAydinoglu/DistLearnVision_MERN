@@ -40,6 +40,9 @@
       text-align: center;
     }
     .td {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       padding: 1rem 3rem;
       border-bottom: 1px dashed var(--text);
       & + .td {
@@ -47,12 +50,33 @@
       }
     }
     .th {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       text-align: center;
       font-weight: bold;
       padding: 1rem 0rem;
       border-bottom: 1px solid var(--text);
       & + .th {
         border-left: 1px solid var(--text);
+      }
+
+      .button {
+        width: max-content;
+        border-left: 1px solid var(--black);
+        border-right: 1px solid var(--black);
+        border-radius: 8px;
+        padding: 0.3rem 1rem;
+        transition: color 1.2s;
+        transition: background-color 1.2s;
+    
+        &:hover {
+          background-color: var(--black);
+          color: var(--white);
+          border-left: 1px solid var(--white);
+          border-right: 1px solid var(--white);
+          cursor: pointer;
+        }
       }
     }
     .td-title {

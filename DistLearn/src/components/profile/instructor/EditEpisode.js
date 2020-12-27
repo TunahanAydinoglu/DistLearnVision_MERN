@@ -2,7 +2,6 @@ import Axios from "axios";
 import React, { useEffect, useState } from "react";
 import { getCookie } from "../../../helpers/auth";
 import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
 import "./editEpisode.scss";
 
 function EditEpisode(props) {
@@ -13,10 +12,10 @@ function EditEpisode(props) {
   const [display, setDisplay] = useState("none");
 
   useEffect(() => {
-    getItems();
-  }, []);
+    getItems(url);
+  }, [url]);
 
-  const getItems = () => {
+  const getItems = (url) => {
     let arr = [];
     Axios.get(url)
       .then((res) => res.data.data)
@@ -49,7 +48,7 @@ function EditEpisode(props) {
             Authorization: token,
           },
         })
-          .then(() => getItems())
+          .then(() => getItems(url))
           .then(() => Swal.fire("Kaydedildi!", "", "success"))
           .catch(errorPop);
       } else if (result.isDenied) {
@@ -77,7 +76,7 @@ function EditEpisode(props) {
             Authorization: token,
           },
         })
-          .then(() => getItems())
+          .then(() => getItems(url))
           .then(() =>
             Swal.fire("Silindi!", "BÖlüm başarıyla silindi.", "success")
           )
@@ -98,7 +97,7 @@ function EditEpisode(props) {
         Authorization: token,
       },
     })
-      .then(() => getItems())
+      .then(() => getItems(url))
       .then(() =>
         Swal.fire({
           position: "center",

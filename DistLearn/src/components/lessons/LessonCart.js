@@ -9,7 +9,6 @@ import { ToastContainer, toast } from "react-toastify";
 
 const LessonCart = (props) => {
   let lesson = props.lesson;
-  const [category, setCategory] = useState("");
   const [like, setLike] = useState(lesson.likeCount);
   const [dislike, setDislike] = useState(lesson.dislikeCount);
   const [locate, setLocate] = useState("");
@@ -75,10 +74,10 @@ const LessonCart = (props) => {
   };
 
   useEffect(() => {
-    locateHelperMethod();
-  }, []);
-  const locateHelperMethod = () => {
-    let locateHelper = "/izle?id=" + lesson._id;
+    locateHelperMethod(lesson._id);
+  }, [lesson._id]);
+  const locateHelperMethod = (lessonId) => {
+    let locateHelper = "/izle?id=" + lessonId;
     setLocate(locateHelper);
   };
   return (

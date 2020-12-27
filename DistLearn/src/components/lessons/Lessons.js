@@ -4,12 +4,17 @@ import * as Icons from "../icons/index";
 import LessonCart from "./LessonCart";
 import Axios from "axios";
 
-function Lessons() {
+const Lessons = () => {
   const [lessons, setLessons] = useState([]);
   const [categories, setCategories] = useState([]);
   const [active, setActive] = useState("1");
 
   let url = "http://localhost:5000/api/lessons";
+
+  useEffect(() => {
+    getLessons(url);
+    getCategories();
+  }, [url]);
 
   const changeCategory = (selected) => {
     setActive(selected);
@@ -35,18 +40,13 @@ function Lessons() {
     } else {
       search = url + "?search=" + e.target.value;
       Axios.get(search)
-      .then((res) => res.data.data)
-      .then((data) => data.map((a) => arr.push(a)))
-      .then(() => setLessons(arr));
+        .then((res) => res.data.data)
+        .then((data) => data.map((a) => arr.push(a)))
+        .then(() => setLessons(arr));
     }
-    
   };
-  useEffect(() => {
-    getLessons();
-    getCategories();
-  }, []);
 
-  const getLessons = () => {
+  const getLessons = (url) => {
     let arr = [];
     Axios.get(url)
       .then((res) => res.data.data)
@@ -111,6 +111,6 @@ function Lessons() {
       </div>
     </div>
   );
-}
+};
 
 export default Lessons;

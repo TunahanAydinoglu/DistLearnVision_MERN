@@ -6,21 +6,14 @@ import { getCookie } from "../../helpers/auth";
 export default function UpdateProfile(props) {
   const user = props.user;
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [name, setName] = useState(user.name);
+  const [email, setEmail] = useState(user.email);
   const [website, setWebsite] = useState(user.website);
   const [job, setJob] = useState(user.job);
   const [place, setPlace] = useState(user.place);
   const [about, setAbout] = useState(user.about);
 
-  useEffect(() => {
-    setName(user.name);
-    setEmail(user.email);
-    setWebsite(user.setWebsite);
-    setJob(user.job);
-    setPlace(user.place);
-    setAbout(user.about);
-  }, []);
+  useEffect(() => {}, []);
 
   function handleSubmitUpdate(e) {
     let urlUpdate = "http://localhost:5000/api/auth/updateDetails";
@@ -56,7 +49,7 @@ export default function UpdateProfile(props) {
               type="text"
               required
               placeholder="Ad Soyad"
-              value={name}
+              defaultValue={name}
               onChange={(e) => setName(e.target.value)}
             />
           </div>
@@ -68,7 +61,7 @@ export default function UpdateProfile(props) {
               type="email"
               required
               placeholder="example@mail.com"
-              value={email}
+              defaultValue={email}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
@@ -79,7 +72,7 @@ export default function UpdateProfile(props) {
               name="website"
               type="text"
               placeholder="www.ornek.com"
-              value={website}
+              defaultValue={website}
               onChange={(e) => setWebsite(e.target.value)}
             />
           </div>
@@ -90,7 +83,7 @@ export default function UpdateProfile(props) {
               name="job"
               type="text"
               placeholder=""
-              value={job}
+              defaultValue={job}
               onChange={(e) => setJob(e.target.value)}
             />
           </div>
@@ -101,7 +94,7 @@ export default function UpdateProfile(props) {
               id="place"
               type="text"
               placeholder=""
-              value={place}
+              defaultValue={place}
               onChange={(e) => setPlace(e.target.value)}
             />
           </div>
@@ -112,7 +105,7 @@ export default function UpdateProfile(props) {
               id="about"
               type="text"
               placeholder="Kendinizden bahsetmek ister misiniz?"
-              value={about}
+              defaultValue={about}
               onChange={(e) => setAbout(e.target.value)}
             />
           </div>

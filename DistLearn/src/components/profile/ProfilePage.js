@@ -11,7 +11,7 @@ import InstructorPage from "./instructor/InstructorPage";
 const ProfilePage = () => {
   const [user, setUser] = useState({});
   const [image, setImage] = useState("");
-  const [active, setActive] = useState("profile");
+  const [active, setActive] = useState(window.location.pathname);
   const [role, setRole] = useState("user");
 
   const changePage = async (selected) => {
@@ -54,24 +54,32 @@ const ProfilePage = () => {
               </div>
               <div className="navi">
                 <ul>
-                  <Link to="/profil" onClick={() => changePage("profile")}>
-                    <li className={active === "profile" ? "active" : null}>
+                  <Link to="/profil" onClick={() => changePage("/profil")}>
+                    <li className={active === "/profil" ? "active" : null}>
                       Profil
                     </li>
                   </Link>
                   <Link
                     to="/profil/guncelleme"
-                    onClick={() => changePage("update")}
+                    onClick={() => changePage("/profil/guncelleme")}
                   >
-                    <li className={active === "update" ? "active" : null}>
+                    <li
+                      className={
+                        active === "/profil/guncelleme" ? "active" : null
+                      }
+                    >
                       Profil Düzenle
                     </li>
                   </Link>
                   <Link
                     to="/profil/fotograf"
-                    onClick={() => changePage("photo")}
+                    onClick={() => changePage("/profil/fotograf")}
                   >
-                    <li className={active === "photo" ? "active" : null}>
+                    <li
+                      className={
+                        active === "/profil/fotograf" ? "active" : null
+                      }
+                    >
                       Fotograf
                     </li>
                   </Link>
@@ -79,16 +87,25 @@ const ProfilePage = () => {
                   {role !== "user" ? (
                     <Link
                       to="/profil/egitmen"
-                      onClick={() => changePage("instructor")}
+                      onClick={() => changePage("/profil/egitmen")}
                     >
-                      <li className={active === "instructor" ? "active" : null}>
+                      <li
+                        className={
+                          active === "/profil/egitmen" ? "active" : null
+                        }
+                      >
                         Eğitmen Paneli
                       </li>
                     </Link>
                   ) : null}
 
-                  <Link to="/profil" onClick={() => changePage("account")}>
-                    <li className={active === "account" ? "active" : null}>
+                  <Link
+                    to="/profil/account"
+                    onClick={() => changePage("/profil/account")}
+                  >
+                    <li
+                      className={active === "/profil/account" ? "active" : null}
+                    >
                       Hesabı Sil
                     </li>
                   </Link>
@@ -104,7 +121,7 @@ const ProfilePage = () => {
                   <UpdateImage image={image} />
                 </Route>
                 <Route path="/profil/egitmen">
-                  <InstructorPage user={user}/>
+                  <InstructorPage user={user} />
                 </Route>
                 <Route path="/profil/">
                   <DefaultProfile user={user} />

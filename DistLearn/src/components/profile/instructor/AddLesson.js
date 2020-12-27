@@ -2,24 +2,17 @@ import Axios from "axios";
 import React, { useEffect, useState } from "react";
 import { getCookie } from "../../../helpers/auth";
 import Swal from "sweetalert2";
-import "./editLesson.scss";
+import "./addLesson.scss";
 
-function EditLesson(props) {
-  const lessonId = props.lesson;
-  const [lesson, setLesson] = useState([]);
+const AddLesson = () => {
   const [categories, setCategories] = useState([]);
   const token = getCookie("token");
-  const url = "http://localhost:5000/api/lessons/" + lessonId;
+  const url = "http://localhost:5000/api/lessons/add";
 
   useEffect(() => {
-    getLessonById(url);
     getCategories();
-  }, [url]);
-  const getLessonById = (url) => {
-    Axios.get(url)
-      .then((res) => res.data.data)
-      .then((data) => setLesson(data));
-  };
+  }, []);
+
   const getCategories = () => {
     let cat = [];
     let catUrl = "http://localhost:5000/api/categories";
@@ -29,10 +22,9 @@ function EditLesson(props) {
       .then(() => setCategories(cat));
   };
 
-  const submithandler = (e) => {
+  const submithandler = async (e) => {
     e.preventDefault();
-    let putUrl = url + "/edit";
-    let item = {
+    let item = await {
       title: e.target[0].value,
       content: e.target[1].value,
       image: e.target[2].value,
@@ -40,23 +32,21 @@ function EditLesson(props) {
       instructor: e.target[4].value,
       category: e.target[5].value,
     };
+    await Axios.post(url, item, {
+      headers: {
+        Authorization: token,
+      },
+    })
+      .then(() => successPop())
+      .catch(() => errorPop());
+  };
+  const successPop = () => {
     Swal.fire({
-      title: "Değişiklikleri kaydetmek istiyor musunuz?",
-      showDenyButton: true,
-      confirmButtonText: `Kaydet`,
-      denyButtonText: `Kaydetme`,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Axios.put(putUrl, item, {
-          headers: {
-            Authorization: token,
-          },
-        })
-          .then(() => Swal.fire("Kaydedildi!", "", "success"))
-          .catch(errorPop);
-      } else if (result.isDenied) {
-        Swal.fire("Değişiklikler kayıt edilmedi.", "", "info");
-      }
+      position: "center",
+      icon: "success",
+      title: "Ders ekleme başarılı",
+      showConfirmButton: true,
+      timer: 1500,
     });
   };
   const errorPop = () => {
@@ -67,7 +57,7 @@ function EditLesson(props) {
     });
   };
   return (
-    <div className="edit-lesson">
+    <div className="add-lesson">
       <form className="update-form" onSubmit={submithandler}>
         <div className="items">
           <div className="form-item">
@@ -78,7 +68,6 @@ function EditLesson(props) {
               type="text"
               required
               placeholder="Ders başlığı"
-              defaultValue={lesson.title}
             />
           </div>
           <div className="form-item">
@@ -89,7 +78,6 @@ function EditLesson(props) {
               type="text"
               required
               placeholder="Ders içeriği"
-              defaultValue={lesson.content}
             />
           </div>
           <div className="form-item">
@@ -100,7 +88,6 @@ function EditLesson(props) {
               type="text"
               required
               placeholder="Örnek: https://i.hizliresim.com/fwUVRb.jpg"
-              defaultValue={lesson.image}
             />
           </div>
           <div className="form-item">
@@ -111,7 +98,6 @@ function EditLesson(props) {
               type="text"
               required
               placeholder="Örnek: https://youtube.com/embed/videoId"
-              defaultValue={lesson.url}
             />
           </div>
           <div className="form-item">
@@ -122,30 +108,23 @@ function EditLesson(props) {
               type="text"
               required
               placeholder="Örnek: Tunahan Aydınoğlu"
-              defaultValue={lesson.instructor}
             />
           </div>
           <div className="form-item">
             <label htmlFor="category">Kategori</label>
             <select name="category" id="category">
               {categories.map((category) => (
-                <option
-                  key={category._id}
-                  defaultValue={category._id}
-                  selected={category._id === lesson.category ? true : false}
-                >
-                  {category.title}
-                </option>
+                <option value={category._id}>{category.title}</option>
               ))}
             </select>
           </div>
         </div>
         <div className="submit-section">
-          <button type="submit">Kaydet</button>
+          <button type="submit">Dersi Ekle</button>
         </div>
       </form>
     </div>
   );
-}
+};
 
-export default EditLesson;
+export default AddLesson;

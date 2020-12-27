@@ -23,7 +23,6 @@ export default class MainPage extends Component {
         <h2>Yeni birşeyler öğrenmeye ne dersiniz!</h2>
         <h4>
           En sevilen kategorileri sizler için seçtik
-          {console.log(categories)}
         </h4>
 
         <ul>

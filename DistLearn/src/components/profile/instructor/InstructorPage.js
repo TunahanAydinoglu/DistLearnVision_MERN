@@ -10,19 +10,22 @@ import Popup from "../../toolbox/Popup";
 import EditLesson from "./EditLesson";
 import EditEpisode from "./EditEpisode";
 import { getCookie } from "../../../helpers/auth";
+import AddLesson from "./AddLesson";
 
 function InstructorPage(props) {
   const [categories, setCategories] = useState([]);
   const [lessons, setLessons] = useState([]);
   const [isOpenLessonModal, setIsOpenLessonModal] = useState(false);
+  const [isOpenAddLessonModal, setIsOpenAddLessonModal] = useState(false);
   const [isOpenEpisodeModal, setIsOpenEpisodeModal] = useState(false);
   const [selectedLesson, setSelectedLesson] = useState();
+  const user_id = props.user._id;
   const token = getCookie("token");
 
   useEffect(() => {
     getCategories();
-    getLessonByUserId();
-  }, []);
+    getLessonByUserId(user_id);
+  }, [user_id]);
 
   const togglePopupLesson = (e) => {
     e.preventDefault();
@@ -30,7 +33,16 @@ function InstructorPage(props) {
       setIsOpenLessonModal(!isOpenLessonModal);
     } else {
       setIsOpenLessonModal(!isOpenLessonModal);
-      getLessonByUserId();
+      getLessonByUserId(user_id);
+    }
+  };
+  const togglePopupAddLesson = (e) => {
+    e.preventDefault();
+    if (isOpenAddLessonModal === false) {
+      setIsOpenAddLessonModal(!isOpenAddLessonModal);
+    } else {
+      setIsOpenAddLessonModal(!isOpenAddLessonModal);
+      getLessonByUserId(user_id);
     }
   };
   const togglePopupEpisode = (e, id) => {
@@ -48,6 +60,7 @@ function InstructorPage(props) {
       confirmButtonColor: "#d33",
       cancelButtonColor: "#3085d6",
       confirmButtonText: "Evet, sil!",
+      cancelButtonText: "İptal",
     }).then((result) => {
       if (result.isConfirmed) {
         Axios.delete(deleteUrl, {
@@ -55,7 +68,7 @@ function InstructorPage(props) {
             Authorization: token,
           },
         })
-          .then(() => getLessonByUserId())
+          .then(() => getLessonByUserId(user_id))
           .then(() =>
             Swal.fire("Silindi!", "Ders tamamen kaldırıldı.", "success")
           )
@@ -79,10 +92,9 @@ function InstructorPage(props) {
       .then((data) => data.map((d) => cat.push(d)))
       .then(() => setCategories(cat));
   };
-  const getLessonByUserId = () => {
+  const getLessonByUserId = (userId) => {
     let arr = [];
-    const user = props.user;
-    let lessonsUrl = "http://localhost:5000/api/lessons/user/" + user._id;
+    let lessonsUrl = "http://localhost:5000/api/lessons/user/" + userId;
     Axios.get(lessonsUrl)
       .then((res) => res.data.data)
       .then((data) => data.map((lesson) => arr.push(lesson)))
@@ -100,13 +112,17 @@ function InstructorPage(props) {
       <div className="update-form">
         <div className="table">
           <div className="thead-tr">
-            <div td className="th">
+            <div className="th">
               Ders Başlık
             </div>
-            <div td className="th">
+            <div className="th">
               Kategori
             </div>
-            <div className="th">Ayarlar</div>
+            <div className="th">
+              <div className="button" onClick={togglePopupAddLesson}>
+                Ders Ekle
+              </div>
+            </div>
           </div>
           {lessons.map((lesson, i) => (
             <div className="tr-tr" key={i}>
@@ -159,6 +175,9 @@ function InstructorPage(props) {
           content={<EditLesson lesson={selectedLesson} />}
           handleClose={togglePopupLesson}
         />
+      )}
+      {isOpenAddLessonModal && (
+        <Popup content={<AddLesson />} handleClose={togglePopupAddLesson} />
       )}
       {isOpenEpisodeModal && (
         <Popup
