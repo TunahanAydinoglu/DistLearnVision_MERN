@@ -10,8 +10,12 @@ const EpisodeSchema = new Schema({
   },
   url: {
     type: String,
-    required: [true, "Please provide a content"],
-    minlength: [5, "Please provide content at least 5 characters"],
+    required: [true, "Please provide a url"],
+    minlength: [5, "Please provide url at least 5 characters"],
+  },
+  ranking: {
+    type: Number,
+    required: [true, "Please provide a ranking"],
   },
   createdAt: {
     type: Date,
@@ -35,16 +39,14 @@ EpisodeSchema.pre("save", async function (next) {
 
   try {
     let lesson_id = this.lesson;
-    console.log(lesson_id);
     const lesson = await Lesson.findById(lesson_id);
-
     lesson.episodes.push(this.id);
     lesson.episodeCount += 1;
     await lesson.save();
-    next();
   } catch (err) {
     next(err);
   }
+  next();
 });
 
 EpisodeSchema.post("remove", async function () {

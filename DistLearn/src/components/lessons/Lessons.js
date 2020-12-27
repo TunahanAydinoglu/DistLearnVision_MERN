@@ -11,8 +11,8 @@ function Lessons() {
 
   let url = "http://localhost:5000/api/lessons";
 
-  const changeCategory = async (selected) => {
-    await setActive(selected);
+  const changeCategory = (selected) => {
+    setActive(selected);
     let catUrl = "http://localhost:5000/api/lessons/category/";
     if (selected === "1") {
       catUrl = url;
@@ -31,29 +31,36 @@ function Lessons() {
     let arr = [];
     let search = "";
     if (e.target.value === "") {
-      search = url;
+      getLessons();
     } else {
       search = url + "?search=" + e.target.value;
-    }
-    Axios.get(search)
+      Axios.get(search)
       .then((res) => res.data.data)
       .then((data) => data.map((a) => arr.push(a)))
       .then(() => setLessons(arr));
+    }
+    
   };
   useEffect(() => {
+    getLessons();
+    getCategories();
+  }, []);
+
+  const getLessons = () => {
     let arr = [];
     Axios.get(url)
       .then((res) => res.data.data)
       .then((data) => data.map((a) => arr.push(a)))
       .then(() => setLessons(arr));
-
+  };
+  const getCategories = () => {
     let categoryUrl = "http://localhost:5000/api/categories";
     let cat = [];
     Axios.get(categoryUrl)
       .then((res) => res.data.data)
       .then((data) => data.map((c) => cat.push(c)))
       .then(() => setCategories(cat));
-  }, []);
+  };
   return (
     <div className="lessons">
       <div className="wrapper">

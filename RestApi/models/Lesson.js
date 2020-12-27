@@ -13,7 +13,7 @@ const LessonSchema = new Schema({
   content: {
     type: String,
     required: [true, "Please provide a content"],
-    minlength: [10, "Please provide content at least 10 characters"],
+    minlength: [5, "Please provide content at least 5 characters"],
   },
   instructor: {
     type: String,
@@ -57,7 +57,11 @@ const LessonSchema = new Schema({
       ref: "User",
     },
   ],
-
+  image: {
+    type: String,
+    required: [true, "Please provide a image"],
+    minlength: [3, "Please provide image at least 3 characters"],
+  },
   user: {
     type: mongoose.Schema.ObjectId,
     ref: "User",
@@ -85,29 +89,28 @@ const LessonSchema = new Schema({
       ref: "Episode",
     },
   ],
-  episodeCount  : {
-    type:Number,
-    default : 0
-},
+  episodeCount: {
+    type: Number,
+    default: 0,
+  },
 });
 
 // Pre Save Method
-LessonSchema.pre("save",async function (next) {
-  if (!this.isModified("title")) next();
-
+LessonSchema.pre("save", async function (next) {
+  if (!this.isModified("title")) {
+    next();
+  }
   try {
     let category_id = this.category;
     const category = await Category.findById(category_id);
-
     category.lessons.push(this.id);
     category.lessonCount += 1;
     this.slug = this.makeSlug();
     await category.save();
+    next();
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
-  next(err);
-
 });
 
 LessonSchema.virtual("likesCount").get(function () {

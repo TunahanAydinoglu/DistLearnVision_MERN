@@ -30,7 +30,7 @@ const {
 
 const lessonQueryMiddleware = require("../middlewares/query/lessonQueryMiddleware");
 
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 
 router.get(
   "/",
@@ -38,6 +38,10 @@ router.get(
     population: {
       path: "user",
       select: "name profile_image",
+    },
+    population: {
+      path: "category",
+      select: "title",
     },
   }),
   getAllLesson

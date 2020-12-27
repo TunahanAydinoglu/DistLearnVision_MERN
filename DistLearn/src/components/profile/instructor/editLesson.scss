@@ -1,0 +1,72 @@
+.edit-lesson {
+  .update-form {
+    width: 100%;
+
+    .items {
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      flex-grow: 1;
+      width: 100%;
+      border-top: 1px solid var(--text);
+      border-bottom: 1px solid var(--text);
+      .form-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 2rem;
+        font-size: 1.8rem;
+        font-weight: 500;
+        width: 80%;
+        label {
+          width: 80%;
+          font-size: 2rem;
+          font-weight: 500;
+          margin-bottom: 0.5rem;
+        }
+        input {
+          padding: 0.5rem;
+          width: 80%;
+          height: 4rem;
+        }
+        textarea {
+          padding: 0.5rem;
+          width: 80%;
+          height: 7rem;
+        }
+
+        select {
+          width: 80%;
+          padding: 0.5rem;
+          height: 4rem;
+
+         
+        }
+      }
+    }
+
+    .submit-section {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 1.5rem auto;
+
+      button {
+        background-color: var(--a);
+        color: var(--white);
+        font-size: 1.5rem;
+        font-weight: 500;
+        border-radius: 0.65rem;
+        height: 4rem;
+        width: 40%;
+        min-width: 20%;
+
+        &:hover {
+          background-color: var(--a-hover);
+        }
+      }
+    }
+  }
+}

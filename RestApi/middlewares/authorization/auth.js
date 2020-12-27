@@ -6,6 +6,7 @@ const Episode = require("../../models/Episode");
 const Answer = require("../../models/Answer");
 
 const CustomError = require("../../helpers/error/customError");
+const Lesson = require("../../models/Lesson");
 
 const getAccessToRoute = errorWrapper(async (req, res, next) => {
   // Is Token Included
@@ -51,9 +52,10 @@ const getTeacherAccess = errorWrapper(async (req, res, next) => {
 });
 const getLessonOwnerAccess = errorWrapper(async (req, res, next) => {
   const userId = req.user.id;
-  const lessonId = req.params.id;
+  const lessonId = req.params.id || req.params.lesson_id;
 
-  const lesson = req.myLesson;
+  const lesson = await Lesson.findById(lessonId);
+
   if (lesson.user != userId) {
     return next(new CustomError("Only owner can handle this operation", 403));
   }

@@ -5,30 +5,43 @@ import "./instructorPage.scss";
 import { FiSettings } from "react-icons/fi";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
 
 import Popup from "../../toolbox/Popup";
 import EditLesson from "./EditLesson";
 import EditEpisode from "./EditEpisode";
+import { getCookie } from "../../../helpers/auth";
 
 function InstructorPage(props) {
   const [categories, setCategories] = useState([]);
   const [lessons, setLessons] = useState([]);
   const [isOpenLessonModal, setIsOpenLessonModal] = useState(false);
   const [isOpenEpisodeModal, setIsOpenEpisodeModal] = useState(false);
-  const MySwal = withReactContent(Swal);
+  const [selectedLesson, setSelectedLesson] = useState();
+  const token = getCookie("token");
+
+  useEffect(() => {
+    getCategories();
+    getLessonByUserId();
+  }, []);
 
   const togglePopupLesson = (e) => {
     e.preventDefault();
-    setIsOpenLessonModal(!isOpenLessonModal);
+    if (isOpenLessonModal === false) {
+      setIsOpenLessonModal(!isOpenLessonModal);
+    } else {
+      setIsOpenLessonModal(!isOpenLessonModal);
+      getLessonByUserId();
+    }
   };
-  const togglePopupEpisode = (e) => {
+  const togglePopupEpisode = (e, id) => {
     e.preventDefault();
     setIsOpenEpisodeModal(!isOpenEpisodeModal);
   };
-  const alertMethod = () => {
-    MySwal.fire({
-      title: "Emin misin?",
+
+  const deleteLessonHandler = (lessonId) => {
+    let deleteUrl = "http://localhost:5000/api/lessons/" + lessonId + "/delete";
+    Swal.fire({
+      title: "Dersi silmek istediğine emin misin?",
       text: "Bunu geri alamayız!",
       icon: "warning",
       showCancelButton: true,
@@ -37,27 +50,44 @@ function InstructorPage(props) {
       confirmButtonText: "Evet, sil!",
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire("Silindi!", "Ders tamamen kaldırıldı.", "success");
+        Axios.delete(deleteUrl, {
+          headers: {
+            Authorization: token,
+          },
+        })
+          .then(() => getLessonByUserId())
+          .then(() =>
+            Swal.fire("Silindi!", "Ders tamamen kaldırıldı.", "success")
+          )
+          .catch(() => errorPop);
       }
     });
   };
+  const errorPop = () => {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Bir şeyler yanlış gitmiş olmalı kayıt eklenemedi.",
+    });
+  };
 
-  useEffect(() => {
-    let arr = [];
+  const getCategories = () => {
     let cat = [];
-    const user = props.user;
     let catUrl = "http://localhost:5000/api/categories";
     Axios.get(catUrl)
       .then((res) => res.data.data)
       .then((data) => data.map((d) => cat.push(d)))
       .then(() => setCategories(cat));
-
+  };
+  const getLessonByUserId = () => {
+    let arr = [];
+    const user = props.user;
     let lessonsUrl = "http://localhost:5000/api/lessons/user/" + user._id;
     Axios.get(lessonsUrl)
       .then((res) => res.data.data)
       .then((data) => data.map((lesson) => arr.push(lesson)))
       .then(() => setLessons(arr));
-  }, []);
+  };
   return (
     <div className="instructor-page">
       <div className="header-wrapper-div">
@@ -93,12 +123,30 @@ function InstructorPage(props) {
                   </span>
                   <div className="dropdown-content">
                     <ul>
-                      <li onClick={togglePopupLesson}>Ders Düzenle</li>
-                      <li onClick={togglePopupEpisode}>Bölüm Düzenle</li>
+                      <li
+                        onClick={(e) => {
+                          togglePopupLesson(e);
+                          setSelectedLesson(lesson._id);
+                        }}
+                      >
+                        Ders Düzenle
+                      </li>
+                      <li
+                        onClick={(e) => {
+                          togglePopupEpisode(e);
+                          setSelectedLesson(lesson._id);
+                        }}
+                      >
+                        Bölüm Düzenle
+                      </li>
                     </ul>
                   </div>
                 </div>
-                <span onClick={alertMethod}>
+                <span
+                  onClick={() => {
+                    deleteLessonHandler(lesson._id);
+                  }}
+                >
                   <RiDeleteBin5Line />
                 </span>
               </div>
@@ -107,10 +155,16 @@ function InstructorPage(props) {
         </div>
       </div>
       {isOpenLessonModal && (
-        <Popup content={<EditLesson />} handleClose={togglePopupLesson} />
+        <Popup
+          content={<EditLesson lesson={selectedLesson} />}
+          handleClose={togglePopupLesson}
+        />
       )}
       {isOpenEpisodeModal && (
-        <Popup content={<EditEpisode />} handleClose={togglePopupEpisode} />
+        <Popup
+          content={<EditEpisode lesson={selectedLesson} />}
+          handleClose={togglePopupEpisode}
+        />
       )}
     </div>
   );

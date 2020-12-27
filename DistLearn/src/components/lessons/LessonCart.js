@@ -10,7 +10,6 @@ import { ToastContainer, toast } from "react-toastify";
 const LessonCart = (props) => {
   let lesson = props.lesson;
   const [category, setCategory] = useState("");
-  const [img, setImg] = useState("");
   const [like, setLike] = useState(lesson.likeCount);
   const [dislike, setDislike] = useState(lesson.dislikeCount);
   const [locate, setLocate] = useState("");
@@ -76,23 +75,17 @@ const LessonCart = (props) => {
   };
 
   useEffect(() => {
+    locateHelperMethod();
+  }, []);
+  const locateHelperMethod = () => {
     let locateHelper = "/izle?id=" + lesson._id;
     setLocate(locateHelper);
-    let lp = "";
-    let url = "http://localhost:5000/api/categories/" + lesson.category;
-    Axios.get(url)
-      .then((res) => res.data.data)
-      .then((data) => {
-        setCategory(data);
-        lp = "http://localhost:5000/categories/" + data.image;
-        setImg(lp);
-      });
-  }, []);
+  };
   return (
     <div className="lesson-cart">
-      <img alt="" src={img} />
+      <img alt="" src={lesson.image} />
       <div className="cart-content">
-        <h4>{category.title}</h4>
+        <h4>{lesson.category.title}</h4>
         <Link to={locate}>{lesson.content}</Link>
         <div className="icons">
           <span className="like">

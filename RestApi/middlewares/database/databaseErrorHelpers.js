@@ -59,13 +59,12 @@ const checkLessonExist = errorWrapper(async (req, res, next) => {
   
   const lesson_id = req.params.id || req.params.lesson_id;
   const lesson = await Lesson.findById(lesson_id);
-
+  
   if (!lesson) {
     return next(
       new CustomError(`Lesson Not Found with Id : ${lesson_id}`, 404)
     );
   }
-  req.myLesson = lesson;
   next();
 });
 
@@ -109,7 +108,6 @@ const checkUserExist = errorWrapper(async (req, res, next) => {
   const user_id = req.params.id || req.params.user_id;
 
   const user = await User.findById(user_id);
-  console.log("check user exist")
 
   if (!user) {
     return next(new CustomError(`User Not Found with Id : ${user_id}`, 404));

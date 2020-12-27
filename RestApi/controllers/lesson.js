@@ -9,14 +9,13 @@ const getAllLesson = errorWrapper(async (req, res, next) => {
 
 const getLessonByCategoryId = errorWrapper(async (req, res, next) => {
   const { category_id } = req.params;
-  const lessons = await Lesson.find({ category: category_id });
+  const lessons = await Lesson.find({ category: category_id }).populate({path:"category",select:"title"});
 
   res.status(200).json({
     success: true,
     data: lessons,
   });
 });
-
 
 const getLessonByUserId = errorWrapper(async (req, res, next) => {
   const { user_id } = req.params;
@@ -30,7 +29,6 @@ const getLessonByUserId = errorWrapper(async (req, res, next) => {
 
 const addNewLesson = errorWrapper(async (req, res, next) => {
   const information = req.body;
-
   const lesson = await Lesson.create({
     ...information,
     user: req.user.id,
@@ -43,7 +41,8 @@ const addNewLesson = errorWrapper(async (req, res, next) => {
 });
 
 const getSingleLesson = errorWrapper(async (req, res, next) => {
-  const lesson = req.myLesson.populate({
+  const lesson_id = req.params.id || req.params.lesson_id;
+  const lesson = await Lesson.findById(lesson_id).populate({
     path: "user",
     select: "name profile_image",
   });
@@ -54,13 +53,16 @@ const getSingleLesson = errorWrapper(async (req, res, next) => {
 });
 
 const editLesson = errorWrapper(async (req, res, next) => {
-  const { title, content, url } = req.body;
+  const lesson_id = req.params.id || req.params.lesson_id;
+  const { title, content, url, instructor, image, category } = req.body;
 
-  let lesson = req.myLesson;
-
+  let lesson = await Lesson.findById(lesson_id);
   lesson.title = title;
   lesson.content = content;
   lesson.url = url;
+  lesson.instructor = instructor;
+  lesson.category = category;
+  lesson.image = image;
 
   lesson = await lesson.save();
 
@@ -71,9 +73,9 @@ const editLesson = errorWrapper(async (req, res, next) => {
 });
 
 const deleteLesson = errorWrapper(async (req, res, next) => {
-  const { id } = req.myLesson;
+  const lesson_id = req.params.id || req.params.lesson_id;
 
-  await Lesson.findByIdAndRemove(id);
+  await Lesson.findByIdAndRemove(lesson_id);
 
   res.status(200).json({
     success: true,
@@ -81,7 +83,8 @@ const deleteLesson = errorWrapper(async (req, res, next) => {
   });
 });
 const likeLesson = errorWrapper(async (req, res, next) => {
-  const lesson = req.myLesson;
+  const lesson_id = req.params.id || req.params.lesson_id;
+  const lesson = await Lesson.findById(lesson_id);
 
   if (lesson.likes.includes(req.user.id)) {
     return next(new CustomError("You already liked this lesson", 400));
@@ -98,7 +101,8 @@ const likeLesson = errorWrapper(async (req, res, next) => {
 });
 
 const undoLikeLesson = errorWrapper(async (req, res, next) => {
-  const lesson = req.myLesson;
+  const lesson_id = req.params.id || req.params.lesson_id;
+  const lesson = await Lesson.findById(lesson_id);
 
   if (!lesson.likes.includes(req.user.id)) {
     return next(
@@ -118,7 +122,8 @@ const undoLikeLesson = errorWrapper(async (req, res, next) => {
   });
 });
 const dislikeLesson = errorWrapper(async (req, res, next) => {
-  const lesson = req.myLesson;
+  const lesson_id = req.params.id || req.params.lesson_id;
+  const lesson = await Lesson.findById(lesson_id);
 
   if (lesson.dislikes.includes(req.user.id)) {
     return next(new CustomError("You already liked this lesson", 400));
@@ -135,7 +140,8 @@ const dislikeLesson = errorWrapper(async (req, res, next) => {
 });
 
 const undoDislikeLesson = errorWrapper(async (req, res, next) => {
-  const lesson = req.myLesson;
+  const lesson_id = req.params.id || req.params.lesson_id;
+  const lesson = await Lesson.findById(lesson_id);
 
   if (!lesson.dislikes.includes(req.user.id)) {
     return next(
@@ -166,5 +172,5 @@ module.exports = {
   dislikeLesson,
   undoDislikeLesson,
   getLessonByCategoryId,
-  getLessonByUserId
+  getLessonByUserId,
 };

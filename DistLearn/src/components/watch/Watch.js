@@ -8,23 +8,31 @@ import QuestionCard from "./QuestionCard";
 
 function Watch() {
   const [episodes, setEpisodes] = useState([]);
+  const [lessonData, setLessonData] = useState([]);
   const [video, setVideo] = useState("");
+  const id = window.location.search.split("=")[1];
 
   useEffect(() => {
-    let id = window.location.search.split("=")[1];
-    let arr = [];
-    let url = "http://localhost:5000/api/lessons/" + id + "/episodes";
+    getLessonById();
+    getEpisodesByLesson();
+  }, []);
+  const getLessonById = () => {
     let urlLesson = "http://localhost:5000/api/lessons/" + id;
     Axios.get(urlLesson)
       .then((res) => res.data.data)
-      .then((data) => setVideo(data.url));
-
+      .then((data) => {
+        setVideo(data.url);
+        setLessonData(data);
+      });
+  };
+  const getEpisodesByLesson = () => {
+    let arr = [];
+    let url = "http://localhost:5000/api/lessons/" + id + "/episodes";
     Axios.get(url)
       .then((res) => res.data.data)
       .then((data) => data.map((c) => arr.push(c)))
       .then(() => setEpisodes(arr));
-  }, []);
-
+  };
   return (
     <div className="watch">
       <div className="left">
@@ -72,11 +80,19 @@ function Watch() {
           <h2>Ders İçerikleri</h2>
           <div className="episodes">
             <ul>
+              <li
+                key="0"
+                onClick={() => setVideo(lessonData.url)}
+                className={video === lessonData.url ? "active" : null}
+              >
+                <h5>Giriş Videosu</h5>
+                <span>{lessonData.title}</span>
+              </li>
               {episodes.map((episode, i) => (
                 <li
                   key={episode._id}
                   onClick={() => setVideo(episode.url)}
-                  className={video === episode.url?"active":null}
+                  className={video === episode.url ? "active" : null}
                 >
                   <h5>{i + 1}. Bölüm</h5>
                   <span>{episode.title}</span>
