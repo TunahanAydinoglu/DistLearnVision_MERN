@@ -99,17 +99,18 @@ const LessonSchema = new Schema({
 LessonSchema.pre("save", async function (next) {
   if (!this.isModified("title")) {
     next();
-  }
-  try {
-    let category_id = this.category;
-    const category = await Category.findById(category_id);
-    category.lessons.push(this.id);
-    category.lessonCount += 1;
-    this.slug = this.makeSlug();
-    await category.save();
-    next();
-  } catch (err) {
-    console.log(err);
+  } else {
+    try {
+      let category_id = this.category;
+      const category = await Category.findById(category_id);
+      category.lessons.push(this.id);
+      category.lessonCount += 1;
+      this.slug = this.makeSlug();
+      await category.save();
+      next();
+    } catch (err) {
+      console.log(err);
+    }
   }
 });
 

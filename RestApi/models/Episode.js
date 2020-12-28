@@ -35,18 +35,20 @@ const EpisodeSchema = new Schema({
 
 // Pre Save Method
 EpisodeSchema.pre("save", async function (next) {
-  if (!this.isModified("user")) return next();
-
-  try {
-    let lesson_id = this.lesson;
-    const lesson = await Lesson.findById(lesson_id);
-    lesson.episodes.push(this.id);
-    lesson.episodeCount += 1;
-    await lesson.save();
-  } catch (err) {
-    next(err);
+  if (!this.isModified("user")) {
+    next();
+  } else {
+    try {
+      let lesson_id = this.lesson;
+      const lesson = await Lesson.findById(lesson_id);
+      lesson.episodes.push(this.id);
+      lesson.episodeCount += 1;
+      await lesson.save();
+      next();
+    } catch (err) {
+      next(err);
+    }
   }
-  next();
 });
 
 EpisodeSchema.post("remove", async function () {

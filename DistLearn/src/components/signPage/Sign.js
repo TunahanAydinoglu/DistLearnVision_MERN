@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { authenticate } from "../../helpers/auth";
+import Swal from "sweetalert2";
 
 import * as Icons from "../icons/index";
 import "./sign.scss";
+import Axios from "axios";
 
 const Sign = () => {
   const [emailLogin, setEmailLogin] = useState("");
@@ -11,8 +12,6 @@ const Sign = () => {
   const [nameRegister, setNameRegister] = useState("");
   const [emailRegister, setEmailRegister] = useState("");
   const [passwordRegister, setPasswordRegister] = useState("");
-  const [registerStat, setRegisterStat] = useState(false);
-  const [loginStat, setLoginStat] = useState(false);
 
   let urlLogin = "http://localhost:5000/api/auth/login";
   let urlRegister = "http://localhost:5000/api/auth/register";
@@ -25,38 +24,52 @@ const Sign = () => {
     email: "",
     password: "",
   };
-  function handleSubmitLogin(event) {
+  const handleSubmitLogin = (event) => {
     event.preventDefault();
 
     userLogin = {
       email: emailLogin,
       password: passwordLogin,
     };
-    axios
-      .post(urlLogin, userLogin)
+    Axios.post(urlLogin, userLogin)
       .then((res) => {
-        if (res.status === 200) {
-          setLoginStat(true);
-          setTimeout(() => {window.location.reload(false)}, 2000);
-        }
+        setTimeout(() => {
+          window.location.reload(false);
+        }, 1000);
         return res.data;
       })
-      .then((data) => authenticate(data));
-  }
-  function handleSubmitRegister(event) {
+      .then((data) => authenticate(data))
+      .then(() => successPop("Giriş işlemi başarılı, Yönlendiriliyorsunuz."))
+      .catch(() => errorPop("Bir şeyler yanlış gitmiş olmalı bilgilerinizi kontrol ediniz."));
+  };
+  const handleSubmitRegister = (event) => {
     event.preventDefault();
     userRegister = {
       name: nameRegister,
       email: emailRegister,
       password: passwordRegister,
     };
-    axios.post(urlRegister, userRegister).then((res) => {
-      if (res.status === 200) {
-        setRegisterStat(true);
-        console.log(res);
-      }
+    Axios.post(urlRegister, userRegister)
+      .then((res) => res)
+      .then(() => successPop("Kayıt işlemi başarılı, Giriş Yapabilirsiniz."))
+      .catch(() => errorPop("Bir şeyler yanlış gitmiş olmalı kayıt eklenemedi."));
+  };
+  const successPop = (message) => {
+    Swal.fire({
+      position: "center",
+      icon: "success",
+      title: message,
+      showConfirmButton: false,
+      timer: 1500,
     });
-  }
+  };
+  const errorPop = (message) => {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: message,
+    });
+  };
   return (
     <div className="popup">
       <div className="login">
@@ -91,17 +104,9 @@ const Sign = () => {
               onChange={(e) => setPasswordLogin(e.target.value)}
             />
           </div>
-
-          {!loginStat ? (
-            <button className="submit-button" type="submit">
-              Giriş Yap
-            </button>
-          ) : (
-            <span className="myAlert">
-              Giriş işlemi başarılı, Yönlendiriliyorsunuz.  
-            </span>
-                    
-          )}
+          <button className="submit-button" type="submit">
+            Giriş Yap
+          </button>
         </form>
       </div>
       <div className="vertical-line"></div>
@@ -148,16 +153,9 @@ const Sign = () => {
               onChange={(e) => setPasswordRegister(e.target.value)}
             />
           </div>
-
-          {!registerStat ? (
-            <button className="submit-button" type="submit">
-              Kayıt Ol
-            </button>
-          ) : (
-            <span className="myAlert">
-              Kayıt işlemi başarılı, Giriş Yapabilirsiniz.
-            </span>
-          )}
+          <button className="submit-button" type="submit">
+            Kayıt Ol
+          </button>
         </form>
       </div>
     </div>

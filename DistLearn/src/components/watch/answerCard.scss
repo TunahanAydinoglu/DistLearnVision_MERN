@@ -1,0 +1,55 @@
+.answer-card {
+  display: flex;
+  flex-direction: row;
+  border-bottom:1px solid var(--my-border);
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+
+  .left-side {
+      padding-top: 2.2rem;
+    img {
+      border: 1px solid var(--my-border);
+      border-radius: 99px;
+      width: 6rem;
+    }
+  }
+
+  .answer {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      .answer-content{
+        padding: 0 2rem 0 1rem;
+      }
+
+      .answer-footer{
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          padding: 0 2rem;
+          color: var(--text);
+          font-weight: 600;
+      }
+  }
+
+  .answer-ranking {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-right: 1rem;
+    svg {
+      font-size: 2.2rem;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+    .up-button {
+      color: var(--green);
+    }
+    .down-button {
+      color: var(--red);
+    }
+  }
+}

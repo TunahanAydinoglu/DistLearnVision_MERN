@@ -11,32 +11,32 @@ import Footer from "./components/footer/Footer";
 
 function App() {
   return (
-    <div className="light" >
+    <div className="light">
       <Router>
         <Header />
-        <div className="main-wrapper" >
-        <Switch>
-          <Route path="/iletisim">
-            <Contact />
-          </Route>
-          <Route path="/izle">
-            <Watch />
-          </Route>
-          <Route path="/hakkimizda">
-            <AboutUs />
-          </Route>
-          <Route path="/dersler">
-            <Lessons />
-          </Route>
-          <Route path="/profil">
-            <ProfilePage />
-          </Route>
-          <Route path="/">
-            <MainPage />
-          </Route>
-        </Switch>
-        <Footer/>
+        <div className="main-wrapper">
+          <Switch>
+            <Route path="/iletisim">
+              <Contact />
+            </Route>
+            <Route path="/izle">
+              <Watch />
+            </Route>
+            <Route path="/hakkimizda">
+              <AboutUs />
+            </Route>
+            <Route path="/dersler">
+              <Lessons />
+            </Route>
+            <Route path="/profil">
+              <ProfilePage />
+            </Route>
+            <Route path="/">
+              <MainPage />
+            </Route>
+          </Switch>
         </div>
+          <Footer />
       </Router>
     </div>
   );

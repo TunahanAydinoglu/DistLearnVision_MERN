@@ -66,18 +66,20 @@ const QuestionSchema = new Schema({
 
 // Pre Save Method
 QuestionSchema.pre("save", async function (next) {
-  if (!this.isModified("title")) next();
-
-  try {
-    this.slug = this.makeSlug();
-    const lesson = await Lesson.findById(this.lesson);
-    lesson.questions.push(this.id);
-    lesson.questionCount += 1;
-    await lesson.save();
-  } catch (err) {
-    console.log(err);
+  if (!this.isModified("title")) {
+    next();
+  } else {
+    try {
+      this.slug = this.makeSlug();
+      const lesson = await Lesson.findById(this.lesson);
+      lesson.questions.push(this.id);
+      lesson.questionCount += 1;
+      await lesson.save();
+      next();
+    } catch (err) {
+      console.log(err);
+    }
   }
-  next();
 });
 QuestionSchema.post("remove", async function () {
   const lesson = await Lesson.findById(this.lesson);

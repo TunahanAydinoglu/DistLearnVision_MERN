@@ -38,10 +38,12 @@ const CategorySchema = new Schema({
 
 // Pre Save Method
 CategorySchema.pre("save", function (next) {
-  if (!this.isModified("title")) next();
-
-  this.slug = this.makeSlug();
-  next();
+  if (!this.isModified("title")) {
+    next();
+  } else {
+    this.slug = this.makeSlug();
+    next();
+  }
 });
 
 CategorySchema.methods.makeSlug = function () {

@@ -5,12 +5,13 @@
   --text: #7e7e7e;
   --text-hover: #252525;
   --a: #252525;
-  --a-hover: rgba(4,76,208,1);
-  --a-hover-opa: rgba(4,76,208,0.8);
+  --a-hover: rgba(4, 76, 208, 1);
+  --a-hover-opa: rgba(4, 76, 208, 0.8);
   --card: #e3f0f0;
   --border: #efefef;
   --star-o: #dadada;
   --star: #d0d23c;
+  --my-border: #dedfe0;
 
   --blue: #007bff;
   --indigo: #6610f2;

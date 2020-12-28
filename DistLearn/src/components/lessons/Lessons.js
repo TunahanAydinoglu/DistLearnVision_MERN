@@ -4,12 +4,15 @@ import * as Icons from "../icons/index";
 import LessonCart from "./LessonCart";
 import Axios from "axios";
 
-const Lessons = () => {
+const Lessons = (props) => {
   const [lessons, setLessons] = useState([]);
   const [categories, setCategories] = useState([]);
   const [active, setActive] = useState("1");
 
   let url = "http://localhost:5000/api/lessons";
+  // props.location.state.categoryUrl === null
+  //   ? "http://localhost:5000/api/lessons"
+  //   : props.location.state.categoryUrl;
 
   useEffect(() => {
     getLessons(url);

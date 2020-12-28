@@ -9,36 +9,42 @@ import Popup from "../toolbox/Popup";
 import AnswerPopup from "./AnswerPopup";
 
 const QuestionCard = (props) => {
-  const questionId = props.questionId;
-  const title = props.title;
-  const content = props.content;
   const userId = props.user;
   const lessonId = props.lessonId;
-  const createdAt = props.createdAt;
-  const answerCount = props.answerCount;
+  const questionId = props.questionId;
   const [user, setUser] = useState({});
   const [like, setLike] = useState(props.likeCount);
   const [dislike, setDislike] = useState(props.dislikeCount);
   const [isOpenAnswerModal, setIsOpenAnswerModal] = useState(false);
   const [userImage, setUserImage] = useState("");
   let token = getCookie("token");
-
+  let question = {
+    id: props.questionId,
+    title: props.title,
+    content: props.content,
+    userId: props.user,
+    createdAt: props.createdAt,
+    answerCount: props.answerCount,
+    userImage: userImage,
+    userName: user.name,
+  };
   useEffect(() => {
-    getUser(userId, user);
+    getUser(userId);
     return () => {};
-  }, [userId, user]);
+  }, [userId]);
 
-  const togglePopupAnswer = (e, id) => {
+  const togglePopupAnswer = (e) => {
     e.preventDefault();
     setIsOpenAnswerModal(!isOpenAnswerModal);
   };
-  const getUser = (userId, user) => {
+
+  const getUser = (userId) => {
     const url = "http://localhost:5000/api/users/profile/" + userId;
     Axios.get(url)
       .then((res) => res.data.data)
-      .then((data) => setUser(data))
-      .then(() => {
-        let pat = "http://localhost:5000/uploads/" + user.profile_image;
+      .then((data) => {
+        setUser(data);
+        let pat = "http://localhost:5000/uploads/" + data.profile_image;
         setUserImage(pat);
       });
   };
@@ -129,21 +135,26 @@ const QuestionCard = (props) => {
           <img alt="" src={userImage} />
         </div>
         <div className="content-wrapper">
-          <h2>{title}</h2>
-          <p className="content">{content}</p>
+          <h2>{question.title}</h2>
+          <p className="content">{question.content}</p>
           <div className="content-bottom">
             <div>
               <span>{user.name}</span>
             </div>
             <div>
-              <span>{createdAt}</span>
-              <span className="read-more" onClick={togglePopupAnswer}>devamini oku</span>
+              <span>{question.createdAt}</span>
+              <span className="read-more" onClick={togglePopupAnswer}>
+                Devamını oku
+              </span>
             </div>
           </div>
         </div>
         <div className="icons">
           <div className="comments">
-            <div onClick={togglePopupAnswer}><Icons.Reply /></div> <span>({answerCount})</span>
+            <div onClick={togglePopupAnswer}>
+              <Icons.Reply />
+            </div>
+            <span>({question.answerCount})</span>
           </div>
           <div>
             <div>
@@ -174,7 +185,10 @@ const QuestionCard = (props) => {
       </div>
       <ToastContainer />
       {isOpenAnswerModal && (
-        <Popup content={<AnswerPopup />} handleClose={togglePopupAnswer} />
+        <Popup
+          content={<AnswerPopup question={question} />}
+          handleClose={togglePopupAnswer}
+        />
       )}
     </div>
   );

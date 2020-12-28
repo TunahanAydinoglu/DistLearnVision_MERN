@@ -14,15 +14,16 @@ function Watch() {
   const [questions, setQuestions] = useState([]);
   const [video, setVideo] = useState("");
   const [display, setDisplay] = useState("none");
+  const [questionDisplay, setQuestionDisplay] = useState("flex");
+  const [commentDisplay, setCommentDisplay] = useState("none");
   const id = window.location.search.split("=")[1];
 
   const token = getCookie("token");
 
   useEffect(() => {
     pageLoad();
-    return () => {};
   }, []);
-  
+
   const pageLoad = () => {
     getLessonById(id);
     getEpisodesByLesson(id);
@@ -57,12 +58,10 @@ function Watch() {
   const questionAddHandler = (e) => {
     e.preventDefault();
     let url = "http://localhost:5000/api/lessons/" + id + "/questions/ask";
-    console.log(id);
     const item = {
       title: e.target[0].value,
       content: e.target[1].value,
     };
-    console.log(item);
     Axios.post(url, item, {
       headers: {
         Authorization: token,
@@ -70,6 +69,9 @@ function Watch() {
     })
       .then(() => successPop())
       .then(() => pageLoad())
+      .then(() => {
+        setDisplay("none");
+      })
       .catch(() => errorPop());
   };
   const successPop = () => {
@@ -95,6 +97,14 @@ function Watch() {
       setDisplay("none");
     }
   };
+  const questionCommendDisplayHandler = (selectedPanel) => {
+    selectedPanel === "question"
+      ? setQuestionDisplay("flex")
+      : setQuestionDisplay("none");
+    selectedPanel === "comment"
+      ? setCommentDisplay("flex")
+      : setCommentDisplay("none");
+  };
   return (
     <div className="watch">
       <div className="left">
@@ -113,11 +123,24 @@ function Watch() {
         <div className="questions-wrapper">
           <div className="wrapper-header">
             <ul>
-              <li>Sorular & Cevaplar</li>
-              <li>Yorumlar</li>
+              <li
+                className={questionDisplay === "flex" ? "active" : null}
+                onClick={() => questionCommendDisplayHandler("question")}
+              >
+                Sorular & Cevaplar
+              </li>
+              <li
+                className={commentDisplay === "flex" ? "active" : null}
+                onClick={() => questionCommendDisplayHandler("comment")}
+              >
+                Yorumlar
+              </li>
             </ul>
           </div>
-          <div className="question-content-wrapper">
+          <div
+            className="question-content-wrapper"
+            style={{ display: questionDisplay }}
+          >
             <div className="question-search">
               <input placeholder="Sorularda ara..." />
               <span>
@@ -159,7 +182,63 @@ function Watch() {
                     Gönder
                   </button>
                 </form>
-                {questions.map((q,i) => (
+                {questions.map((q, i) => (
+                  <QuestionCard
+                    key={i}
+                    questionId={q._id}
+                    title={q.title}
+                    content={q.content}
+                    user={q.user}
+                    likeCount={q.likeCount}
+                    dislikeCount={q.dislikeCount}
+                    answerCount={q.answerCount}
+                    lessonId={id}
+                    createdAt={q.createdAt.split("T")[0]}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+          <div
+            className="comment-content-wrapper"
+            style={{ display: commentDisplay }}
+          >
+            <div className="questions">
+              <div className="questions-header">
+                <span>Bu derste {questions.length} soru mevcuttur</span>
+                <div className="question-add" onClick={displayHandler}>
+                  Yeni bir soru ekle
+                </div>
+              </div>
+              <div className="cards-wrapper">
+                <form
+                  className="question-form"
+                  style={{ display }}
+                  onSubmit={questionAddHandler}
+                >
+                  <div className="question-form-item">
+                    <label htmlFor="title">Soru Başlığı :</label>
+                    <input
+                      id="title"
+                      name="title"
+                      placeholder="Bir başlık giriniz.."
+                      required={true}
+                    />
+                  </div>
+                  <div className="question-form-item">
+                    <label htmlFor="content">Soru İçeriği :</label>
+                    <textarea
+                      id="content"
+                      name="content"
+                      placeholder="Soru içeriği giriniz.."
+                      required={true}
+                    ></textarea>
+                  </div>
+                  <button type="submit" className="form-button">
+                    Gönder
+                  </button>
+                </form>
+                {questions.map((q, i) => (
                   <QuestionCard
                     key={i}
                     questionId={q._id}
@@ -205,7 +284,6 @@ function Watch() {
           </div>
         </div>
       </aside>
-     
     </div>
   );
 }
