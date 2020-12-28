@@ -12,11 +12,12 @@ const LessonCart = (props) => {
   const [like, setLike] = useState(lesson.likeCount);
   const [dislike, setDislike] = useState(lesson.dislikeCount);
   const [locate, setLocate] = useState("");
+  let token = getCookie("token");
 
   const likeHandler = () => {
     let config = {
       headers: {
-        Authorization: getCookie("token"),
+        Authorization: token,
       },
     };
     let url = "http://localhost:5000/api/lessons/" + lesson._id;
@@ -31,7 +32,7 @@ const LessonCart = (props) => {
   const undoLikeHandler = () => {
     let config = {
       headers: {
-        Authorization: getCookie("token"),
+        Authorization: token,
       },
     };
     let url = "http://localhost:5000/api/lessons/" + lesson._id;
@@ -47,10 +48,10 @@ const LessonCart = (props) => {
     let url = "http://localhost:5000/api/lessons/" + lesson._id + "/dislike";
     Axios.get(url, {
       headers: {
-        Authorization: getCookie("token"),
+        Authorization: token,
       },
     }).then(() => {
-      toast.error("Disslike eklendi :(", {
+      toast.error("Dislike eklendi :(", {
         position: "bottom-right",
         autoClose: 4000,
       });
@@ -62,10 +63,10 @@ const LessonCart = (props) => {
       "http://localhost:5000/api/lessons/" + lesson._id + "/undo_dislike";
     Axios.get(url, {
       headers: {
-        Authorization: getCookie("token"),
+        Authorization: token,
       },
     }).then(() => {
-      toast.warn("Disslike geri alındı :) ", {
+      toast.warn("Dislike geri alındı :) ", {
         position: "bottom-right",
         autoClose: 4000,
       });

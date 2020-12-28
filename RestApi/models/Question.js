@@ -7,13 +7,12 @@ const QuestionSchema = new Schema({
   title: {
     type: String,
     required: [true, "Please provide a title"],
-    minlength: [5, "Please provide title at least 5 characters"],
-    unique: true,
+    minlength: [1, "Please provide title at least 1 characters"],
   },
   content: {
     type: String,
     required: [true, "Please provide a content"],
-    minlength: [5, "Please provide content at least 5 characters"],
+    minlength: [1, "Please provide content at least 1 characters"],
   },
   slug: String,
   createdAt: {

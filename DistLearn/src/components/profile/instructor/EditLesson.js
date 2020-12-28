@@ -4,7 +4,7 @@ import { getCookie } from "../../../helpers/auth";
 import Swal from "sweetalert2";
 import "./editLesson.scss";
 
-function EditLesson(props) {
+const EditLesson = (props) => {
   const lessonId = props.lesson;
   const [lesson, setLesson] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -146,6 +146,6 @@ function EditLesson(props) {
       </form>
     </div>
   );
-}
+};
 
 export default EditLesson;

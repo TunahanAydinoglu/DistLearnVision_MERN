@@ -14,6 +14,8 @@ const {
   deleteQuestion,
   likeQuestion,
   undoLikeQuestion,
+  dislikeQuestion,
+  undoDislikeQuestion,
 } = require("../controllers/question");
 
 const {
@@ -71,6 +73,15 @@ router.get(
   [getAccessToRoute, checkQuestionExist],
   undoLikeQuestion
 );
+router.get("/:id/dislike", [getAccessToRoute, checkQuestionExist], dislikeQuestion);
+router.get(
+  "/:id/undo_dislike",
+  [getAccessToRoute, checkQuestionExist],
+  undoDislikeQuestion
+);
+
+
+
 router.post("/ask", getAccessToRoute, askNewQuestion);
 
 router.put(
