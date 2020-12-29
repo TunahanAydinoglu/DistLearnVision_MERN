@@ -21,13 +21,15 @@ const LessonCart = (props) => {
       },
     };
     let url = "http://localhost:5000/api/lessons/" + lesson._id;
-    Axios.get(url + "/like", config).then(() => {
-      toast.success("Beğeniniz eklendi :) ", {
-        position: "bottom-right",
-        autoClose: 4000,
-      });
-      setLike(like + 1);
-    });
+    Axios.get(url + "/like", config)
+      .then(() => {
+        toast.success("Beğeniniz eklendi :) ", {
+          position: "bottom-right",
+          autoClose: 4000,
+        });
+        setLike(like + 1);
+      })
+      .catch(() => undoLikeHandler());
   };
   const undoLikeHandler = () => {
     let config = {
@@ -50,13 +52,17 @@ const LessonCart = (props) => {
       headers: {
         Authorization: token,
       },
-    }).then(() => {
-      toast.error("Dislike eklendi :(", {
-        position: "bottom-right",
-        autoClose: 4000,
-      });
-      setDislike(dislike + 1);
-    });
+    })
+      .then(() => {
+        toast
+          .error("Dislike eklendi :(", {
+            position: "bottom-right",
+            autoClose: 4000,
+          })
+          .then(() => setDislike(dislike + 1));
+        setDislike(dislike + 1);
+      })
+      .catch(() => undoDislikeHandler());
   };
   const undoDislikeHandler = () => {
     let url =
