@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import "react-toastify/dist/ReactToastify.css";
 
 import Header from "./components/header/Header";
 import ProfilePage from "./components/profile/ProfilePage";

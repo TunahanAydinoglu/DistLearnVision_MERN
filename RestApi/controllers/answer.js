@@ -22,7 +22,7 @@ const getAllAnswersByQuestion = errorWrapper(async (req, res, next) => {
   const question = await Question.findById(question_id).populate("answers");
 
   const answers = await question.answers.sort(function (a, b) {
-    return a.sumCount - b.sumCount;
+    return b.sumCount - a.sumCount;
   });
 
   res.status(200).json({
@@ -87,6 +87,7 @@ const likeAnswer = errorWrapper(async (req, res, next) => {
   }
   answer.likes.push(req.user.id);
   answer.likeCount += 1;
+  answer.sumCount += 1;
 
   await answer.save();
 
@@ -109,6 +110,7 @@ const undoLikeAnswer = errorWrapper(async (req, res, next) => {
 
   answer.likes.splice(index, 1);
   answer.likeCount -= 1;
+  answer.sumCount -= 1;
 
   await answer.save();
 
@@ -123,10 +125,11 @@ const dislikeAnswer = errorWrapper(async (req, res, next) => {
   const answer = await Answer.findById(answer_id);
 
   if (answer.dislikes.includes(req.user.id)) {
-    return next(new CustomError("You already liked this answer", 400));
+    return next(new CustomError("You already disliked this answer", 400));
   }
   answer.dislikes.push(req.user.id);
   answer.dislikeCount += 1;
+  answer.sumCount -= 1;
 
   await answer.save();
 
@@ -142,13 +145,14 @@ const undoDislikeAnswer = errorWrapper(async (req, res, next) => {
 
   if (!answer.dislikes.includes(req.user.id)) {
     return next(
-      new CustomError("You can not undo like operation for this answer", 400)
+      new CustomError("You can not undo dislike operation for this answer", 400)
     );
   }
   const index = answer.dislikes.indexOf(req.user.id);
 
   answer.dislikes.splice(index, 1);
   answer.dislikeCount -= 1;
+  answer.sumCount += 1;
 
   await answer.save();
 

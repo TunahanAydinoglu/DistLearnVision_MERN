@@ -20,7 +20,6 @@ const AnswerSchema = new Schema({
   sumCount: {
     type: Number,
     default: 0,
-    min: 0,
   },
   likes: [
     {
@@ -73,9 +72,7 @@ AnswerSchema.virtual("likesCount").get(function () {
 AnswerSchema.virtual("dislikesCount").get(function () {
   return this.dislikes.length;
 });
-AnswerSchema.virtual("sumCount").get(function () {
-  return this.likes.length - this.dislikes.length;
-});
+
 AnswerSchema.post("remove", async function () {
   const question = await Question.findById(this.question);
 

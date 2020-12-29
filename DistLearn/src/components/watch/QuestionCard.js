@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import * as Icons from "../icons/index";
 import Axios from "axios";
 import { getCookie } from "../../helpers/auth";
-import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import "./questionCard.scss";
 import Popup from "../toolbox/Popup";
@@ -22,11 +21,12 @@ const QuestionCard = (props) => {
     id: props.questionId,
     title: props.title,
     content: props.content,
-    userId: props.user,
     createdAt: props.createdAt,
-    answerCount: props.answerCount,
+    answerCount:props.answerCount,
     userImage: userImage,
     userName: user.name,
+    token:token,
+    lessonId:lessonId,
   };
   useEffect(() => {
     getUser(userId);

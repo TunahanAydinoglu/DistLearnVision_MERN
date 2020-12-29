@@ -5,6 +5,9 @@
   .left-side {
     flex: 1 1 19%;
     margin-right: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     .user {
       width: 100%;
       display: flex;
@@ -17,6 +20,29 @@
       }
       .user-name {
         text-transform: capitalize;
+      }
+      span {
+        margin-bottom: 2rem;
+      }
+    }
+    .add-answer {
+      margin: 2rem auto;
+      font-size: 1.8rem;
+      font-weight: 600;
+      padding: 0.5rem 1rem;
+      color: var(--gray-dark);
+      border-left: 1px solid var(--black);
+      border-right: 1px solid var(--black);
+      border-radius: 8px;
+      transition: color 1.2s;
+      transition: background-color 1.2s;
+
+      &:hover {
+        background-color: var(--black);
+        color: var(--white);
+        border-left: 1px solid var(--gray-dark);
+        border-right: 1px solid var(--gray-dark);
+        cursor: pointer;
       }
     }
   }
@@ -31,7 +57,7 @@
     border-left: 1px solid var(--my-border);
     .question {
       width: 94%;
-      border-bottom: 1px solid var(--my-border);
+      border-bottom: 2px solid var(--my-border);
       padding-bottom: 2rem;
       margin-bottom: 2rem;
       .question-content {
@@ -55,6 +81,40 @@
       }
     }
 
+    .add-answer-form {
+      width: 90%;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--my-border);
+
+      fieldset {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        textarea {
+          width: 100%;
+          height: 6rem;
+          padding: 1rem;
+          margin-bottom: 1rem;
+        }
+        button {
+          background-color: inherit;
+          padding: 0.4rem 3rem;
+          font-size: 1.6rem;
+          font-weight: 600;
+          border-radius: 6px;
+          color: var(--black);
+          border: 2px solid var(--black);
+          &:hover {
+            cursor: pointer;
+          }
+        }
+      }
+    }
     .answers {
       display: flex;
       flex-direction: column;

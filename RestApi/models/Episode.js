@@ -16,6 +16,7 @@ const EpisodeSchema = new Schema({
   ranking: {
     type: Number,
     required: [true, "Please provide a ranking"],
+    min: 1,
   },
   createdAt: {
     type: Date,
