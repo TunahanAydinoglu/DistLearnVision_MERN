@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import Axios from "axios";
 import { getCookie } from "../../helpers/auth";
 import "./profilePage.scss";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
@@ -23,7 +23,7 @@ const ProfilePage = () => {
 
     let prof = "";
     let token = getCookie("token");
-    axios
+    Axios
       .get(getProfileUrl, {
         headers: {
           Authorization: token,
@@ -31,7 +31,7 @@ const ProfilePage = () => {
       })
       .then((res) => res.data.data)
       .then((data) =>
-        axios
+        Axios
           .get(getUserUrl + data.id)
           .then((res) => res.data.data)
           .then((data) => {
@@ -124,7 +124,7 @@ const ProfilePage = () => {
                   <InstructorPage user={user} />
                 </Route>
                 <Route path="/profil/">
-                  <DefaultProfile user={user} />
+                  <DefaultProfile />
                 </Route>
               </Switch>
             </div>

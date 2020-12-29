@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import * as Icons from "../icons/index";
 import Swal from "sweetalert2";
 import Axios from "axios";
+import { ToastContainer } from "react-toastify";
 
 import "./watch.scss";
 import QuestionCard from "./QuestionCard";
@@ -284,6 +285,7 @@ function Watch() {
           </div>
         </div>
       </aside>
+      <ToastContainer />
     </div>
   );
 }

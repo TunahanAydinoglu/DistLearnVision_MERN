@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
 import { BiDownArrow, BiUpArrow } from "react-icons/bi";
-import { ToastContainer, toast } from "react-toastify";
 import "./answerCard.scss";
 import { getCookie } from "../../helpers/auth";
+import { toast } from "react-toastify";
 
 const AnswerCard = (props) => {
   const answer = props.answer;
@@ -35,7 +35,13 @@ const AnswerCard = (props) => {
     };
     let url = likeUrl + "/like";
     Axios.get(url, config)
-      .then(() => setRankingCount(rankingCount + 1))
+      .then(() => {
+        setRankingCount(rankingCount + 1);
+        toast.success("Cevap puanı arttırıldı :) ", {
+          position: "bottom-right",
+          autoClose: 3000,
+        });
+      })
       .catch(() => undoLikeHandler());
   };
   const undoLikeHandler = () => {
@@ -45,7 +51,13 @@ const AnswerCard = (props) => {
       },
     };
     let url = likeUrl + "/undo_like";
-    Axios.get(url, config).then(() => setRankingCount(rankingCount - 1));
+    Axios.get(url, config).then(() => {
+      setRankingCount(rankingCount - 1);
+      toast.warn("Cevap puaniniz geri alındı :) ", {
+        position: "bottom-right",
+        autoClose: 3000,
+      });
+    });
   };
   const dislikeHandler = () => {
     let url = likeUrl + "/dislike";
@@ -54,7 +66,13 @@ const AnswerCard = (props) => {
         Authorization: token,
       },
     })
-      .then(() => setRankingCount(rankingCount - 1))
+      .then(() => {
+        setRankingCount(rankingCount - 1);
+        toast.warn("Cevap puanı azaltildi.", {
+          position: "bottom-right",
+          autoClose: 3000,
+        });
+      })
       .catch(() => undoDislikeHandler());
   };
   const undoDislikeHandler = () => {
@@ -63,7 +81,13 @@ const AnswerCard = (props) => {
       headers: {
         Authorization: token,
       },
-    }).then(() => setRankingCount(rankingCount + 1));
+    }).then(() => {
+      setRankingCount(rankingCount + 1);
+      toast.warn("Cevap puaniniz geri alındı :) ", {
+        position: "bottom-right",
+        autoClose: 3000,
+      });
+    });
   };
   return (
     <div className="answer-card">
@@ -80,7 +104,7 @@ const AnswerCard = (props) => {
       <div className="answer-ranking">
         <BiUpArrow className="up-button" onClick={likeButtonHandler} />
         {rankingCount}
-        <BiDownArrow className="down-button" onClick={dislikeHandler}/>
+        <BiDownArrow className="down-button" onClick={dislikeHandler} />
       </div>
     </div>
   );

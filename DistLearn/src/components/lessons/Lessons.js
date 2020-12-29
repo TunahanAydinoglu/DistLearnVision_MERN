@@ -10,14 +10,16 @@ const Lessons = (props) => {
   const [active, setActive] = useState("1");
 
   let url = "http://localhost:5000/api/lessons";
+  const categoryId = window.location.href.split("dersler/")[1];
+
   // props.location.state.categoryUrl === null
   //   ? "http://localhost:5000/api/lessons"
   //   : props.location.state.categoryUrl;
 
   useEffect(() => {
-    getLessons(url);
+    categoryId === undefined ? getLessons(url) : changeCategory(categoryId);
     getCategories();
-  }, [url]);
+  }, [url, categoryId]);
 
   const changeCategory = (selected) => {
     setActive(selected);
@@ -37,16 +39,11 @@ const Lessons = (props) => {
   const searchHandle = (e) => {
     e.preventDefault();
     let arr = [];
-    let search = "";
-    if (e.target.value === "") {
-      getLessons();
-    } else {
-      search = url + "?search=" + e.target.value;
-      Axios.get(search)
-        .then((res) => res.data.data)
-        .then((data) => data.map((a) => arr.push(a)))
-        .then(() => setLessons(arr));
-    }
+    let search = url + "?search=" + e.target.value;
+    Axios.get(search)
+      .then((res) => res.data.data)
+      .then((data) => data.map((a) => arr.push(a)))
+      .then(() => setLessons(arr));
   };
 
   const getLessons = (url) => {

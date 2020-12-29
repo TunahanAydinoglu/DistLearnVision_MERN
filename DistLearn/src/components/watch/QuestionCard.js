@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import * as Icons from "../icons/index";
 import Axios from "axios";
 import { getCookie } from "../../helpers/auth";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "./questionCard.scss";
 import Popup from "../toolbox/Popup";
 import AnswerPopup from "./AnswerPopup";
@@ -22,11 +22,11 @@ const QuestionCard = (props) => {
     title: props.title,
     content: props.content,
     createdAt: props.createdAt,
-    answerCount:props.answerCount,
+    answerCount: props.answerCount,
     userImage: userImage,
     userName: user.name,
-    token:token,
-    lessonId:lessonId,
+    token: token,
+    lessonId: lessonId,
   };
   useEffect(() => {
     getUser(userId);
@@ -66,8 +66,9 @@ const QuestionCard = (props) => {
           position: "bottom-right",
           autoClose: 4000,
         });
+        setLike(like + 1);
       })
-      .then(() => setLike(like + 1));
+      .catch(() => undoLikeHandler());
   };
   const undoLikeHandler = () => {
     let config = {
@@ -106,8 +107,9 @@ const QuestionCard = (props) => {
           position: "bottom-right",
           autoClose: 4000,
         });
+        setDislike(dislike + 1);
       })
-      .then(() => setDislike(dislike + 1));
+      .catch(() => undoDislikeHandler());
   };
   const undoDislikeHandler = () => {
     let url =
@@ -169,7 +171,7 @@ const QuestionCard = (props) => {
               </div>
               <span>({dislike})</span>
             </div>
-            <div className="dropdown">
+            {/* <div className="dropdown">
               <span>
                 <Icons.ArrowBottom />
               </span>
@@ -179,13 +181,12 @@ const QuestionCard = (props) => {
                   <li onClick={undoDislikeHandler}>Dislike geri al</li>
                 </ul>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
-      <ToastContainer />
       {isOpenAnswerModal && (
-        <Popup
+      <Popup
           content={<AnswerPopup question={question} />}
           handleClose={togglePopupAnswer}
         />

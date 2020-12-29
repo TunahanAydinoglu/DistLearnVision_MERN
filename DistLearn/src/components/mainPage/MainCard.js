@@ -6,14 +6,9 @@ export default class MainCard extends Component {
   render() {
     let category = this.props.category;
     let imgUrl = "http://localhost:5000/categories/" + category.image;
-    let url = "http://localhost:5000/api/lessons/category/";
+    let categoryPath = "/dersler/" + category._id;
     return (
-      <Link to={{
-        pathname: '/dersler/category='+category._id,
-        state:{
-          categoryUrl: url + category._id
-        }
-      }}>
+      <Link to={categoryPath}>
         <div className="flow">
           <div
             className="main-card"

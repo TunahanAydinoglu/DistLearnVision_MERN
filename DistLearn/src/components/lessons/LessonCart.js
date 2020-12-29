@@ -1,10 +1,9 @@
 import "./lessonCart.scss";
-import { LikeFa, DislikeFa, ArrowBottom } from "../icons/index";
+import { LikeFa, DislikeFa } from "../icons/index";
 import Axios from "axios";
 import { getCookie } from "../../helpers/auth";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 
 const LessonCart = (props) => {
@@ -13,7 +12,7 @@ const LessonCart = (props) => {
   const [dislike, setDislike] = useState(lesson.dislikeCount);
   const [locate, setLocate] = useState("");
   let token = getCookie("token");
-
+ 
   const likeHandler = () => {
     let config = {
       headers: {
@@ -54,14 +53,12 @@ const LessonCart = (props) => {
       },
     })
       .then(() => {
-        toast
-          .error("Dislike eklendi :(", {
-            position: "bottom-right",
-            autoClose: 4000,
-          })
-          .then(() => setDislike(dislike + 1));
-        setDislike(dislike + 1);
+        toast.error("Dislike eklendi :(", {
+          position: "bottom-right",
+          autoClose: 4000,
+        });
       })
+      .then(() => setDislike(dislike + 1))
       .catch(() => undoDislikeHandler());
   };
   const undoDislikeHandler = () => {
@@ -89,9 +86,11 @@ const LessonCart = (props) => {
   };
   return (
     <div className="lesson-cart">
-      <img alt="" src={lesson.image} />
+      <Link to={locate}>
+        <img alt="" src={lesson.image} />
+      </Link>
       <div className="cart-content">
-        <h4>{lesson.category.title}</h4>
+        <h4>{lesson.title}</h4>
         <Link to={locate}>{lesson.content}</Link>
         <div className="icons">
           <span className="like">
@@ -106,7 +105,7 @@ const LessonCart = (props) => {
             </span>
             ({dislike})
           </span>
-          <div className="dropdown">
+          {/* <div className="dropdown">
             <span>
               <ArrowBottom />
             </span>
@@ -116,7 +115,7 @@ const LessonCart = (props) => {
                 <li onClick={undoDislikeHandler}>Dislike geri al</li>
               </ul>
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="cart-footer">
           <span>{lesson.instructor}</span>

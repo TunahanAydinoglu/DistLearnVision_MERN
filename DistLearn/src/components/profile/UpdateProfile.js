@@ -1,6 +1,7 @@
 import Axios from "axios";
 import { useState, useEffect } from "react";
 import "./updateProfile.scss";
+import Swal from "sweetalert2";
 import { getCookie } from "../../helpers/auth";
 
 export default function UpdateProfile(props) {
@@ -32,9 +33,18 @@ export default function UpdateProfile(props) {
       headers: {
         Authorization: token,
       },
-    }).then(() => alert("Guncelleme Basarili"));
+    })
+      .then(() => Swal.fire("Guncelleme Basarili!", "", "success"))
+      .catch(() => errorPop());
   }
 
+  const errorPop = () => {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Bir şeyler yanlış gitmiş olmalı kayıt eklenemedi.",
+    });
+  };
   return (
     <div className="updateProfile">
       <h2>Profil Sayfası</h2>

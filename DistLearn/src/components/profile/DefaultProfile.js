@@ -1,8 +1,28 @@
+import { useEffect, useState } from "react";
+import Axios from "axios";
 import "./defaultProfile.scss";
+import { getCookie } from "../../helpers/auth";
 
-export default function DefaultProfile(props) {
-  const user = props.user;
+export default function DefaultProfile() {
+  const [user, setUser] = useState({});
 
+  useEffect(() => {
+    let getProfileUrl = "http://localhost:5000/api/auth/user";
+    let getUserUrl = "http://localhost:5000/api/users/profile/";
+
+    let token = getCookie("token");
+    Axios.get(getProfileUrl, {
+      headers: {
+        Authorization: token,
+      },
+    })
+      .then((res) => res.data.data)
+      .then((data) =>
+        Axios.get(getUserUrl + data.id)
+          .then((res) => res.data.data)
+          .then((data) => setUser(data))
+      );
+  }, []);
   return (
     <div className="default-profile">
       <h2>Profil Sayfası</h2>

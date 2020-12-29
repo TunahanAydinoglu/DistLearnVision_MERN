@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Popup from "../toolbox/Popup";
 import { getCookie, signout } from "../../helpers/auth";
 import { Link } from "react-router-dom";
+import { FiLogOut } from "react-icons/fi";
 
 import "./header.scss";
 import * as Icons from "../icons/index";
@@ -50,7 +51,9 @@ function Header() {
             </nav>
           </div>
           <div className="header-right">
-            <Link to="/dersler"><Icons.SearchFa /></Link>
+            <Link to="/dersler">
+              <Icons.SearchFa />
+            </Link>
             <span className="line"></span>
             {valid ? (
               <div className="valid">
@@ -60,8 +63,8 @@ function Header() {
                 </Link>
                 <span>&nbsp;|</span>
                 <a href="/" onClick={() => signout()}>
-                  Çıkış Yap
-                  <Icons.ArrowBottom />
+                  Çıkış Yap &nbsp;
+                  <FiLogOut />
                 </a>
               </div>
             ) : (

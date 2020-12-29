@@ -133,6 +133,7 @@ const EditLesson = (props) => {
                   key={category._id}
                   defaultValue={category._id}
                   selected={category._id === lesson.category ? true : false}
+                  value={category._id}
                 >
                   {category.title}
                 </option>

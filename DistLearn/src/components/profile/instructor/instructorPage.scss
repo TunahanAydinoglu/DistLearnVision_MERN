@@ -69,7 +69,7 @@
         padding: 0.3rem 1rem;
         transition: color 1.2s;
         transition: background-color 1.2s;
-    
+
         &:hover {
           background-color: var(--black);
           color: var(--white);
@@ -99,6 +99,9 @@
         font-weight: 500;
         color: grey;
         margin-left: 2rem;
+        &:hover {
+          cursor: pointer;
+        }
       }
       .dropdown {
         position: relative;
