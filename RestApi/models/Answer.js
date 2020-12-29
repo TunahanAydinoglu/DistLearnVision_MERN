@@ -17,8 +17,23 @@ const AnswerSchema = new Schema({
     default: 0,
     min: 0,
   },
-
+  sumCount: {
+    type: Number,
+    default: 0,
+    min: 0,
+  },
   likes: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: "User",
+    },
+  ],
+  dislikeCount: {
+    type: Number,
+    default: 0,
+    min: 0,
+  },
+  dislikes: [
     {
       type: mongoose.Schema.ObjectId,
       ref: "User",
@@ -55,7 +70,12 @@ AnswerSchema.pre("save", async function (next) {
 AnswerSchema.virtual("likesCount").get(function () {
   return this.likes.length;
 });
-
+AnswerSchema.virtual("dislikesCount").get(function () {
+  return this.dislikes.length;
+});
+AnswerSchema.virtual("sumCount").get(function () {
+  return this.likes.length - this.dislikes.length;
+});
 AnswerSchema.post("remove", async function () {
   const question = await Question.findById(this.question);
 

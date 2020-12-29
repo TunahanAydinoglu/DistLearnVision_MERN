@@ -7,7 +7,9 @@ const {
     editAnswer,
     deleteAnswer,
     likeAnswer,
-    undoLikeAnswer
+    undoLikeAnswer,
+    dislikeAnswer,
+    undoDislikeAnswer
 } = require("../controllers/answer");
 
 const {
@@ -25,6 +27,8 @@ const router = express.Router({mergeParams:true});
 router.get("/",checkQuestionExist,getAllAnswersByQuestion);
 router.get("/:answer_id/like",[checkQuestionAndAnswerExist,getAccessToRoute],likeAnswer);
 router.get("/:answer_id/undo_like",[checkQuestionAndAnswerExist,getAccessToRoute],undoLikeAnswer);
+router.get("/:answer_id/dislike",[checkQuestionAndAnswerExist,getAccessToRoute],dislikeAnswer);
+router.get("/:answer_id/undo_dislike",[checkQuestionAndAnswerExist,getAccessToRoute],undoDislikeAnswer);
 router.get("/:answer_id",checkQuestionAndAnswerExist,getSingleAnswer);
 router.post("/",[getAccessToRoute,checkQuestionExist],addNewAnswerToQuestion);
 router.put("/:answer_id/edit",[checkQuestionAndAnswerExist,getAccessToRoute,getAnswerOwnerAccess],editAnswer);
