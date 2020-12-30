@@ -1,6 +1,52 @@
+import Axios from "axios";
+import { useState } from "react";
+import Swal from "sweetalert2";
 import "./contact.scss";
 
 const Contact = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [subject, setSubject] = useState("");
+  const [content, setContent] = useState("");
+
+  const contactSubmitHandler = (e) => {
+    e.preventDefault();
+    const contactUrl = "http://localhost:5000/api/contact/new";
+    const item = {
+      name,
+      email,
+      subject,
+      content,
+    };
+
+    Axios.post(contactUrl, item)
+      .then(() => {
+        successPop("Mesajınız iletilmiştir.");
+        e.target[0].value = "";
+        e.target[1].value = "";
+        e.target[2].value = "";
+        e.target[3].value = "";
+      })
+      .catch(() => {
+        errorPop("Bir hata oluştu bilgileri kontrol ediniz.");
+      });
+  };
+  const successPop = (message) => {
+    Swal.fire({
+      position: "center",
+      icon: "success",
+      title: message,
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  };
+  const errorPop = (message) => {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: message,
+    });
+  };
   return (
     <div className="contact">
       <div className="map">
@@ -14,7 +60,7 @@ const Contact = () => {
           tabIndex={0}
         ></iframe>
       </div>
-      <form className="contact-form">
+      <form className="contact-form" onSubmit={contactSubmitHandler}>
         <h2>Mesaj Gönder</h2>
         <div className="contact-item">
           <label htmlFor="name">Ad Soyad</label>
@@ -24,6 +70,7 @@ const Contact = () => {
             type="text"
             required
             placeholder="Ad Soyad"
+            onChange={(e) => setName(e.target.value)}
           />
         </div>
         <div className="contact-item">
@@ -34,9 +81,10 @@ const Contact = () => {
             type="email"
             required
             placeholder="example@mail.com"
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <div className="contact-item">
+        {/* <div className="contact-item">
           <label htmlFor="phone">Telefon</label>
           <input
             id="phone"
@@ -45,7 +93,7 @@ const Contact = () => {
             required
             placeholder="+90 555 555 5555"
           />
-        </div>
+        </div> */}
         <div className="contact-item">
           <label htmlFor="subject">Konu</label>
           <input
@@ -54,6 +102,7 @@ const Contact = () => {
             type="text"
             required
             placeholder="Konu"
+            onChange={(e) => setSubject(e.target.value)}
           />
         </div>
         <div className="contact-item">
@@ -64,6 +113,7 @@ const Contact = () => {
             type="text"
             required
             placeholder="Mesajınızı giriniz..."
+            onChange={(e) => setContent(e.target.value)}
           />
         </div>
         <button className="submit-button" type="submit">

@@ -8,7 +8,6 @@ import { toast } from "react-toastify";
 const AnswerCard = (props) => {
   const answer = props.answer;
   const [userImage, setUserImage] = useState("");
-  const [user, setUser] = useState(null);
   const [rankingCount, setRankingCount] = useState(answer.sumCount);
   const token = getCookie("token");
   const likeUrl = props.answerUrl + answer._id;
@@ -22,7 +21,6 @@ const AnswerCard = (props) => {
     Axios.get(url)
       .then((res) => res.data.data)
       .then((data) => {
-        setUser(data);
         let pat = "http://localhost:5000/uploads/" + data.profile_image;
         setUserImage(pat);
       });
