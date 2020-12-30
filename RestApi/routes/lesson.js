@@ -1,6 +1,7 @@
 const express = require("express");
 const question = require("./question");
 const episode = require("./episode");
+const comment = require("./comment");
 const Lesson = require("../models/Lesson");
 
 const {
@@ -32,20 +33,21 @@ const lessonQueryMiddleware = require("../middlewares/query/lessonQueryMiddlewar
 
 const router = express.Router({ mergeParams: true });
 
-router.get(
-  "/",
-  lessonQueryMiddleware(Lesson, {
-    population: {
-      path: "user",
-      select: "name profile_image",
-    },
-    population: {
-      path: "category",
-      select: "title",
-    },
-  }),
-  getAllLesson
-);
+// router.get(
+//   "/",
+//   lessonQueryMiddleware(Lesson, {
+//     population: {
+//       path: "user",
+//       select: "name profile_image",
+//     },
+//     population: {
+//       path: "category",
+//       select: "title",
+//     },
+//   }),
+//   getAllLesson
+// );
+router.get("/",getAllLesson)
 router.get("/:id", checkLessonExist, getSingleLesson);
 router.get("/category/:category_id", checkCategoryExist, getLessonByCategoryId);
 router.get("/user/:user_id", checkUserExist, getLessonByUserId);
@@ -76,5 +78,6 @@ router.delete(
 
 router.use("/:lesson_id/questions", checkLessonExist, question);
 router.use("/:lesson_id/episodes", checkLessonExist, episode);
+router.use("/:lesson_id/comments", checkLessonExist, comment);
 
 module.exports = router;

@@ -65,6 +65,18 @@ const questionSortHelper = (query, req) => {
   // Else
   return query.sort("-createdAt");
 };
+const commentSortHelper = (query, req) => {
+  const sortKey = req.query.sortBy;
+
+  if (sortKey === "most-answered") {
+    return query.sort(`-answerCount -title`);
+  }
+  if (sortKey === "most-liked") {
+    return query.sort(`-likeCount -title`);
+  }
+  // Else
+  return query.sort("-createdAt");
+};
 const categorySortHelper = (query, req) => {
   const sortKey = req.query.sortBy;
 
@@ -102,4 +114,5 @@ module.exports = {
   lessonSortHelper,
   episodeSortHelper,
   categorySortHelper,
+  commentSortHelper,
 };

@@ -3,13 +3,28 @@ const Lesson = require("../models/Lesson");
 const errorWrapper = require("../helpers/error/errorWrapper");
 const CustomError = require("../helpers/error/customError");
 
+// const getAllLesson = errorWrapper(async (req, res, next) => {
+//   return res.status(200).json(res.advanceQueryResults);
+// });
+
 const getAllLesson = errorWrapper(async (req, res, next) => {
-  return res.status(200).json(res.advanceQueryResults);
+  const lessons = await Lesson.find().populate({
+    path:"comments",
+    select:"mark"
+  });
+
+  return res.status(200).json({
+    success: true,
+    data: lessons,
+  });
 });
 
 const getLessonByCategoryId = errorWrapper(async (req, res, next) => {
   const { category_id } = req.params;
-  const lessons = await Lesson.find({ category: category_id }).populate({path:"category",select:"title"});
+  const lessons = await Lesson.find({ category: category_id }).populate({
+    path: "category",
+    select: "title",
+  });
 
   res.status(200).json({
     success: true,
@@ -42,10 +57,14 @@ const addNewLesson = errorWrapper(async (req, res, next) => {
 
 const getSingleLesson = errorWrapper(async (req, res, next) => {
   const lesson_id = req.params.id || req.params.lesson_id;
-  const lesson = await Lesson.findById(lesson_id).populate({
+  const lesson = await Lesson.findById(lesson_id).populate([{
     path: "user",
     select: "name profile_image",
-  });
+  },{
+    path:"comments",
+    select:"mark"
+  }]);
+
   res.status(200).json({
     success: true,
     data: lesson,

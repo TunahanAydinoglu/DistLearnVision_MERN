@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const errorWrapper = require("../../helpers/error/errorWrapper");
 const User = require("../../models/User");
 const Question = require("../../models/Question");
+const Comment = require("../../models/Comment");
 const Episode = require("../../models/Episode");
 const Answer = require("../../models/Answer");
 
@@ -83,7 +84,17 @@ const getQuestionOwnerAccess = errorWrapper(async (req, res, next) => {
   }
   return next();
 });
+const getCommentOwnerAccess = errorWrapper(async (req, res, next) => {
+  const userId = req.user.id;
+  const commentId = req.params.id;
 
+  const comment = await Comment.findById(commentId);
+
+  if (comment.user != userId) {
+    return next(new CustomError("Only owner can handle this operation", 403));
+  }
+  return next();
+});
 const getAnswerOwnerAccess = errorWrapper(async (req, res, next) => {
   const userId = req.user.id;
   const answerId = req.params.answer_id;
@@ -113,4 +124,5 @@ module.exports = {
   getQuestionOwnerAccess,
   getAnswerOwnerAccess,
   getEpisodeOwnerAccess,
+  getCommentOwnerAccess,
 };

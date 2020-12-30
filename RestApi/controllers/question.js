@@ -13,7 +13,7 @@ const getAllQuestions = errorWrapper(async (req, res, next) => {
 
   const lesson = await (await Lesson.findById(lesson_id).populate("questions"));
 
-  const questions = lesson.questions;
+  const questions = lesson.questions.sort();
 
   res.status(200).json({
     success: true,

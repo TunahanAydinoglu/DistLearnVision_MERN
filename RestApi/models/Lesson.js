@@ -71,7 +71,10 @@ const LessonSchema = new Schema({
     type: Number,
     default: 0,
   },
-
+  commentCount: {
+    type: Number,
+    default: 0,
+  },
   category: {
     type: mongoose.Schema.ObjectId,
     ref: "Category",
@@ -83,6 +86,18 @@ const LessonSchema = new Schema({
       ref: "Question",
     },
   ],
+  comments: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: "Comment",
+    },
+  ],
+  markAverage:{
+    type:Number,
+    min:0,
+    max:5,
+    default:0
+  },
   episodes: [
     {
       type: mongoose.Schema.ObjectId,

@@ -6,6 +6,7 @@ const Answer = require(root + "/models/Answer");
 const Question = require(root + "/models/Question");
 const Lesson = require(root + "/models/Lesson");
 const User = require(root + "/models/User");
+const Comment = require(root + "/models/Comment");
 const Episode = require(root + "/models/Episode");
 
 const errorWrapper = require(root + "/helpers/error/errorWrapper");
@@ -19,6 +20,18 @@ const checkQuestionExist = errorWrapper(async (req, res, next) => {
   if (!question) {
     return next(
       new CustomError(`Question Not Found with Id : ${question_id}`, 404)
+    );
+  }
+  next();
+});
+const checkCommentExist = errorWrapper(async (req, res, next) => {
+  const comment_id = req.params.id || req.params.comment_id;
+
+  const comment = await Comment.findById(question_id);
+
+  if (!comment) {
+    return next(
+      new CustomError(`Comment Not Found with Id : ${comment_id}`, 404)
     );
   }
   next();
@@ -56,10 +69,9 @@ const checkEpisodeExist = errorWrapper(async (req, res, next) => {
 });
 
 const checkLessonExist = errorWrapper(async (req, res, next) => {
-  
   const lesson_id = req.params.id || req.params.lesson_id;
   const lesson = await Lesson.findById(lesson_id);
-  
+
   if (!lesson) {
     return next(
       new CustomError(`Lesson Not Found with Id : ${lesson_id}`, 404)
@@ -123,4 +135,5 @@ module.exports = {
   checkEpisodeExist,
   checkUserExist,
   checkCategoryExist,
+  checkCommentExist,
 };
