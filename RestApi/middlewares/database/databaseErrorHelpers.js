@@ -26,15 +26,14 @@ const checkQuestionExist = errorWrapper(async (req, res, next) => {
 });
 const checkCommentExist = errorWrapper(async (req, res, next) => {
   const comment_id = req.params.id || req.params.comment_id;
-
-  const comment = await Comment.findById(question_id);
+  const comment = await Comment.findById(comment_id);
 
   if (!comment) {
     return next(
       new CustomError(`Comment Not Found with Id : ${comment_id}`, 404)
     );
   }
-  next();
+next();
 });
 const checkCategoryExist = errorWrapper(async (req, res, next) => {
   const category_id = req.params.id || req.params.category_id;

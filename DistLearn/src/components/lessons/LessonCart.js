@@ -5,6 +5,7 @@ import { getCookie } from "../../helpers/auth";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import StarRatingComponent from "react-star-rating-component";
 
 const LessonCart = (props) => {
   let lesson = props.lesson;
@@ -93,29 +94,11 @@ const LessonCart = (props) => {
         <h4>{lesson.title}</h4>
         <Link to={locate}>{lesson.content}</Link>
         <div className="icons">
-          <span className="like">
-            <span onClick={likeHandler}>
-              <LikeFa />
-            </span>
-            ({like})
-          </span>
-          <span className="dislike">
-            <span onClick={dislikeHandler}>
-              <DislikeFa />
-            </span>
-            ({dislike})
-          </span>
-          {/* <div className="dropdown">
-            <span>
-              <ArrowBottom />
-            </span>
-            <div className="dropdown-content">
-              <ul>
-                <li onClick={undoLikeHandler}>Like geri al</li>
-                <li onClick={undoDislikeHandler}>Dislike geri al</li>
-              </ul>
-            </div>
-          </div> */}
+        <StarRatingComponent
+                  name="rate"
+                  starCount={5}
+                  value={Math.round(lesson.markAverage)}
+                />
         </div>
         <div className="cart-footer">
           <span>{lesson.instructor}</span>

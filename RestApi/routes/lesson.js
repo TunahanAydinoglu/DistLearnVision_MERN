@@ -33,21 +33,21 @@ const lessonQueryMiddleware = require("../middlewares/query/lessonQueryMiddlewar
 
 const router = express.Router({ mergeParams: true });
 
-// router.get(
-//   "/",
-//   lessonQueryMiddleware(Lesson, {
-//     population: {
-//       path: "user",
-//       select: "name profile_image",
-//     },
-//     population: {
-//       path: "category",
-//       select: "title",
-//     },
-//   }),
-//   getAllLesson
-// );
-router.get("/",getAllLesson)
+router.get(
+  "/",
+  lessonQueryMiddleware(Lesson, {
+    population: {
+      path: "user",
+      select: "name profile_image",
+    },
+    population: {
+      path: "category",
+      select: "title",
+    },
+  }),
+  getAllLesson
+);
+// router.get("/",getAllLesson)
 router.get("/:id", checkLessonExist, getSingleLesson);
 router.get("/category/:category_id", checkCategoryExist, getLessonByCategoryId);
 router.get("/user/:user_id", checkUserExist, getLessonByUserId);

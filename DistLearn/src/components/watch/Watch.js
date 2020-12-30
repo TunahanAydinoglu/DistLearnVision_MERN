@@ -4,19 +4,23 @@ import * as Icons from "../icons/index";
 import Swal from "sweetalert2";
 import Axios from "axios";
 import { ToastContainer } from "react-toastify";
+import StarRatingComponent from "react-star-rating-component";
 
 import "./watch.scss";
 import QuestionCard from "./QuestionCard";
 import { getCookie } from "../../helpers/auth";
+import CommentCard from "./CommentCard";
 
 function Watch() {
   const [episodes, setEpisodes] = useState([]);
   const [lessonData, setLessonData] = useState([]);
   const [questions, setQuestions] = useState([]);
+  const [comments, setComments] = useState([]);
   const [video, setVideo] = useState("");
   const [display, setDisplay] = useState("none");
   const [questionDisplay, setQuestionDisplay] = useState("flex");
   const [commentDisplay, setCommentDisplay] = useState("none");
+  const [rateStar, setRateStar] = useState(null);
   const id = window.location.search.split("=")[1];
 
   const token = getCookie("token");
@@ -28,16 +32,24 @@ function Watch() {
   const pageLoad = () => {
     getLessonById(id);
     getEpisodesByLesson(id);
-    getQuestionsByLesson(id);
+    getQuestionsAndCommentsByLesson(id);
   };
-  const getQuestionsByLesson = (lessonId) => {
-    let arr = [];
-    let urlQuestions =
-      "http://localhost:5000/api/lessons/" + lessonId + "/questions/";
+  const getQuestionsAndCommentsByLesson = (lessonId) => {
+    let arrQuestions = [];
+    let arrComments = [];
+    let defaultUrl = "http://localhost:5000/api/lessons/" + lessonId;
+    let urlQuestions = defaultUrl + "/questions/";
+    let urlComments = defaultUrl + "/comments/";
+
     Axios.get(urlQuestions)
       .then((res) => res.data.data)
-      .then((data) => data.map((q) => arr.push(q)))
-      .then(() => setQuestions(arr));
+      .then((data) => data.map((q) => arrQuestions.push(q)))
+      .then(() => setQuestions(arrQuestions));
+
+    Axios.get(urlComments)
+      .then((res) => res.data.data)
+      .then((data) => data.map((q) => arrComments.push(q)))
+      .then(() => setComments(arrComments));
   };
   const getLessonById = (lessonId) => {
     let urlLesson = "http://localhost:5000/api/lessons/" + lessonId;
@@ -68,27 +80,50 @@ function Watch() {
         Authorization: token,
       },
     })
-      .then(() => successPop())
+      .then(() => successPop("Sorunuz başarıyla eklendi."))
       .then(() => pageLoad())
       .then(() => {
         setDisplay("none");
       })
-      .catch(() => errorPop());
+      .catch(() =>
+        errorPop("Bir şeyler yanlış gitmiş olmalı sorunuz eklenemedi.")
+      );
   };
-  const successPop = () => {
+  const commentAddHandler = (e) => {
+    e.preventDefault();
+    let url = "http://localhost:5000/api/lessons/" + id + "/comments/add";
+    const item = {
+      content: e.target[0].value,
+      mark: rateStar,
+    };
+    Axios.post(url, item, {
+      headers: {
+        Authorization: token,
+      },
+    })
+      .then(() => successPop("Yorumunuz başarıyla eklendi."))
+      .then(() => pageLoad())
+      .then(() => {
+        setDisplay("none");
+      })
+      .catch(() =>
+        errorPop("Bir şeyler yanlış gitmiş olmalı yorumunuz eklenemedi.")
+      );
+  };
+  const successPop = (message) => {
     Swal.fire({
       position: "center",
       icon: "success",
-      title: "Sorunuz başarıyla eklendi.",
+      title: message,
       showConfirmButton: true,
       timer: 1000,
     });
   };
-  const errorPop = () => {
+  const errorPop = (message) => {
     Swal.fire({
       icon: "error",
       title: "Oops...",
-      text: "Bir şeyler yanlış gitmiş olmalı sorunuz eklenemedi.",
+      text: message,
     });
   };
   const displayHandler = () => {
@@ -105,6 +140,9 @@ function Watch() {
     selectedPanel === "comment"
       ? setCommentDisplay("flex")
       : setCommentDisplay("none");
+  };
+  const onStarClick = (nextValue, prevValue, name) => {
+    setRateStar(nextValue);
   };
   return (
     <div className="watch">
@@ -142,12 +180,12 @@ function Watch() {
             className="question-content-wrapper"
             style={{ display: questionDisplay }}
           >
-            <div className="question-search">
+            {/* <div className="question-search">
               <input placeholder="Sorularda ara..." />
               <span>
-                <Icons.SearchFa />{" "}
+                <Icons.SearchFa />
               </span>
-            </div>
+            </div> */}
             <div className="questions">
               <div className="questions-header">
                 <span>Bu derste {questions.length} soru mevcuttur</span>
@@ -204,51 +242,51 @@ function Watch() {
             className="comment-content-wrapper"
             style={{ display: commentDisplay }}
           >
-            <div className="questions">
-              <div className="questions-header">
-                <span>Bu derste {questions.length} soru mevcuttur</span>
+            <div className="comments">
+              <div className="comments-header">
+                <span>Bu derste {comments.length} yorum mevcuttur</span>
                 <div className="question-add" onClick={displayHandler}>
-                  Yeni bir soru ekle
+                  Yeni bir yorum ekle
                 </div>
               </div>
               <div className="cards-wrapper">
                 <form
-                  className="question-form"
+                  className="comment-form"
                   style={{ display }}
-                  onSubmit={questionAddHandler}
+                  onSubmit={commentAddHandler}
                 >
-                  <div className="question-form-item">
-                    <label htmlFor="title">Soru Başlığı :</label>
-                    <input
-                      id="title"
-                      name="title"
-                      placeholder="Bir başlık giriniz.."
-                      required={true}
-                    />
-                  </div>
-                  <div className="question-form-item">
-                    <label htmlFor="content">Soru İçeriği :</label>
+                  <div className="comment-form-item">
+                    <label htmlFor="content">Yorum İçeriği :</label>
                     <textarea
                       id="content"
                       name="content"
-                      placeholder="Soru içeriği giriniz.."
+                      placeholder="Yorumunuzu giriniz.."
                       required={true}
                     ></textarea>
+                  </div>
+                  <div className="comment-form-item form-star">
+                    <label className="star-label" htmlFor="rate">Derse Puanınız : </label>
+                    <StarRatingComponent
+                      name="rate"
+                      required={true}
+                      starCount={5}
+                      value={rateStar}
+                      onStarClick={onStarClick}
+                    />
                   </div>
                   <button type="submit" className="form-button">
                     Gönder
                   </button>
                 </form>
-                {questions.map((q, i) => (
-                  <QuestionCard
+                {comments.map((q, i) => (
+                  <CommentCard
                     key={i}
                     questionId={q._id}
-                    title={q.title}
                     content={q.content}
                     user={q.user}
+                    mark={q.mark}
                     likeCount={q.likeCount}
                     dislikeCount={q.dislikeCount}
-                    answerCount={q.answerCount}
                     lessonId={id}
                     createdAt={q.createdAt.split("T")[0]}
                   />

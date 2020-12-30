@@ -4,13 +4,14 @@ const errorWrapper = require("../helpers/error/errorWrapper");
 const CustomError = require("../helpers/error/customError");
 const Lesson = require("../models/Lesson");
 
-
 const getAllComments = errorWrapper(async (req, res, next) => {
   const { lesson_id } = req.params;
 
-  const lesson = await (await Lesson.findById(lesson_id).populate("comments"));
+  const lesson = await Lesson.findById(lesson_id).populate("comments");
 
-  const comments = lesson.comments.sort();
+  let comments = lesson.comments.sort(function (a, b) {
+    return b.createdAt - a.createdAt;
+  });
 
   res.status(200).json({
     success: true,
@@ -41,7 +42,7 @@ const getSingleComment = errorWrapper(async (req, res, next) => {
 
 const editComment = errorWrapper(async (req, res, next) => {
   const { id } = req.params;
-  const { content,mark } = req.body;
+  const { content, mark } = req.body;
   let comment = await Comment.findById(id);
 
   comment.mark = mark;

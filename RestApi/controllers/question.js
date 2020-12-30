@@ -4,6 +4,7 @@ const errorWrapper = require("../helpers/error/errorWrapper");
 const CustomError = require("../helpers/error/customError");
 const Lesson = require("../models/Lesson");
 
+
 // const getAllQuestions = errorWrapper(async (req, res, next) => {
 //   return res.status(200).json(res.advanceQueryResults);
 // });
@@ -11,9 +12,11 @@ const Lesson = require("../models/Lesson");
 const getAllQuestions = errorWrapper(async (req, res, next) => {
   const { lesson_id } = req.params;
 
-  const lesson = await (await Lesson.findById(lesson_id).populate("questions"));
+  const lesson = await Lesson.findById(lesson_id).populate("questions");
 
-  const questions = lesson.questions.sort();
+  const questions = lesson.questions.sort(function (a, b) {
+    return b.createdAt - a.createdAt;
+  });
 
   res.status(200).json({
     success: true,

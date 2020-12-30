@@ -3,21 +3,21 @@ const Lesson = require("../models/Lesson");
 const errorWrapper = require("../helpers/error/errorWrapper");
 const CustomError = require("../helpers/error/customError");
 
-// const getAllLesson = errorWrapper(async (req, res, next) => {
-//   return res.status(200).json(res.advanceQueryResults);
-// });
-
 const getAllLesson = errorWrapper(async (req, res, next) => {
-  const lessons = await Lesson.find().populate({
-    path:"comments",
-    select:"mark"
-  });
-
-  return res.status(200).json({
-    success: true,
-    data: lessons,
-  });
+  return res.status(200).json(res.advanceQueryResults);
 });
+
+// const getAllLesson = errorWrapper(async (req, res, next) => {
+//   const lessons = await Lesson.find().populate({
+//     path:"comments",
+//     select:"mark"
+//   });
+
+//   return res.status(200).json({
+//     success: true,
+//     data: lessons,
+//   });
+// });
 
 const getLessonByCategoryId = errorWrapper(async (req, res, next) => {
   const { category_id } = req.params;
