@@ -1,11 +1,12 @@
 {
-  "name": "question-answer-api",
+  "name": "dist-learn-vision-api",
   "version": "1.0.0",
-  "description": "Question & Answer - Rest Api",
+  "description": "Dist Learn Vision - Rest Api",
   "main": "server.js",
   "scripts": {
+  	"dev-install": "npm install --prefix client && npm install",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js",
+    "start": "node server.js",
     "dev": "nodemon server"
   },
   "keywords": [
@@ -14,7 +15,7 @@
     "rest",
     "api"
   ],
-  "author": "Mustafa Murat Coşkun",
+  "author": "Tunahan Aydınoğlu",
   "license": "MIT",
   "dependencies": {
     "bcryptjs": "^2.4.3",
