@@ -18,21 +18,22 @@ const ProfilePage = () => {
     await setActive(selected);
   };
   useEffect(() => {
-    let getProfileUrl = "http://localhost:5000/api/auth/user";
-    let getUserUrl = "http://localhost:5000/api/users/profile/";
+    getProfile();
+  }, []);
 
+  const getProfile = () => {
     let prof = "";
     let token = getCookie("token");
-    Axios
-      .get(getProfileUrl, {
-        headers: {
-          Authorization: token,
-        },
-      })
+    let getProfileUrl = "http://localhost:5000/api/auth/user";
+    let getUserUrl = "http://localhost:5000/api/users/profile/";
+    Axios.get(getProfileUrl, {
+      headers: {
+        Authorization: token,
+      },
+    })
       .then((res) => res.data.data)
       .then((data) =>
-        Axios
-          .get(getUserUrl + data.id)
+        Axios.get(getUserUrl + data.id)
           .then((res) => res.data.data)
           .then((data) => {
             setUser(data);
@@ -41,7 +42,7 @@ const ProfilePage = () => {
           })
           .then(() => setImage("http://localhost:5000/uploads/" + prof))
       );
-  }, []);
+  };
   return (
     <Router>
       <div className="profile">

@@ -12,8 +12,9 @@ const QuestionCard = (props) => {
   const lessonId = props.lessonId;
   const questionId = props.questionId;
   const [user, setUser] = useState({});
-  const [like, setLike] = useState(props.likeCount);
-  const [dislike, setDislike] = useState(props.dislikeCount);
+  const [like, setLike] = useState(0);
+  const [dislike, setDislike] = useState(0);
+  const [answerCount, setAnswerCount] = useState(0);
   const [isOpenAnswerModal, setIsOpenAnswerModal] = useState(false);
   const [userImage, setUserImage] = useState("");
   let token = getCookie("token");
@@ -22,7 +23,6 @@ const QuestionCard = (props) => {
     title: props.title,
     content: props.content,
     createdAt: props.createdAt,
-    answerCount: props.answerCount,
     userImage: userImage,
     userName: user.name,
     token: token,
@@ -30,14 +30,34 @@ const QuestionCard = (props) => {
   };
   useEffect(() => {
     getUser(userId);
+    getQuestionByIdForLikeHandler(lessonId,questionId);
     return () => {};
-  }, [userId]);
+  }, [userId,lessonId,questionId]);
 
+  const getQuestionByIdForLikeHandler = (lessonId,questionId) => {
+    const questionUrl =
+      "http://localhost:5000/api/lessons/" +
+      lessonId +
+      "/questions/" +
+      questionId;
+    Axios.get(questionUrl)
+      .then((res) => res.data.data)
+      .then((data) => {
+        setLike(data[0].likeCount);
+        setDislike(data[0].dislikeCount);
+        setAnswerCount(data[0].answerCount);
+      });
+  };
   const togglePopupAnswer = (e) => {
     e.preventDefault();
-    setIsOpenAnswerModal(!isOpenAnswerModal);
+    if (isOpenAnswerModal) {
+      getQuestionByIdForLikeHandler();
+      console.log("geldi geldi geldi geldi geldi geldi geldi geldi ")
+      setIsOpenAnswerModal(!isOpenAnswerModal);
+    } else {
+      setIsOpenAnswerModal(!isOpenAnswerModal);
+    }
   };
-
   const getUser = (userId) => {
     const url = "http://localhost:5000/api/users/profile/" + userId;
     Axios.get(url)
@@ -62,6 +82,7 @@ const QuestionCard = (props) => {
       "/like";
     Axios.get(url, config)
       .then(() => {
+        getQuestionByIdForLikeHandler();
         toast.success("Beğeniniz eklendi :) ", {
           position: "bottom-right",
           autoClose: 4000,
@@ -83,6 +104,7 @@ const QuestionCard = (props) => {
       questionId +
       "/undo_like";
     Axios.get(url, config).then(() => {
+      getQuestionByIdForLikeHandler();
       toast.error("Beğeniniz geri alındı :(", {
         position: "bottom-right",
         autoClose: 4000,
@@ -103,6 +125,7 @@ const QuestionCard = (props) => {
       },
     })
       .then(() => {
+        getQuestionByIdForLikeHandler();
         toast.error("Dislike eklendi :(", {
           position: "bottom-right",
           autoClose: 4000,
@@ -123,6 +146,7 @@ const QuestionCard = (props) => {
         Authorization: token,
       },
     }).then(() => {
+      getQuestionByIdForLikeHandler();
       toast.warn("Dislike geri alındı :) ", {
         position: "bottom-right",
         autoClose: 4000,
@@ -156,7 +180,7 @@ const QuestionCard = (props) => {
             <div onClick={togglePopupAnswer}>
               <Icons.Reply />
             </div>
-            <span>({question.answerCount})</span>
+            <span>({answerCount})</span>
           </div>
           <div>
             <div>
@@ -186,7 +210,7 @@ const QuestionCard = (props) => {
         </div>
       </div>
       {isOpenAnswerModal && (
-      <Popup
+        <Popup
           content={<AnswerPopup question={question} />}
           handleClose={togglePopupAnswer}
         />

@@ -1,6 +1,5 @@
 import Iframe from "react-iframe";
 import { useEffect, useState } from "react";
-import * as Icons from "../icons/index";
 import Swal from "sweetalert2";
 import Axios from "axios";
 import { ToastContainer } from "react-toastify";
@@ -82,11 +81,11 @@ function Watch() {
       },
     })
       .then(() => successPop("Sorunuz başarıyla eklendi."))
-      .then(() => pageLoad())
       .then(() => {
         setAddQuestionDisplay("none");
         e.target[0].value = "";
         e.target[1].value = "";
+        pageLoad();
       })
       .catch(() =>
         errorPop("Bir şeyler yanlış gitmiş olmalı sorunuz eklenemedi.")
@@ -232,9 +231,9 @@ function Watch() {
                     Gönder
                   </button>
                 </form>
-                {questions.map((q, i) => (
+                {questions.map((q) => (
                   <QuestionCard
-                    key={i}
+                    key={q._id}
                     questionId={q._id}
                     title={q.title}
                     content={q.content}
@@ -246,6 +245,7 @@ function Watch() {
                     createdAt={q.createdAt.split("T")[0]}
                   />
                 ))}
+           
               </div>
             </div>
           </div>
@@ -294,17 +294,17 @@ function Watch() {
                     Gönder
                   </button>
                 </form>
-                {comments.map((q, i) => (
+                {comments.map((comment) => (
                   <CommentCard
-                    key={i}
-                    questionId={q._id}
-                    content={q.content}
-                    user={q.user}
-                    mark={q.mark}
-                    likeCount={q.likeCount}
-                    dislikeCount={q.dislikeCount}
+                    key={comment._id}
+                    commentId={comment._id}
+                    content={comment.content}
+                    user={comment.user}
+                    mark={comment.mark}
+                    likeCount={comment.likeCount}
+                    dislikeCount={comment.dislikeCount}
                     lessonId={id}
-                    createdAt={q.createdAt.split("T")[0]}
+                    createdAt={comment.createdAt.split("T")[0]}
                   />
                 ))}
               </div>

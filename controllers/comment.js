@@ -37,7 +37,12 @@ const addNewComment = errorWrapper(async (req, res, next) => {
 });
 
 const getSingleComment = errorWrapper(async (req, res, next) => {
-  return res.status(200).json(res.advanceCommentResults);
+  const { id } = req.params;
+  const comment = await Comment.findById(id);
+  return res.status(200).json({
+    success: true,
+    data: comment,
+  });
 });
 
 const editComment = errorWrapper(async (req, res, next) => {

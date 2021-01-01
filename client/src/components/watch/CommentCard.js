@@ -10,14 +10,14 @@ import StarRatingComponent from "react-star-rating-component";
 const CommentCard = (props) => {
   const userId = props.user;
   const lessonId = props.lessonId;
-  const questionId = props.questionId;
+  const commentId = props.commentId;
   const [user, setUser] = useState({});
   const [like, setLike] = useState(props.likeCount);
   const [dislike, setDislike] = useState(props.dislikeCount);
   const [userImage, setUserImage] = useState("");
   let token = getCookie("token");
-  let question = {
-    id: props.questionId,
+  let comment = {
+    id: props.commentId,
     title: props.title,
     content: props.content,
     createdAt: props.createdAt,
@@ -53,7 +53,7 @@ const CommentCard = (props) => {
       "http://localhost:5000/api/lessons/" +
       lessonId +
       "/comments/" +
-      questionId +
+      commentId +
       "/like";
     Axios.get(url, config)
       .then(() => {
@@ -75,7 +75,7 @@ const CommentCard = (props) => {
       "http://localhost:5000/api/lessons/" +
       lessonId +
       "/comments/" +
-      questionId +
+      commentId +
       "/undo_like";
     Axios.get(url, config).then(() => {
       toast.error("Beğeniniz geri alındı :(", {
@@ -90,7 +90,7 @@ const CommentCard = (props) => {
       "http://localhost:5000/api/lessons/" +
       lessonId +
       "/comments/" +
-      questionId +
+      commentId +
       "/dislike";
     Axios.get(url, {
       headers: {
@@ -111,7 +111,7 @@ const CommentCard = (props) => {
       "http://localhost:5000/api/lessons/" +
       lessonId +
       "/comments/" +
-      questionId +
+      commentId +
       "/undo_dislike";
     Axios.get(url, {
       headers: {
@@ -132,18 +132,18 @@ const CommentCard = (props) => {
           <img alt="" src={userImage} />
         </div>
         <div className="content-wrapper">
-          <h2>{question.userName}</h2>
-          <p className="content">{question.content}</p>
+          <h2>{comment.userName}</h2>
+          <p className="content">{comment.content}</p>
           <div className="content-bottom">
             <div>
                 <StarRatingComponent
                   name="rate"
                   starCount={5}
-                  value={question.mark}
+                  value={comment.mark}
                 />
             </div>
             <div>
-              <span>{question.createdAt}</span>
+              <span>{comment.createdAt}</span>
             </div>
           </div>
         </div>
