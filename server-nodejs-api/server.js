@@ -47,14 +47,6 @@ app.use(express.static("public"));
 app.use(errorHandler);
 
 
-app.use(express.static('client/build'));
-// serve up the index.html if express does'nt recognize the route
-const path = require('path');
-app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-});
-
-
 // Starting Our Server
 app.listen(PORT,() => {
     console.log(`App Started on ${PORT} - Environment : ${process.env.NODE_ENV} `);
