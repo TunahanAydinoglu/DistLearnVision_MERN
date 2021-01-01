@@ -56,11 +56,14 @@ const Lessons = (props) => {
   const getCategories = () => {
     let categoryUrl = "http://localhost:5000/api/categories";
     let cat = [];
+
     Axios.get(categoryUrl)
       .then((res) => res.data.data)
       .then((data) => data.map((c) => cat.push(c)))
-      .then(() => setCategories(cat));
+      .then(() => setCategories(cat))
+      .catch((err) => console(err));
   };
+
   return (
     <div className="lessons">
       <div className="wrapper">

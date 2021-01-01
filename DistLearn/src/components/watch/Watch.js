@@ -17,7 +17,8 @@ function Watch() {
   const [questions, setQuestions] = useState([]);
   const [comments, setComments] = useState([]);
   const [video, setVideo] = useState("");
-  const [display, setDisplay] = useState("none");
+  const [addQuestionDisplay, setAddQuestionDisplay] = useState("none");
+  const [addCommentDisplay, setAddCommentDisplay] = useState("none");
   const [questionDisplay, setQuestionDisplay] = useState("flex");
   const [commentDisplay, setCommentDisplay] = useState("none");
   const [rateStar, setRateStar] = useState(null);
@@ -83,7 +84,9 @@ function Watch() {
       .then(() => successPop("Sorunuz başarıyla eklendi."))
       .then(() => pageLoad())
       .then(() => {
-        setDisplay("none");
+        setAddQuestionDisplay("none");
+        e.target[0].value = "";
+        e.target[1].value = "";
       })
       .catch(() =>
         errorPop("Bir şeyler yanlış gitmiş olmalı sorunuz eklenemedi.")
@@ -104,7 +107,8 @@ function Watch() {
       .then(() => successPop("Yorumunuz başarıyla eklendi."))
       .then(() => pageLoad())
       .then(() => {
-        setDisplay("none");
+        setAddCommentDisplay("none");
+        e.target[0].value = "";
       })
       .catch(() =>
         errorPop("Bir şeyler yanlış gitmiş olmalı yorumunuz eklenemedi.")
@@ -126,11 +130,15 @@ function Watch() {
       text: message,
     });
   };
-  const displayHandler = () => {
-    if (display === "none") {
-      setDisplay("flex");
+  const addQuestionOrCommentDisplayHandler = (item) => {
+    if (item === "question") {
+      addQuestionDisplay === "none"
+        ? setAddQuestionDisplay("flex")
+        : setAddQuestionDisplay("none");
     } else {
-      setDisplay("none");
+      addCommentDisplay === "none"
+        ? setAddCommentDisplay("flex")
+        : setAddCommentDisplay("none");
     }
   };
   const questionCommendDisplayHandler = (selectedPanel) => {
@@ -189,14 +197,17 @@ function Watch() {
             <div className="questions">
               <div className="questions-header">
                 <span>Bu derste {questions.length} soru mevcuttur</span>
-                <div className="question-add" onClick={displayHandler}>
+                <div
+                  className="question-add"
+                  onClick={() => addQuestionOrCommentDisplayHandler("question")}
+                >
                   Yeni bir soru ekle
                 </div>
               </div>
               <div className="cards-wrapper">
                 <form
                   className="question-form"
-                  style={{ display }}
+                  style={{ display: addQuestionDisplay }}
                   onSubmit={questionAddHandler}
                 >
                   <div className="question-form-item">
@@ -245,14 +256,17 @@ function Watch() {
             <div className="comments">
               <div className="comments-header">
                 <span>Bu derste {comments.length} yorum mevcuttur</span>
-                <div className="question-add" onClick={displayHandler}>
+                <div
+                  className="question-add"
+                  onClick={() => addQuestionOrCommentDisplayHandler("comment")}
+                >
                   Yeni bir yorum ekle
                 </div>
               </div>
               <div className="cards-wrapper">
                 <form
                   className="comment-form"
-                  style={{ display }}
+                  style={{ display: addCommentDisplay }}
                   onSubmit={commentAddHandler}
                 >
                   <div className="comment-form-item">
@@ -265,7 +279,9 @@ function Watch() {
                     ></textarea>
                   </div>
                   <div className="comment-form-item form-star">
-                    <label className="star-label" htmlFor="rate">Derse Puanınız : </label>
+                    <label className="star-label" htmlFor="rate">
+                      Derse Puanınız :{" "}
+                    </label>
                     <StarRatingComponent
                       name="rate"
                       required={true}
