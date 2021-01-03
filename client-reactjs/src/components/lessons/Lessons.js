@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import "./lessons.scss";
 import * as Icons from "../icons/index";
 import LessonCart from "./LessonCart";
-import Axios from "axios";
+import { getAllAsArrayAxios } from "../../helpers/axiosHelpers";
 
 const Lessons = (props) => {
   const [lessons, setLessons] = useState([]);
@@ -11,57 +11,37 @@ const Lessons = (props) => {
 
   let url = "http://localhost:5000/api/lessons";
   const categoryId = window.location.href.split("dersler/")[1];
-
-  // props.location.state.categoryUrl === null
-  //   ? "http://localhost:5000/api/lessons"
-  //   : props.location.state.categoryUrl;
-
   useEffect(() => {
     categoryId === undefined ? getLessons(url) : changeCategory(categoryId);
     getCategories();
   }, [url, categoryId]);
 
-  const changeCategory = (selected) => {
+  const changeCategory = async (selected) => {
     setActive(selected);
-    let catUrl = "http://localhost:5000/api/lessons/category/";
-    if (selected === "1") {
-      catUrl = url;
-    } else {
-      catUrl = catUrl + selected;
-    }
-    let arr = [];
-    Axios.get(catUrl)
-      .then((res) => res.data.data)
-      .then((data) => data.map((a) => arr.push(a)))
-      .then(() => setLessons(arr));
+    let categoryUrl = "http://localhost:5000/api/lessons/category/";
+    selected === "1"
+      ? (categoryUrl = url)
+      : (categoryUrl = categoryUrl + selected);
+    const data = await getAllAsArrayAxios(categoryUrl);
+    setLessons(data);
   };
 
-  const searchHandle = (e) => {
+  const searchHandle = async (e) => {
     e.preventDefault();
-    let arr = [];
-    let search = url + "?search=" + e.target.value;
-    Axios.get(search)
-      .then((res) => res.data.data)
-      .then((data) => data.map((a) => arr.push(a)))
-      .then(() => setLessons(arr));
+    let searchUrl = url + "?search=" + e.target.value;
+    const data = await getAllAsArrayAxios(searchUrl);
+    setLessons(data);
   };
 
-  const getLessons = (url) => {
-    let arr = [];
-    Axios.get(url)
-      .then((res) => res.data.data)
-      .then((data) => data.map((a) => arr.push(a)))
-      .then(() => setLessons(arr));
+  const getLessons = async (url) => {
+    const data = await getAllAsArrayAxios(url);
+    setLessons(data);
   };
-  const getCategories = () => {
+  
+  const getCategories = async () => {
     let categoryUrl = "http://localhost:5000/api/categories";
-    let cat = [];
-
-    Axios.get(categoryUrl)
-      .then((res) => res.data.data)
-      .then((data) => data.map((c) => cat.push(c)))
-      .then(() => setCategories(cat))
-      .catch((err) => console(err));
+    const data = await getAllAsArrayAxios(categoryUrl);
+    setCategories(data);
   };
 
   return (
