@@ -1,25 +1,22 @@
-import Axios from "axios";
 import React, { useEffect, useState } from "react";
-import { getCookie } from "../../../helpers/auth";
-import Swal from "sweetalert2";
 import "./addLesson.scss";
+import {
+  getAllAsArrayAxios,
+  postAxiosWithAlertPop,
+} from "../../../helpers/axiosHelpers";
 
 const AddLesson = () => {
   const [categories, setCategories] = useState([]);
-  const token = getCookie("token");
   const url = "http://localhost:5000/api/lessons/add";
 
   useEffect(() => {
     getCategories();
   }, []);
 
-  const getCategories = () => {
-    let cat = [];
-    let catUrl = "http://localhost:5000/api/categories";
-    Axios.get(catUrl)
-      .then((res) => res.data.data)
-      .then((data) => data.map((d) => cat.push(d)))
-      .then(() => setCategories(cat));
+  const getCategories = async () => {
+    let categoriesUrl = "http://localhost:5000/api/categories";
+    const data = await getAllAsArrayAxios(categoriesUrl);
+    setCategories(data);
   };
 
   const submithandler = async (e) => {
@@ -32,30 +29,14 @@ const AddLesson = () => {
       instructor: e.target[4].value,
       category: e.target[5].value,
     };
-    await Axios.post(url, item, {
-      headers: {
-        Authorization: token,
-      },
-    })
-      .then(() => successPop())
-      .catch(() => errorPop());
+    postAxiosWithAlertPop(
+      url,
+      item,
+      "Ders ekleme başarılı",
+      "Bir şeyler yanlış gitmiş olmalı kayıt eklenemedi."
+    );
   };
-  const successPop = () => {
-    Swal.fire({
-      position: "center",
-      icon: "success",
-      title: "Ders ekleme başarılı",
-      showConfirmButton: true,
-      timer: 1500,
-    });
-  };
-  const errorPop = () => {
-    Swal.fire({
-      icon: "error",
-      title: "Oops...",
-      text: "Bir şeyler yanlış gitmiş olmalı kayıt eklenemedi.",
-    });
-  };
+
   return (
     <div className="add-lesson">
       <form className="update-form" onSubmit={submithandler}>

@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
-import Axios from "axios";
 import { BiDownArrow, BiUpArrow } from "react-icons/bi";
 import "./answerCard.scss";
-import { getCookie } from "../../helpers/auth";
-import { toast } from "react-toastify";
+import {
+  getSingleAxios,
+  getLikeOrUndoLikeWithToast,
+  getDislikeOrUndoDislikeWithToast,
+} from "../../helpers/axiosHelpers";
 
 const AnswerCard = (props) => {
   const answer = props.answer;
   const [userImage, setUserImage] = useState("");
   const [rankingCount, setRankingCount] = useState(answer.sumCount);
-  const token = getCookie("token");
-  const likeUrl = props.answerUrl + answer._id;
+  const itemUrl = props.answerUrl + answer._id;
 
   useEffect(() => {
     getUser(answer.user);
@@ -18,75 +19,19 @@ const AnswerCard = (props) => {
   }, [answer.user]);
   const getUser = (userId) => {
     const url = "http://localhost:5000/api/users/profile/" + userId;
-    Axios.get(url)
-      .then((res) => res.data.data)
-      .then((data) => {
-        let pat = "http://localhost:5000/uploads/" + data.profile_image;
-        setUserImage(pat);
-      });
-  };
-  const likeButtonHandler = () => {
-    let config = {
-      headers: {
-        Authorization: token,
-      },
-    };
-    let url = likeUrl + "/like";
-    Axios.get(url, config)
-      .then(() => {
-        setRankingCount(rankingCount + 1);
-        toast.success("Cevap puanı arttırıldı :) ", {
-          position: "bottom-right",
-          autoClose: 3000,
-        });
-      })
-      .catch(() => undoLikeHandler());
-  };
-  const undoLikeHandler = () => {
-    let config = {
-      headers: {
-        Authorization: token,
-      },
-    };
-    let url = likeUrl + "/undo_like";
-    Axios.get(url, config).then(() => {
-      setRankingCount(rankingCount - 1);
-      toast.warn("Cevap puaniniz geri alındı :) ", {
-        position: "bottom-right",
-        autoClose: 3000,
-      });
+    getSingleAxios(url).then((data) => {
+      setUserImage("http://localhost:5000/uploads/" + data.profile_image);
     });
   };
-  const dislikeHandler = () => {
-    let url = likeUrl + "/dislike";
-    Axios.get(url, {
-      headers: {
-        Authorization: token,
-      },
-    })
-      .then(() => {
-        setRankingCount(rankingCount - 1);
-        toast.warn("Cevap puanı azaltildi.", {
-          position: "bottom-right",
-          autoClose: 3000,
-        });
-      })
-      .catch(() => undoDislikeHandler());
+  const likeButtonHandler = async () => {
+    let rate = await getLikeOrUndoLikeWithToast(itemUrl,"Cevap puanı arttırıldı :) ","Cevap puaniniz geri alındı.");
+    setRankingCount(rankingCount + rate);
   };
-  const undoDislikeHandler = () => {
-    let url = likeUrl + "/undo_dislike";
-    Axios.get(url, {
-      headers: {
-        Authorization: token,
-      },
-    }).then(() => {
-      setRankingCount(rankingCount + 1);
-      toast.warn("Cevap puaniniz geri alındı :) ", {
-        position: "bottom-right",
-        autoClose: 3000,
-      });
-    });
+  const dislikeHandler = async () => {
+    let rate = await getDislikeOrUndoDislikeWithToast(itemUrl,"Cevap puanı azaltildi.","Cevap puaniniz geri alındı :) ");
+    setRankingCount(rankingCount - rate);
   };
+
   return (
     <div className="answer-card">
       <aside className="answer-card-left-side">

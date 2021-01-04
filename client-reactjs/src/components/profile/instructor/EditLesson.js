@@ -1,14 +1,12 @@
 import Axios from "axios";
 import React, { useEffect, useState } from "react";
-import { getCookie } from "../../../helpers/auth";
-import Swal from "sweetalert2";
 import "./editLesson.scss";
+import { getAllAsArrayAxios,putAxiosWithConfirmPop } from "../../../helpers/axiosHelpers";
 
 const EditLesson = (props) => {
   const lessonId = props.lesson;
   const [lesson, setLesson] = useState([]);
   const [categories, setCategories] = useState([]);
-  const token = getCookie("token");
   const url = "http://localhost:5000/api/lessons/" + lessonId;
 
   useEffect(() => {
@@ -20,18 +18,15 @@ const EditLesson = (props) => {
       .then((res) => res.data.data)
       .then((data) => setLesson(data));
   };
-  const getCategories = () => {
-    let cat = [];
-    let catUrl = "http://localhost:5000/api/categories";
-    Axios.get(catUrl)
-      .then((res) => res.data.data)
-      .then((data) => data.map((d) => cat.push(d)))
-      .then(() => setCategories(cat));
+  const getCategories = async () => {
+    let categoryUrl = "http://localhost:5000/api/categories";
+    const data = await getAllAsArrayAxios(categoryUrl);
+    setCategories(data);
   };
 
   const submithandler = (e) => {
     e.preventDefault();
-    let putUrl = url + "/edit";
+    let putLessonUrl = url + "/edit";
     let item = {
       title: e.target[0].value,
       content: e.target[1].value,
@@ -40,32 +35,9 @@ const EditLesson = (props) => {
       instructor: e.target[4].value,
       category: e.target[5].value,
     };
-    Swal.fire({
-      title: "Değişiklikleri kaydetmek istiyor musunuz?",
-      showDenyButton: true,
-      confirmButtonText: `Kaydet`,
-      denyButtonText: `Kaydetme`,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Axios.put(putUrl, item, {
-          headers: {
-            Authorization: token,
-          },
-        })
-          .then(() => Swal.fire("Kaydedildi!", "", "success"))
-          .catch(errorPop);
-      } else if (result.isDenied) {
-        Swal.fire("Değişiklikler kayıt edilmedi.", "", "info");
-      }
-    });
+    putAxiosWithConfirmPop(putLessonUrl,item)
   };
-  const errorPop = () => {
-    Swal.fire({
-      icon: "error",
-      title: "Oops...",
-      text: "Bir şeyler yanlış gitmiş olmalı kayıt eklenemedi.",
-    });
-  };
+
   return (
     <div className="edit-lesson">
       <form className="update-form" onSubmit={submithandler}>

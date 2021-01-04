@@ -1,6 +1,7 @@
 import Axios from "axios";
 import { useState } from "react";
-import Swal from "sweetalert2";
+
+import {successPop,errorPop} from '../../helpers/alertHelpers'
 import "./contact.scss";
 
 const Contact = () => {
@@ -31,22 +32,7 @@ const Contact = () => {
         errorPop("Bir hata oluştu bilgileri kontrol ediniz.");
       });
   };
-  const successPop = (message) => {
-    Swal.fire({
-      position: "center",
-      icon: "success",
-      title: message,
-      showConfirmButton: false,
-      timer: 1500,
-    });
-  };
-  const errorPop = (message) => {
-    Swal.fire({
-      icon: "error",
-      title: "Oops...",
-      text: message,
-    });
-  };
+  
   return (
     <div className="contact">
       <div className="map">

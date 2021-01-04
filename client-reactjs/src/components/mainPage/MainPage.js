@@ -1,5 +1,5 @@
-import Axios from "axios";
 import React, { Component } from "react";
+import { getAllAsArrayAxios } from "../../helpers/axiosHelpers";
 import MainCard from "./MainCard";
 import "./mainPage.scss";
 
@@ -8,13 +8,10 @@ export default class MainPage extends Component {
     categories: [],
   };
 
-  componentDidMount() {
+ async componentDidMount() {
     const url = "http://localhost:5000/api/categories";
-    let arr = [];
-    Axios.get(url)
-      .then((res) => res.data.data)
-      .then((data) => data.map((c) => arr.push(c)))
-      .then(() => this.setState({ categories: arr }));
+    const data = await getAllAsArrayAxios(url);
+    this.setState({ categories: data })
   }
   render() {
     let categories = this.state.categories;

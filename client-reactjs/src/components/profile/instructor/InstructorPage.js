@@ -1,16 +1,17 @@
-import Axios from "axios";
 import React, { useEffect, useState } from "react";
 import "./instructorPage.scss";
 
 import { FiSettings } from "react-icons/fi";
 import { RiDeleteBin5Line } from "react-icons/ri";
-import Swal from "sweetalert2";
 
 import Popup from "../../toolbox/Popup";
 import EditLesson from "./EditLesson";
 import EditEpisode from "./EditEpisode";
-import { getCookie } from "../../../helpers/auth";
 import AddLesson from "./AddLesson";
+import {
+  deleteAxiosWithConfirmPop,
+  getAllAsArrayAxios,
+} from "../../../helpers/axiosHelpers";
 
 function InstructorPage(props) {
   const [categories, setCategories] = useState([]);
@@ -20,7 +21,6 @@ function InstructorPage(props) {
   const [isOpenEpisodeModal, setIsOpenEpisodeModal] = useState(false);
   const [selectedLesson, setSelectedLesson] = useState();
   const user_id = props.user._id;
-  const token = getCookie("token");
 
   useEffect(() => {
     getCategories();
@@ -45,60 +45,29 @@ function InstructorPage(props) {
       getLessonByUserId(user_id);
     }
   };
-  const togglePopupEpisode = (e, id) => {
+  const togglePopupEpisode = (e) => {
     e.preventDefault();
     setIsOpenEpisodeModal(!isOpenEpisodeModal);
   };
 
   const deleteLessonHandler = (lessonId) => {
     let deleteUrl = "http://localhost:5000/api/lessons/" + lessonId + "/delete";
-    Swal.fire({
-      title: "Dersi silmek istediğine emin misin?",
-      text: "Bunu geri alamayız!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
-      confirmButtonText: "Evet, sil!",
-      cancelButtonText: "İptal",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Axios.delete(deleteUrl, {
-          headers: {
-            Authorization: token,
-          },
-        })
-          .then(() => getLessonByUserId(user_id))
-          .then(() =>
-            Swal.fire("Silindi!", "Ders tamamen kaldırıldı.", "success")
-          )
-          .catch(() => errorPop);
-      }
-    });
-  };
-  const errorPop = () => {
-    Swal.fire({
-      icon: "error",
-      title: "Oops...",
-      text: "Bir şeyler yanlış gitmiş olmalı kayıt eklenemedi.",
-    });
+    deleteAxiosWithConfirmPop(
+      deleteUrl,
+      "Ders tamamen kaldırıldı.",
+      "Bir şeyler yanlış gitmiş olmalı kayıt eklenemedi."
+    ).then(() => getLessonByUserId(user_id));
   };
 
-  const getCategories = () => {
-    let cat = [];
-    let catUrl = "http://localhost:5000/api/categories";
-    Axios.get(catUrl)
-      .then((res) => res.data.data)
-      .then((data) => data.map((d) => cat.push(d)))
-      .then(() => setCategories(cat));
+  const getCategories = async () => {
+    let categoryUrl = "http://localhost:5000/api/categories";
+    const data = await getAllAsArrayAxios(categoryUrl);
+    setCategories(data);
   };
-  const getLessonByUserId = (userId) => {
-    let arr = [];
+  const getLessonByUserId = async (userId) => {
     let lessonsUrl = "http://localhost:5000/api/lessons/user/" + userId;
-    Axios.get(lessonsUrl)
-      .then((res) => res.data.data)
-      .then((data) => data.map((lesson) => arr.push(lesson)))
-      .then(() => setLessons(arr));
+    const data = await getAllAsArrayAxios(lessonsUrl);
+    setLessons(data);
   };
   return (
     <div className="instructor-page">
@@ -112,12 +81,8 @@ function InstructorPage(props) {
       <div className="update-form">
         <div className="table">
           <div className="thead-tr">
-            <div className="th">
-              Ders Başlık
-            </div>
-            <div className="th">
-              Kategori
-            </div>
+            <div className="th">Ders Başlık</div>
+            <div className="th">Kategori</div>
             <div className="th">
               <div className="button" onClick={togglePopupAddLesson}>
                 Ders Ekle

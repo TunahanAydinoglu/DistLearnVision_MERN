@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { authenticate } from "../../helpers/auth";
-import Swal from "sweetalert2";
 
 import * as Icons from "../icons/index";
 import "./sign.scss";
 import Axios from "axios";
+import { errorPop, successPop } from "../../helpers/alertHelpers";
 
 const Sign = () => {
   const [emailLogin, setEmailLogin] = useState("");
@@ -15,19 +15,11 @@ const Sign = () => {
 
   let urlLogin = "http://localhost:5000/api/auth/login";
   let urlRegister = "http://localhost:5000/api/auth/register";
-  let userLogin = {
-    email: "",
-    password: "",
-  };
-  let userRegister = {
-    name: "",
-    email: "",
-    password: "",
-  };
+
   const handleSubmitLogin = (event) => {
     event.preventDefault();
 
-    userLogin = {
+   const userLogin = {
       email: emailLogin,
       password: passwordLogin,
     };
@@ -44,7 +36,7 @@ const Sign = () => {
   };
   const handleSubmitRegister = (event) => {
     event.preventDefault();
-    userRegister = {
+   const userRegister = {
       name: nameRegister,
       email: emailRegister,
       password: passwordRegister,
@@ -54,22 +46,7 @@ const Sign = () => {
       .then(() => successPop("Kayıt işlemi başarılı, Giriş Yapabilirsiniz."))
       .catch(() => errorPop("Bir şeyler yanlış gitmiş olmalı kayıt eklenemedi."));
   };
-  const successPop = (message) => {
-    Swal.fire({
-      position: "center",
-      icon: "success",
-      title: message,
-      showConfirmButton: false,
-      timer: 1500,
-    });
-  };
-  const errorPop = (message) => {
-    Swal.fire({
-      icon: "error",
-      title: "Oops...",
-      text: message,
-    });
-  };
+
   return (
     <div className="popup">
       <div className="login">

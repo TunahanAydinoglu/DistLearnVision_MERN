@@ -1,12 +1,13 @@
-import Axios from "axios";
 import { useState, useEffect } from "react";
 import "./updateProfile.scss";
-import Swal from "sweetalert2";
-import { getCookie } from "../../helpers/auth";
+import {
+  putAxiosWithConfirmPop,
+  getAuthProfileAxios,
+  getSingleAxios,
+} from "../../helpers/axiosHelpers";
 
 export default function UpdateProfile(props) {
-  const user = props.user;
-
+  const [user, setUser] = useState({});
   const [name, setName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
   const [website, setWebsite] = useState(user.website);
@@ -14,11 +15,15 @@ export default function UpdateProfile(props) {
   const [place, setPlace] = useState(user.place);
   const [about, setAbout] = useState(user.about);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    let getUserUrl = "http://localhost:5000/api/users/profile/";
+    getAuthProfileAxios().then((data) =>
+      getSingleAxios(getUserUrl + data.id).then((data) => setUser(data))
+    );
+  }, []);
 
   function handleSubmitUpdate(e) {
-    let urlUpdate = "http://localhost:5000/api/auth/updateDetails";
-    let token = getCookie("token");
+    let updateUrl = "http://localhost:5000/api/auth/updateDetails";
 
     e.preventDefault();
     let updatedUser = {
@@ -29,22 +34,8 @@ export default function UpdateProfile(props) {
       place: place,
       about: about,
     };
-    Axios.put(urlUpdate, updatedUser, {
-      headers: {
-        Authorization: token,
-      },
-    })
-      .then(() => Swal.fire("Guncelleme Basarili!", "", "success"))
-      .catch(() => errorPop());
+    putAxiosWithConfirmPop(updateUrl, updatedUser);
   }
-
-  const errorPop = () => {
-    Swal.fire({
-      icon: "error",
-      title: "Oops...",
-      text: "Bir şeyler yanlış gitmiş olmalı kayıt eklenemedi.",
-    });
-  };
   return (
     <div className="updateProfile">
       <h2>Profil Sayfası</h2>
@@ -59,7 +50,7 @@ export default function UpdateProfile(props) {
               type="text"
               required
               placeholder="Ad Soyad"
-              defaultValue={name}
+              defaultValue={user.name}
               onChange={(e) => setName(e.target.value)}
             />
           </div>
@@ -71,7 +62,7 @@ export default function UpdateProfile(props) {
               type="email"
               required
               placeholder="example@mail.com"
-              defaultValue={email}
+              defaultValue={user.email}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
@@ -82,7 +73,7 @@ export default function UpdateProfile(props) {
               name="website"
               type="text"
               placeholder="www.ornek.com"
-              defaultValue={website}
+              defaultValue={user.website}
               onChange={(e) => setWebsite(e.target.value)}
             />
           </div>
@@ -93,7 +84,7 @@ export default function UpdateProfile(props) {
               name="job"
               type="text"
               placeholder=""
-              defaultValue={job}
+              defaultValue={user.job}
               onChange={(e) => setJob(e.target.value)}
             />
           </div>
@@ -104,7 +95,7 @@ export default function UpdateProfile(props) {
               id="place"
               type="text"
               placeholder=""
-              defaultValue={place}
+              defaultValue={user.place}
               onChange={(e) => setPlace(e.target.value)}
             />
           </div>
@@ -115,7 +106,7 @@ export default function UpdateProfile(props) {
               id="about"
               type="text"
               placeholder="Kendinizden bahsetmek ister misiniz?"
-              defaultValue={about}
+              defaultValue={user.about}
               onChange={(e) => setAbout(e.target.value)}
             />
           </div>

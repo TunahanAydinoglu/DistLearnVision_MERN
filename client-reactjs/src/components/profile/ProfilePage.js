@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
-import Axios from "axios";
-import { getCookie } from "../../helpers/auth";
 import "./profilePage.scss";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import UpdateProfile from "./UpdateProfile";
 import UpdateImage from "./UpdateImage";
 import DefaultProfile from "./DefaultProfile";
 import InstructorPage from "./instructor/InstructorPage";
+import {
+  getAuthProfileAxios,
+  getSingleAxios,
+} from "../../helpers/axiosHelpers";
 
 const ProfilePage = () => {
   const [user, setUser] = useState({});
@@ -23,25 +25,16 @@ const ProfilePage = () => {
 
   const getProfile = () => {
     let prof = "";
-    let token = getCookie("token");
-    let getProfileUrl = "http://localhost:5000/api/auth/user";
     let getUserUrl = "http://localhost:5000/api/users/profile/";
-    Axios.get(getProfileUrl, {
-      headers: {
-        Authorization: token,
-      },
-    })
-      .then((res) => res.data.data)
-      .then((data) =>
-        Axios.get(getUserUrl + data.id)
-          .then((res) => res.data.data)
-          .then((data) => {
-            setUser(data);
-            setRole(data.role);
-            prof = data.profile_image;
-          })
-          .then(() => setImage("http://localhost:5000/uploads/" + prof))
-      );
+    getAuthProfileAxios().then((data) => {
+      getSingleAxios(getUserUrl + data.id)
+        .then((data) => {
+          setUser(data);
+          setRole(data.role);
+          prof = data.profile_image;
+        })
+        .then(() => setImage("http://localhost:5000/uploads/" + prof));
+    });
   };
   return (
     <Router>

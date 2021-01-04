@@ -1,26 +1,25 @@
-import Axios from "axios";
 import React, { useEffect, useState } from "react";
-import { getCookie } from "../../../helpers/auth";
-import Swal from "sweetalert2";
 import "./editEpisode.scss";
+import {
+  getAllAsArrayAxios,
+  postAxiosWithAlertPop,
+  deleteAxiosWithConfirmPop,
+  putAxiosWithConfirmPop,
+} from "../../../helpers/axiosHelpers";
 
 function EditEpisode(props) {
   const [episodes, setEpisodes] = useState([]);
   const lesson = props.lesson;
   const url = "http://localhost:5000/api/lessons/" + lesson + "/episodes/";
-  const token = getCookie("token");
   const [display, setDisplay] = useState("none");
 
   useEffect(() => {
     getItems(url);
   }, [url]);
 
-  const getItems = (url) => {
-    let arr = [];
-    Axios.get(url)
-      .then((res) => res.data.data)
-      .then((data) => data.map((e) => arr.push(e)))
-      .then(() => setEpisodes(arr));
+  const getItems = async (url) => {
+    const data = await getAllAsArrayAxios(url);
+    setEpisodes(data);
   };
 
   const addFormHandle = () => {
@@ -35,54 +34,17 @@ function EditEpisode(props) {
       title: e.target[1].value,
       url: e.target[2].value,
     };
-    console.log(item)
-    Swal.fire({
-      title: "Değişiklikleri kaydetmek istiyor musunuz?",
-      showDenyButton: true,
-      confirmButtonText: `Kaydet`,
-      denyButtonText: `Kaydetme`,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Axios.put(putUrl, item, {
-          headers: {
-            Authorization: token,
-          },
-        })
-          .then(() => getItems(url))
-          .then(() => Swal.fire("Kaydedildi!", "", "success"))
-          .catch(errorPop);
-      } else if (result.isDenied) {
-        Swal.fire("Değişiklikler kayıt edilmedi.", "", "info");
-      }
-    });
+    putAxiosWithConfirmPop(putUrl, item);
   };
 
   const deleteItemHandler = (e, id) => {
     e.preventDefault();
     let deleteUrl = url + id + "/delete";
-    Swal.fire({
-      title: "Emin misin?",
-      text: "Bunu geri alamayacaksın!",
-      icon: "warning",
-      showCancelButton: true,
-      cancelButtonText: "İptal",
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Evet, Sil!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Axios.delete(deleteUrl, {
-          headers: {
-            Authorization: token,
-          },
-        })
-          .then(() => getItems(url))
-          .then(() =>
-            Swal.fire("Silindi!", "BÖlüm başarıyla silindi.", "success")
-          )
-          .catch(errorPop);
-      }
-    });
+    deleteAxiosWithConfirmPop(
+      deleteUrl,
+      "Bölüm başarıyla silindi.",
+      "Bir şeyler yanlış gitmiş olmalı ders sılınemedı."
+    ).then(() => getItems(url));
   };
   const addLessonHandler = (e) => {
     e.preventDefault();
@@ -91,32 +53,16 @@ function EditEpisode(props) {
       title: e.target[1].value,
       url: e.target[2].value,
     };
-    console.log(item)
-    Axios.post(url, item, {
-      headers: {
-        Authorization: token,
-      },
-    })
+    postAxiosWithAlertPop(
+      url,
+      item,
+      "Yeni bölüm eklendi",
+      "Bir şeyler yanlış gitmiş olmalı kayıt eklenemedi."
+    )
       .then(() => getItems(url))
-      .then(() =>
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Yeni bölüm eklendi",
-          showConfirmButton: false,
-          timer: 800,
-        })
-      )
-      .then(() => setDisplay("none"))
-      .catch(() => errorPop());
+      .then(() => setDisplay("none"));
   };
-  const errorPop = () => {
-    Swal.fire({
-      icon: "error",
-      title: "Oops...",
-      text: "Bir şeyler yanlış gitmiş olmalı kayıt eklenemedi.",
-    });
-  };
+
   return (
     <div className="edit-episodes">
       <div className="table">

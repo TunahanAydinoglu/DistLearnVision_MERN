@@ -1,14 +1,16 @@
 import Iframe from "react-iframe";
 import { useEffect, useState } from "react";
-import Swal from "sweetalert2";
-import Axios from "axios";
 import { ToastContainer } from "react-toastify";
 import StarRatingComponent from "react-star-rating-component";
 
 import "./watch.scss";
 import QuestionCard from "./QuestionCard";
-import { getCookie } from "../../helpers/auth";
 import CommentCard from "./CommentCard";
+import {
+  getAllAsArrayAxios,
+  getSingleAxios,
+  postAxiosWithAlertPop,
+} from "../../helpers/axiosHelpers";
 
 function Watch() {
   const [episodes, setEpisodes] = useState([]);
@@ -23,7 +25,6 @@ function Watch() {
   const [rateStar, setRateStar] = useState(null);
   const id = window.location.search.split("=")[1];
 
-  const token = getCookie("token");
 
   useEffect(() => {
     pageLoad();
@@ -34,100 +35,67 @@ function Watch() {
     getEpisodesByLesson(id);
     getQuestionsAndCommentsByLesson(id);
   };
-  const getQuestionsAndCommentsByLesson = (lessonId) => {
-    let arrQuestions = [];
-    let arrComments = [];
+  const getQuestionsAndCommentsByLesson = async (lessonId) => {
     let defaultUrl = "http://localhost:5000/api/lessons/" + lessonId;
     let urlQuestions = defaultUrl + "/questions/";
     let urlComments = defaultUrl + "/comments/";
 
-    Axios.get(urlQuestions)
-      .then((res) => res.data.data)
-      .then((data) => data.map((q) => arrQuestions.push(q)))
-      .then(() => setQuestions(arrQuestions));
+    const questionsData = await getAllAsArrayAxios(urlQuestions);
+    setQuestions(questionsData);
 
-    Axios.get(urlComments)
-      .then((res) => res.data.data)
-      .then((data) => data.map((q) => arrComments.push(q)))
-      .then(() => setComments(arrComments));
+    const commentsData = await getAllAsArrayAxios(urlComments);
+    setComments(commentsData);
   };
   const getLessonById = (lessonId) => {
     let urlLesson = "http://localhost:5000/api/lessons/" + lessonId;
-    Axios.get(urlLesson)
-      .then((res) => res.data.data)
-      .then((data) => {
-        setVideo(data.url);
-        setLessonData(data);
-      });
+    getSingleAxios(urlLesson).then((data) => {
+      setVideo(data.url);
+      setLessonData(data);
+    });
   };
-  const getEpisodesByLesson = (lessonId) => {
-    let arr = [];
-    let url = "http://localhost:5000/api/lessons/" + lessonId + "/episodes";
-    Axios.get(url)
-      .then((res) => res.data.data)
-      .then((data) => data.map((c) => arr.push(c)))
-      .then(() => setEpisodes(arr));
+  const getEpisodesByLesson = async (lessonId) => {
+    let urlEpisodes =
+      "http://localhost:5000/api/lessons/" + lessonId + "/episodes";
+    const episodesData = await getAllAsArrayAxios(urlEpisodes);
+    setEpisodes(episodesData);
   };
   const questionAddHandler = (e) => {
     e.preventDefault();
-    let url = "http://localhost:5000/api/lessons/" + id + "/questions/ask";
+    let askUrl = "http://localhost:5000/api/lessons/" + id + "/questions/ask";
     const item = {
       title: e.target[0].value,
       content: e.target[1].value,
     };
-    Axios.post(url, item, {
-      headers: {
-        Authorization: token,
-      },
-    })
-      .then(() => successPop("Sorunuz başarıyla eklendi."))
-      .then(() => {
-        setAddQuestionDisplay("none");
-        e.target[0].value = "";
-        e.target[1].value = "";
-        pageLoad();
-      })
-      .catch(() =>
-        errorPop("Bir şeyler yanlış gitmiş olmalı sorunuz eklenemedi.")
-      );
+    postAxiosWithAlertPop(
+      askUrl,
+      item,
+      "Sorunuz başarıyla eklendi.",
+      "Bir şeyler yanlış gitmiş olmalı sorunuz eklenemedi."
+    ).then(() => {
+      setAddQuestionDisplay("none");
+      e.target[0].value = "";
+      e.target[1].value = "";
+      pageLoad();
+    });
   };
   const commentAddHandler = (e) => {
     e.preventDefault();
-    let url = "http://localhost:5000/api/lessons/" + id + "/comments/add";
+    let addCommentUrl = "http://localhost:5000/api/lessons/" + id + "/comments/add";
     const item = {
       content: e.target[0].value,
       mark: rateStar,
     };
-    Axios.post(url, item, {
-      headers: {
-        Authorization: token,
-      },
-    })
-      .then(() => successPop("Yorumunuz başarıyla eklendi."))
-      .then(() => pageLoad())
+    postAxiosWithAlertPop(
+      addCommentUrl,
+      item,
+      "Yorumunuz başarıyla eklendi.",
+      "Bir şeyler yanlış gitmiş olmalı yorumunuz eklenemedi."
+    )
       .then(() => {
+        pageLoad();
         setAddCommentDisplay("none");
         e.target[0].value = "";
       })
-      .catch(() =>
-        errorPop("Bir şeyler yanlış gitmiş olmalı yorumunuz eklenemedi.")
-      );
-  };
-  const successPop = (message) => {
-    Swal.fire({
-      position: "center",
-      icon: "success",
-      title: message,
-      showConfirmButton: true,
-      timer: 1000,
-    });
-  };
-  const errorPop = (message) => {
-    Swal.fire({
-      icon: "error",
-      title: "Oops...",
-      text: message,
-    });
   };
   const addQuestionOrCommentDisplayHandler = (item) => {
     if (item === "question") {
@@ -245,7 +213,6 @@ function Watch() {
                     createdAt={q.createdAt.split("T")[0]}
                   />
                 ))}
-           
               </div>
             </div>
           </div>

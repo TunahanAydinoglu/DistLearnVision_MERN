@@ -1,47 +1,25 @@
 import { useState } from "react";
-import { getCookie } from "../../helpers/auth";
-import Swal from "sweetalert2";
 import "./updateImage.scss";
-import Axios from "axios";
+import { postAxiosWithAlertPop } from "../../helpers/axiosHelpers";
 //FORMAT DOC NOT
 export default function UpdateImage(props) {
   const [path, setPath] = useState('Geçerli formatlar ".jpg, .jpeg, .png"');
-  const token = getCookie("token");
   const [image, setImage] = useState(null);
 
   function handleSubmitImageUpdate(e) {
     e.preventDefault();
     let fd = new FormData();
     fd.append("profile_image", image);
-    let url = "http://localhost:5000/api/auth/upload";
+    let uploadUrl = "http://localhost:5000/api/auth/upload";
 
-    Axios.post(url, fd, {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-        Authorization: token,
-        Accept: "application/json",
-      },
-    })
-      .then(() => successPop("Fotoğrafiniz guncellenmistir."))
-      .then(() => setTimeout(() => window.location.reload(), 1500))
-      .catch(() => errorPop());
+    postAxiosWithAlertPop(
+      uploadUrl,
+      fd,
+      "Fotoğrafınız Güncellendi!",
+      "Bir şeyler yanlış gitmiş olmalı Fotoğrafınız güncellenemedi."
+    ).then(() => setTimeout(() => window.location.reload(), 1500));
   }
-  const successPop = () => {
-    Swal.fire({
-      position: "center",
-      icon: "success",
-      title: "Fotoğrafınız Güncellendi",
-      showConfirmButton: true,
-      timer: 1500,
-    });
-  };
-  const errorPop = () => {
-    Swal.fire({
-      icon: "error",
-      title: "Oops...",
-      text: "Bir şeyler yanlış gitmiş olmalı kayıt eklenemedi.",
-    });
-  };
+
   return (
     <div className="updateProfile">
       <div className="header-wrapper-div">

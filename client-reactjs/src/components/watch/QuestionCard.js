@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import * as Icons from "../icons/index";
-import Axios from "axios";
-import { getCookie } from "../../helpers/auth";
-import { toast } from "react-toastify";
 import "./questionCard.scss";
 import Popup from "../toolbox/Popup";
 import AnswerPopup from "./AnswerPopup";
+import {
+  getDislikeOrUndoDislikeWithToast,
+  getLikeOrUndoLikeWithToast,
+  getSingleAxios,
+} from "../../helpers/axiosHelpers";
 
 const QuestionCard = (props) => {
   const userId = props.user;
@@ -17,7 +19,12 @@ const QuestionCard = (props) => {
   const [answerCount, setAnswerCount] = useState(0);
   const [isOpenAnswerModal, setIsOpenAnswerModal] = useState(false);
   const [userImage, setUserImage] = useState("");
-  let token = getCookie("token");
+  const itemUrl =
+    "http://localhost:5000/api/lessons/" +
+    lessonId +
+    "/questions/" +
+    questionId;
+
   let question = {
     id: props.questionId,
     title: props.title,
@@ -25,134 +32,54 @@ const QuestionCard = (props) => {
     createdAt: props.createdAt,
     userImage: userImage,
     userName: user.name,
-    token: token,
     lessonId: lessonId,
   };
   useEffect(() => {
     getUser(userId);
-    getQuestionByIdForLikeHandler(lessonId,questionId);
+    getQuestionByIdForLikeHandler(itemUrl);
     return () => {};
-  }, [userId,lessonId,questionId]);
+  }, [userId,itemUrl]);
 
-  const getQuestionByIdForLikeHandler = (lessonId,questionId) => {
-    const questionUrl =
-      "http://localhost:5000/api/lessons/" +
-      lessonId +
-      "/questions/" +
-      questionId;
-    Axios.get(questionUrl)
-      .then((res) => res.data.data)
-      .then((data) => {
-        setLike(data[0].likeCount);
-        setDislike(data[0].dislikeCount);
-        setAnswerCount(data[0].answerCount);
-      });
+  const getQuestionByIdForLikeHandler = (itemUrl) => {
+    getSingleAxios(itemUrl).then((data) => {
+      setLike(data[0].likeCount);
+      setDislike(data[0].dislikeCount);
+      setAnswerCount(data[0].answerCount);
+    });
   };
   const togglePopupAnswer = (e) => {
     e.preventDefault();
     if (isOpenAnswerModal) {
       getQuestionByIdForLikeHandler();
-      console.log("geldi geldi geldi geldi geldi geldi geldi geldi ")
       setIsOpenAnswerModal(!isOpenAnswerModal);
     } else {
       setIsOpenAnswerModal(!isOpenAnswerModal);
     }
   };
+
   const getUser = (userId) => {
     const url = "http://localhost:5000/api/users/profile/" + userId;
-    Axios.get(url)
-      .then((res) => res.data.data)
-      .then((data) => {
-        setUser(data);
-        let pat = "http://localhost:5000/uploads/" + data.profile_image;
-        setUserImage(pat);
-      });
-  };
-  const likeHandler = () => {
-    let config = {
-      headers: {
-        Authorization: token,
-      },
-    };
-    let url =
-      "http://localhost:5000/api/lessons/" +
-      lessonId +
-      "/questions/" +
-      questionId +
-      "/like";
-    Axios.get(url, config)
-      .then(() => {
-        getQuestionByIdForLikeHandler();
-        toast.success("Beğeniniz eklendi :) ", {
-          position: "bottom-right",
-          autoClose: 4000,
-        });
-        setLike(like + 1);
-      })
-      .catch(() => undoLikeHandler());
-  };
-  const undoLikeHandler = () => {
-    let config = {
-      headers: {
-        Authorization: token,
-      },
-    };
-    let url =
-      "http://localhost:5000/api/lessons/" +
-      lessonId +
-      "/questions/" +
-      questionId +
-      "/undo_like";
-    Axios.get(url, config).then(() => {
-      getQuestionByIdForLikeHandler();
-      toast.error("Beğeniniz geri alındı :(", {
-        position: "bottom-right",
-        autoClose: 4000,
-      });
-      setLike(like - 1);
+    getSingleAxios(url).then((data) => {
+      setUser(data);
+      setUserImage("http://localhost:5000/uploads/" + data.profile_image);
     });
   };
-  const dislikeHandler = () => {
-    let url =
-      "http://localhost:5000/api/lessons/" +
-      lessonId +
-      "/questions/" +
-      questionId +
-      "/dislike";
-    Axios.get(url, {
-      headers: {
-        Authorization: token,
-      },
-    })
-      .then(() => {
-        getQuestionByIdForLikeHandler();
-        toast.error("Dislike eklendi :(", {
-          position: "bottom-right",
-          autoClose: 4000,
-        });
-        setDislike(dislike + 1);
-      })
-      .catch(() => undoDislikeHandler());
+  const likeHandler = async () => {
+    let rate = await getLikeOrUndoLikeWithToast(
+      itemUrl,
+      "Beğeniniz eklendi :) ",
+      "Beğeniniz geri alındı :("
+    );
+    setLike(like + rate);
   };
-  const undoDislikeHandler = () => {
-    let url =
-      "http://localhost:5000/api/lessons/" +
-      lessonId +
-      "/questions/" +
-      questionId +
-      "/undo_dislike";
-    Axios.get(url, {
-      headers: {
-        Authorization: token,
-      },
-    }).then(() => {
-      getQuestionByIdForLikeHandler();
-      toast.warn("Dislike geri alındı :) ", {
-        position: "bottom-right",
-        autoClose: 4000,
-      });
-      setDislike(dislike - 1);
-    });
+
+  const dislikeHandler = async () => {
+    let rate = await getDislikeOrUndoDislikeWithToast(
+      itemUrl,
+      "Dislike eklendi :(",
+      "Dislike geri alındı :) "
+    );
+    setDislike(dislike + rate);
   };
   return (
     <div className="question-card">

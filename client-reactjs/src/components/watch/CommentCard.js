@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
 import * as Icons from "../icons/index";
-import Axios from "axios";
-import { getCookie } from "../../helpers/auth";
-import { toast } from "react-toastify";
 import "./commentCard.scss";
 import StarRatingComponent from "react-star-rating-component";
-
+import { getDislikeOrUndoDislikeWithToast, getLikeOrUndoLikeWithToast, getSingleAxios } from "../../helpers/axiosHelpers";
 
 const CommentCard = (props) => {
   const userId = props.user;
@@ -15,17 +12,17 @@ const CommentCard = (props) => {
   const [like, setLike] = useState(props.likeCount);
   const [dislike, setDislike] = useState(props.dislikeCount);
   const [userImage, setUserImage] = useState("");
-  let token = getCookie("token");
+  let itemUrl =
+    "http://localhost:5000/api/lessons/" + lessonId + "/comments/" + commentId;
   let comment = {
     id: props.commentId,
     title: props.title,
     content: props.content,
     createdAt: props.createdAt,
     answerCount: props.answerCount,
-    mark:props.mark,
+    mark: props.mark,
     userImage: userImage,
     userName: user.name,
-    token: token,
     lessonId: lessonId,
   };
   useEffect(() => {
@@ -35,95 +32,28 @@ const CommentCard = (props) => {
 
   const getUser = (userId) => {
     const url = "http://localhost:5000/api/users/profile/" + userId;
-    Axios.get(url)
-      .then((res) => res.data.data)
-      .then((data) => {
-        setUser(data);
-        let pat = "http://localhost:5000/uploads/" + data.profile_image;
-        setUserImage(pat);
-      });
-  };
-  const likeHandler = () => {
-    let config = {
-      headers: {
-        Authorization: token,
-      },
-    };
-    let url =
-      "http://localhost:5000/api/lessons/" +
-      lessonId +
-      "/comments/" +
-      commentId +
-      "/like";
-    Axios.get(url, config)
-      .then(() => {
-        toast.success("Beğeniniz eklendi :) ", {
-          position: "bottom-right",
-          autoClose: 4000,
-        });
-        setLike(like + 1);
-      })
-      .catch(() => undoLikeHandler());
-  };
-  const undoLikeHandler = () => {
-    let config = {
-      headers: {
-        Authorization: token,
-      },
-    };
-    let url =
-      "http://localhost:5000/api/lessons/" +
-      lessonId +
-      "/comments/" +
-      commentId +
-      "/undo_like";
-    Axios.get(url, config).then(() => {
-      toast.error("Beğeniniz geri alındı :(", {
-        position: "bottom-right",
-        autoClose: 4000,
-      });
-      setLike(like - 1);
+    getSingleAxios(url).then((data) => {
+      setUser(data);
+      setUserImage("http://localhost:5000/uploads/" + data.profile_image);
     });
   };
-  const dislikeHandler = () => {
-    let url =
-      "http://localhost:5000/api/lessons/" +
-      lessonId +
-      "/comments/" +
-      commentId +
-      "/dislike";
-    Axios.get(url, {
-      headers: {
-        Authorization: token,
-      },
-    })
-      .then(() => {
-        toast.error("Dislike eklendi :(", {
-          position: "bottom-right",
-          autoClose: 4000,
-        });
-        setDislike(dislike + 1);
-      })
-      .catch(() => undoDislikeHandler());
+
+  const likeHandler = async () => {
+    let rate = await getLikeOrUndoLikeWithToast(
+      itemUrl,
+      "Beğeniniz eklendi :) ",
+      "Beğeniniz geri alındı :("
+    );
+    setLike(like + rate);
   };
-  const undoDislikeHandler = () => {
-    let url =
-      "http://localhost:5000/api/lessons/" +
-      lessonId +
-      "/comments/" +
-      commentId +
-      "/undo_dislike";
-    Axios.get(url, {
-      headers: {
-        Authorization: token,
-      },
-    }).then(() => {
-      toast.warn("Dislike geri alındı :) ", {
-        position: "bottom-right",
-        autoClose: 4000,
-      });
-      setDislike(dislike - 1);
-    });
+
+  const dislikeHandler = async () => {
+    let rate = await getDislikeOrUndoDislikeWithToast(
+      itemUrl,
+      "Dislike eklendi :(",
+      "Dislike geri alındı :) "
+    );
+    setDislike(dislike + rate);
   };
   return (
     <div className="comment-card">
@@ -136,11 +66,11 @@ const CommentCard = (props) => {
           <p className="content">{comment.content}</p>
           <div className="content-bottom">
             <div>
-                <StarRatingComponent
-                  name="rate"
-                  starCount={5}
-                  value={comment.mark}
-                />
+              <StarRatingComponent
+                name="rate"
+                starCount={5}
+                value={comment.mark}
+              />
             </div>
             <div>
               <span>{comment.createdAt}</span>

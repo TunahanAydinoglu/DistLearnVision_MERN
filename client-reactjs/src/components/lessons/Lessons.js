@@ -4,7 +4,7 @@ import * as Icons from "../icons/index";
 import LessonCart from "./LessonCart";
 import { getAllAsArrayAxios } from "../../helpers/axiosHelpers";
 
-const Lessons = (props) => {
+const Lessons = () => {
   const [lessons, setLessons] = useState([]);
   const [categories, setCategories] = useState([]);
   const [active, setActive] = useState("1");
@@ -31,13 +31,14 @@ const Lessons = (props) => {
     let searchUrl = url + "?search=" + e.target.value;
     const data = await getAllAsArrayAxios(searchUrl);
     setLessons(data);
+    setActive("1");
   };
 
   const getLessons = async (url) => {
     const data = await getAllAsArrayAxios(url);
     setLessons(data);
   };
-  
+
   const getCategories = async () => {
     let categoryUrl = "http://localhost:5000/api/categories";
     const data = await getAllAsArrayAxios(categoryUrl);

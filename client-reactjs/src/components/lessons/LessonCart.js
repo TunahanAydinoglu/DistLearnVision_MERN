@@ -10,7 +10,6 @@ const LessonCart = (props) => {
   let lesson = props.lesson;
   const [locate, setLocate] = useState("");
 
-
   // const [like, setLike] = useState(lesson.likeCount);
   // const [dislike, setDislike] = useState(lesson.dislikeCount);
   // let token = getCookie("token");
