@@ -1,0 +1,108 @@
+images : 
+    https://i.hizliresim.com/fwUVRb.jpg
+    https://i.hizliresim.com/FX3tDU.jpg
+    https://i.hizliresim.com/RRrDGg.jpg
+    https://i.hizliresim.com/NagAPr.jpg
+Lessons : 
+
+    Siber : 
+        category : Siber Guvenlik 
+        Author : Mehmet Dursun İnce 
+        title : Webde Güvenlik
+        url : https://www.youtube.com/embed/nTExLv92yc4
+
+
+        epısodes: 
+
+        1 - 
+        SQL Injection'ı Bütünüyle Anlamak
+        https://www.youtube.com/embed/WtHnT73NaaQ
+
+        2 - 
+        IDOR Insecure Direct Object Reference Zafiyetleri Hakkında Her şey
+        https://www.youtube.com/embed/TsJ2XPuGe1k
+
+        3 -
+         Session'ı ve CSRF Zafiyetini Anlamak & SameSite Cookie Önlemi
+         https://www.youtube.com/embed/CKHai0OW6BY
+
+        4 - 
+        Bir Hacker'ın Gözünden Modern Web Nasıl Çalışır?
+        https://www.youtube.com/embed/3AgDSw0I89A
+
+        5 - 
+        HackerConf.Stream! Goygoy ve Akabinde Web Security Academy
+        https://www.youtube.com/embed/iYPqOWJR1nY
+
+        6 - 
+        Siber Güvenlik Üzerine Goygoy ve Web Security Academiy 2nd Edition
+        https://www.youtube.com/embed/IfYyFMydLV4
+
+        7 - 
+        XML Parserlar ve XML external entity (XXE) Injection
+        https://www.youtube.com/embed/-BPnSQou8yw
+
+        8 - 
+        XSS Güvenlik Zafiyeti Hakkında Her Şey Part - 1
+        https://www.youtube.com/embed/NFD3vZ-lIgI
+
+        9 - 
+        XSS Güvenlik Zafiyeti Serüvenine Devam Part 2
+        https://www.youtube.com/embed/xXbDhyKo9B8
+
+       10 - 
+       Web Security Academy'den Devam Ediyoruz
+       https://www.youtube.com/embed/ebLgQiG7ACw
+
+    Web : 
+        category : Web Gelistirme
+        Author : Adem İlter
+        title : ReactJs ile Twitter Klonu
+            url : https://www.youtube.com/embed/U6dQVWHqmSM 
+
+            epısodes: 
+
+            1 - 
+            Next ve Storybook Kurulumu
+            https://youtube.com/embed/jDhZrULGAuQ
+
+            2 - 
+            Reset.css, SVGR, Postcss
+            https://youtube.com/embed/2W_qXpQJ_Ng
+
+            3 -
+            CSS Variable, Navigation
+            https://youtube.com/embed/mHOOLF1xXnw
+
+            4 - 
+            ThemeButton ve Stack
+            https://youtube.com/embed/oppxESPuPg8
+
+            5 - 
+            React ile Twitter Klonu #5
+            https://youtube.com/embed/M3gxjGelGMs
+
+        title :  Webflow ile site yapıyoruz. Kod yazmadan! 
+           https://youtube.com/embed/Y22WkG8mc8E
+
+              epısodes: 
+
+            2 - 
+            Webflow ile site yapıyoruz. Kod yazmadan! (No-code)
+            https://youtube.com/embed/OPixgX1HWLk
+
+            3 -
+          Webflow ile site yapıyoruz. Kod yazmadan! (No-code)
+            https://youtube.com/embed/f7jcd6-28Ok
+
+    Mobıl : 
+        category : Mobıl
+        Author : Adem İlter
+        title : React Native ile Mobil Uygulama
+            url : https://youtube.com/embed/NZwqvEVonUU
+
+    Kişisel Gelişim : 
+    category : Mobıl
+    Author : Hale Caneroğlu
+    title : Sen Değiş, Dünyan Değişsin
+        url : https://youtube.com/embed/mcM1-Dmyq_0       

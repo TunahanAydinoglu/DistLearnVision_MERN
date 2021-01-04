@@ -60,7 +60,12 @@ function EditEpisode(props) {
       "Bir şeyler yanlış gitmiş olmalı kayıt eklenemedi."
     )
       .then(() => getItems(url))
-      .then(() => setDisplay("none"));
+      .then(() => {
+        setDisplay("none");
+        e.target[0].value = "";
+        e.target[1].value = "";
+        e.target[2].value = "";
+      });
   };
 
   return (
