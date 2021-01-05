@@ -50,7 +50,7 @@ const QuestionCard = (props) => {
   const togglePopupAnswer = (e) => {
     e.preventDefault();
     if (isOpenAnswerModal) {
-      getQuestionByIdForLikeHandler();
+      getQuestionByIdForLikeHandler(itemUrl);
       setIsOpenAnswerModal(!isOpenAnswerModal);
     } else {
       setIsOpenAnswerModal(!isOpenAnswerModal);
