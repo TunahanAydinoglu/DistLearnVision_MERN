@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { getAxiosWithToken } from "../../../../helpers/axiosHelpers";
+import {
+  getAxiosWithToken,
+  deleteAxiosWithConfirmPop,
+} from "../../../../helpers/axiosHelpers";
 
 function AdminCommentsComponent() {
   const [comments, setComments] = useState([]);
@@ -18,23 +21,17 @@ function AdminCommentsComponent() {
     const response = await getAxiosWithToken(searchUserUrl);
     setComments([...response.data]);
   };
-  const updateUserHandler = (e, id) => {
+
+  const deleteCommentHandler = async (e, id, index) => {
     e.preventDefault();
-    // let putUrl = url + id + "/edit";
-    let item = {
-      ranking: e.target[0].value,
-      title: e.target[1].value,
-      url: e.target[2].value,
-    };
-  };
-  const changeBlockHandler = (e, id) => {
-    e.preventDefault();
-    // let deleteUrl = url + id + "/delete";
-    // deleteAxiosWithConfirmPop(
-    //   deleteUrl,
-    //   "Bölüm başarıyla silindi.",
-    //   "Bir şeyler yanlış gitmiş olmalı ders sılınemedı."
-    // ).then(() => getItems(url));
+    const deleteUrl = `http://localhost:5000/api/admin/comments/${id}/delete`;
+    const successMessage = "Yorum başarıyla silindi.";
+    const errorMessage = "Bir şeyler yanlış gitmiş olmalı yorum silinemedi.";
+    const result = await deleteAxiosWithConfirmPop(deleteUrl, successMessage, errorMessage);
+    if(result){
+      comments.splice(index,1);
+      setComments([...comments]);
+    }
   };
   return (
     <div className="admin-users">
@@ -44,7 +41,7 @@ function AdminCommentsComponent() {
             <div className="th th-name">Yorum</div>
             <div className="th th-role">Like</div>
             <div className="th th-blocked">Dislike</div>
-            <div className="th th-setting">Settings</div>
+            <div className="th th-setting">Ayarlar</div>
           </div>
         </div>
         <div className="search-field">
@@ -54,12 +51,9 @@ function AdminCommentsComponent() {
           />
         </div>
         <div className="tbody">
-          {comments.map((comment, i) => (
-            <form
-              key={comment._id}
-              onSubmit={(e) => updateUserHandler(e, comment._id)}
-            >
-              <div className={i % 2 === 0 ? "tr" : "tr tr-even"}>
+          {comments.map((comment, index) => (
+            <form key={comment._id}>
+              <div className={index % 2 === 0 ? "tr" : "tr tr-even"}>
                 <div className="td td-comment td-font">{comment.content}</div>
                 <div className="td td-role td-font">{comment.likeCount}</div>
                 <div className="td td-blocked td-font">
@@ -68,7 +62,7 @@ function AdminCommentsComponent() {
                 <div className="td td-setting">
                   <button
                     type="button"
-                    onClick={(e) => changeBlockHandler(e, comment._id)}
+                    onClick={(e) => deleteCommentHandler(e, comment._id, index)}
                   >
                     Sil
                   </button>

@@ -43,7 +43,7 @@ function EditEpisode(props) {
     deleteAxiosWithConfirmPop(
       deleteUrl,
       "Bölüm başarıyla silindi.",
-      "Bir şeyler yanlış gitmiş olmalı ders sılınemedı."
+      "Bir şeyler yanlış gitmiş olmalı ders silinemedi."
     ).then(() => getItems(url));
   };
   const addLessonHandler = (e) => {

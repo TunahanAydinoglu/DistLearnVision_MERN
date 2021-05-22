@@ -1,4 +1,7 @@
-import { getAxiosWithToken } from "../../../../helpers/axiosHelpers";
+import {
+  getAxiosWithToken,
+  putAxiosWithConfirmPop,
+} from "../../../../helpers/axiosHelpers";
 import React, { useEffect, useState } from "react";
 
 const AdminUsersComponent = () => {
@@ -22,15 +25,21 @@ const AdminUsersComponent = () => {
   };
   const updateUserHandler = (e, id) => {
     e.preventDefault();
-    // let putUrl = url + id + "/edit";
+    const updateUrl = `http://localhost:5000/api/admin/users/${id}`;
     let item = {
-      ranking: e.target[0].value,
-      title: e.target[1].value,
-      url: e.target[2].value,
+      name: e.target[0].value,
+      role: e.target[1].value,
     };
+    putAxiosWithConfirmPop(updateUrl, item);
   };
-  const changeBlockHandler = (e, id) => {
+  const changeBlockHandler = async (e, id, index) => {
     e.preventDefault();
+    const blockUrl = `http://localhost:5000/api/admin/users/${id}/block`;
+    const response = await getAxiosWithToken(blockUrl);
+    if (response.success) {
+      users[index].blocked = !users[index].blocked;
+      setUsers([...users]);
+    }
   };
   return (
     <div className="admin-users">
@@ -39,20 +48,23 @@ const AdminUsersComponent = () => {
           <div className="tr">
             <div className="th th-name">Kullanici</div>
             <div className="th th-role">Rol</div>
-            <div className="th th-blocked">Block</div>
-            <div className="th th-setting">Settings</div>
+            <div className="th th-blocked">Durum</div>
+            <div className="th th-setting">Ayarlar</div>
           </div>
         </div>
         <div className="search-field">
-          <input placeholder="Kullanici ara" onChange={(e) => searchAxios(e.target.value)} />
+          <input
+            placeholder="Kullanici ara"
+            onChange={(e) => searchAxios(e.target.value)}
+          />
         </div>
         <div className="tbody">
-          {users.map((user, i) => (
+          {users.map((user, index) => (
             <form
               key={user._id}
               onSubmit={(e) => updateUserHandler(e, user._id)}
             >
-              <div className={i % 2 === 0 ? "tr" : "tr tr-even"}>
+              <div className={index % 2 === 0 ? "tr" : "tr tr-even"}>
                 <div className="td td-name">
                   <input name="name" defaultValue={user.name} required />
                 </div>
@@ -66,9 +78,9 @@ const AdminUsersComponent = () => {
                   <button type="submit">Güncelle</button>
                   <button
                     type="button"
-                    onClick={(e) => changeBlockHandler(e, user._id)}
+                    onClick={(e) => changeBlockHandler(e, user._id, index)}
                   >
-                    Block
+                    {user.blocked ? "Unblock" : "Block"}
                   </button>
                 </div>
               </div>

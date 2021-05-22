@@ -56,7 +56,7 @@ const deleteAxiosWithConfirmPop = async (
   successMessage,
   errorMessage
 ) => {
-  Swal.fire({
+  const result = await Swal.fire({
     title: "Emin misin?",
     text: "Bunu geri alamayız!",
     icon: "warning",
@@ -65,17 +65,22 @@ const deleteAxiosWithConfirmPop = async (
     cancelButtonColor: "#3085d6",
     confirmButtonText: "Evet, sil!",
     cancelButtonText: "İptal",
-  }).then((result) => {
-    if (result.isConfirmed) {
-      Axios.delete(deleteUrl, {
-        headers: {
-          Authorization: token,
-        },
-      })
-        .then(() => successPop(successMessage))
-        .catch(() => errorPop(errorMessage));
-    }
   });
+  if (result.isConfirmed) {
+    const response = await Axios.delete(deleteUrl, {
+      headers: {
+        Authorization: token,
+      },
+    });
+    if (response.data.success) {
+      successPop(successMessage);
+      return true;
+    } else {
+      errorPop(errorMessage);
+      return false;
+    }
+  }
+  return false;
 };
 const putAxiosWithConfirmPop = (url, item) => {
   Swal.fire({
