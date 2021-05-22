@@ -40,9 +40,10 @@ const getBlockUser = errorWrapper(async (req, res, next) => {
 
   await User.updateOne({ _id: user._id }, { blocked: !user.blocked });
 
+  let message = user.blocked ? "User unblocked successfully" : "User blocked successfully";
   return res.status(200).json({
     success: true,
-    message: "User Blocked Successfully",
+    message: message,
   });
 });
 

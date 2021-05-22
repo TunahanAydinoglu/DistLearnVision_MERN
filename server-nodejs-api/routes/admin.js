@@ -36,7 +36,7 @@ router.use([getAccessToRoute, getAdminAccess]);
 
 router.get("/users", getAllUsers);
 router.get("/users/:id", checkUserExist, getSingleUser);
-router.get("/block/:id", checkUserExist, getBlockUser);
+router.get("/users/:id/block", checkUserExist, getBlockUser);
 router.delete("/user/:id", checkUserExist, deleteUser);
 
 router.get("/search/users", getFindUserByUserName);
