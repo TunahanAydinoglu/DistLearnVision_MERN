@@ -123,6 +123,7 @@ const checkUserExist = errorWrapper(async (req, res, next) => {
   if (!user) {
     return next(new CustomError(`User Not Found with Id : ${user_id}`, 404));
   }
+  req.user_id = user_id;
   next();
 });
 

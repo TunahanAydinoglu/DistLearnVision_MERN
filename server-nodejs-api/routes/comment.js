@@ -21,7 +21,6 @@ const {
   getCommentOwnerAccess,
 } = require("../middlewares/authorization/auth");
 
-
 const router = express.Router({ mergeParams: true });
 
 router.get("/", getAllComments);

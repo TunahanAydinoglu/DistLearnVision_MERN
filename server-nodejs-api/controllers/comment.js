@@ -1,8 +1,20 @@
 const Comment = require("../models/Comment");
-
 const errorWrapper = require("../helpers/error/errorWrapper");
 const CustomError = require("../helpers/error/customError");
-const Lesson = require("../models/Lesson");
+
+const getAllCommentsForAdmin = errorWrapper(async (req, res, next) => {
+  let comments = await Comment.find();
+
+  comments = comments.sort((a, b) => {
+    return b.createdAt - a.createdAt;
+  });
+
+  res.status(200).json({
+    success: true,
+    commentCount: comments.length,
+    data: comments,
+  });
+});
 
 const getAllComments = errorWrapper(async (req, res, next) => {
   const { lesson_id } = req.params;
@@ -161,4 +173,5 @@ module.exports = {
   undoLikeComment,
   dislikeComment,
   undoDislikeComment,
+  getAllCommentsForAdmin,
 };
