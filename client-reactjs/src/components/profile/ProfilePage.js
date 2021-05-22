@@ -9,6 +9,7 @@ import {
   getAuthProfileAxios,
   getSingleAxios,
 } from "../../helpers/axiosHelpers";
+import Admin from "./admin/Admin";
 
 const ProfilePage = () => {
   const [user, setUser] = useState({});
@@ -78,7 +79,7 @@ const ProfilePage = () => {
                     </li>
                   </Link>
 
-                  {role !== "user" ? (
+                  {role === "teacher" || "admin" ? (
                     <Link
                       to="/profil/egitmen"
                       onClick={() => changePage("/profil/egitmen")}
@@ -93,6 +94,20 @@ const ProfilePage = () => {
                     </Link>
                   ) : null}
 
+                  {role === "admin" ? (
+                    <Link
+                      to="/profil/admin"
+                      onClick={() => changePage("/profil/admin")}
+                    >
+                      <li
+                        className={
+                          active === "/profil/admin" ? "active" : null
+                        }
+                      >
+                        Admin Paneli
+                      </li>
+                    </Link>
+                  ) : null}
                   <Link
                     to="/profil/account"
                     onClick={() => changePage("/profil/account")}
@@ -117,6 +132,9 @@ const ProfilePage = () => {
                 <Route path="/profil/egitmen">
                   <InstructorPage user={user} />
                 </Route>
+                <Route path="/profil/admin">
+                <Admin user={user} />
+              </Route>
                 <Route path="/profil/">
                   <DefaultProfile />
                 </Route>

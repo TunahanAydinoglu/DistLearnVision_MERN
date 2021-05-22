@@ -33,7 +33,7 @@ const Lessons = () => {
     setLessons(data);
     setActive("1");
   };
-
+  
   const getLessons = async (url) => {
     const data = await getAllAsArrayAxios(url);
     setLessons(data);

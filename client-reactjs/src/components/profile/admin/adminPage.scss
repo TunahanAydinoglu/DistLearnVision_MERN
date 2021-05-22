@@ -1,0 +1,191 @@
+.admin-page {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    list-style-type: none;
+    .cizgi{
+      width: 2px;
+      height: 100%;
+      color: black;
+      background-color: black;
+    }
+    .menu-item {
+      font-size: 14px;
+      padding: 0 20px;
+      & + .menu-item {
+        border-left: 2px solid black;
+      }
+      &:hover{
+        cursor: pointer;
+        color: black;
+      }
+    }
+    .active{
+      font-size: 21px;
+      font-weight: bold;
+    }
+
+  }
+
+  .td-font {
+    font: 400 13.3333px Arial;
+  }
+
+  .admin-users {
+    width: 96%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .search-field {
+      width: 99.98%;
+      input {
+        width: 100%;
+        padding: 5px;
+        outline: none;
+      }
+    }
+  }
+  .table {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-collapse: collapse;
+    .thead {
+      display: flex;
+      width: 100%;
+      .tr {
+        width: 100%;
+        display: flex;
+        .th {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          border: 1px solid #ddd;
+          padding-top: 12px;
+          padding-bottom: 12px;
+          padding-left: 5px;
+          text-align: left;
+          background-color: var(--black);
+          color: var(--white);
+          & + .th {
+            padding-left: 1rem;
+          }
+        }
+      }
+    }
+    .tbody {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      .tr {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+
+        .td {
+          width: 100%;
+          border: 1px solid #ddd;
+          align-items: center;
+          text-align: center;
+          padding: 0.6rem 0.3rem;
+          input {
+            width: 100%;
+            border: none;
+            padding: 0.7rem 1rem;
+            background-color: inherit;
+            &:focus {
+              background-color: #ffe;
+              outline-offset: 0px;
+            }
+          }
+        }
+
+        &:hover {
+          background-color: #ddd;
+        }
+        tr td input:hover {
+          background-color: #ddd;
+        }
+      }
+      .tr-even {
+        background-color: #f2f2f2;
+      }
+      .tr-add {
+        background-color: rgb(201, 233, 182);
+      }
+    }
+    button {
+      background-color: var(--black);
+      color: var(--white);
+      padding: 5px 8px;
+      border: 1px solid var(--white);
+      border-radius: 6px;
+      &:hover {
+        cursor: pointer;
+        color: rgba(32, 194, 14, 0.6);
+        border: 1px solid rgba(32, 194, 14, 0.6);
+        background-color: var(--black);
+      }
+    }
+    .add-button {
+      width: 90%;
+      padding: 7px 1px;
+    }
+
+    .td-name {
+      flex: 1 1 40%;
+    }
+    .td-comment {
+      flex: 1 1 40%;
+      padding-left: 1.3rem !important;
+      text-align: start !important;
+    }
+
+    .td-role {
+      flex: 1 1 15%;
+    }
+    .td-blocked {
+      flex: 1 1 15%;
+    }
+    .td-setting {
+      flex: 1 1 13%;
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .th-name {
+      flex: 1 1 40%;
+    }
+    .th-role {
+      flex: 1 1 15%;
+    }
+    .th-blocked {
+      flex: 1 1 15%;
+    }
+    .th-setting {
+      display: flex;
+      flex: 1 1 13%;
+      font-size: 1.6rem;
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+      padding-left: 0 !important;
+
+      &:hover {
+        cursor: pointer;
+        color: rgba(32, 194, 14, 0.6) !important;
+        border: 1px solid rgba(32, 194, 14, 0.6) !important;
+      }
+    }
+  }
+}

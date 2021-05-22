@@ -16,6 +16,15 @@ const getAuthProfileAxios = async () => {
   return data;
 };
 
+export const getAxiosWithToken = async (url) => {
+  const response = await Axios.get(url, {
+    headers: {
+      Authorization: token,
+    },
+  });
+  return response.data;
+};
+
 const getAllAsArrayAxios = async (url) => {
   let arr = [];
   await Axios.get(url)
@@ -91,7 +100,11 @@ const putAxiosWithConfirmPop = (url, item) => {
   });
 };
 
-const getLikeOrUndoLikeWithToast = async (itemUrl,successMessage,warningMessage) => {
+const getLikeOrUndoLikeWithToast = async (
+  itemUrl,
+  successMessage,
+  warningMessage
+) => {
   let config = {
     headers: {
       Authorization: token,
@@ -107,12 +120,12 @@ const getLikeOrUndoLikeWithToast = async (itemUrl,successMessage,warningMessage)
       rate = 1;
     })
     .catch(() => {
-      undoLike(itemUrl, config,warningMessage);
+      undoLike(itemUrl, config, warningMessage);
       rate = -1;
     });
   return rate;
 };
-const undoLike = (itemUrl, config,warningMessage) => {
+const undoLike = (itemUrl, config, warningMessage) => {
   Axios.get(itemUrl + "/undo_like", config).then(() => {
     toast.warn(warningMessage, {
       position: "bottom-right",
@@ -120,7 +133,11 @@ const undoLike = (itemUrl, config,warningMessage) => {
     });
   });
 };
-const getDislikeOrUndoDislikeWithToast = async (itemUrl,successMessage,warningMessage) => {
+const getDislikeOrUndoDislikeWithToast = async (
+  itemUrl,
+  successMessage,
+  warningMessage
+) => {
   let config = {
     headers: {
       Authorization: token,
@@ -136,12 +153,12 @@ const getDislikeOrUndoDislikeWithToast = async (itemUrl,successMessage,warningMe
       });
     })
     .catch(() => {
-      undoDislike(itemUrl, config,warningMessage);
+      undoDislike(itemUrl, config, warningMessage);
       rate = -1;
     });
   return rate;
 };
-const undoDislike = (itemUrl, config,warningMessage) => {
+const undoDislike = (itemUrl, config, warningMessage) => {
   Axios.get(itemUrl + "/undo_dislike", config).then(() => {
     toast.warn(warningMessage, {
       position: "bottom-right",
