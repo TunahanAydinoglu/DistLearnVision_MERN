@@ -27,8 +27,6 @@ function Watch() {
 
   const [player, setPlayer] = useState(null);
   const [lessonState, setLessonState] = useState(false);
-  const [tracing, setTracing] = useState(0);
-
 
   useEffect(() => {
     pageLoad();
@@ -166,13 +164,12 @@ function Watch() {
                 Yorumlar
               </li>
               <li onClick={() => lessonHandler()}>
-                  Yüz Takibi {lessonState ? "Durdur" : "Baslat"}{tracing}
+                  Yüz Takibi {lessonState ? "Durdur" : "Baslat"}
               </li>
               {lessonState ? (
                 <FaceApi
                   onPlayVideo={onPlayVideo}
                   onPauseVideo={onPauseVideo}
-                  setTracing={setTracing}
                 />
             ) : (
               <div></div>

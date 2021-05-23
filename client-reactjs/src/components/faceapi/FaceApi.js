@@ -1,17 +1,18 @@
-
 import React, { useRef, useEffect } from "react";
 import "./faceApi.scss";
-
+import * as tf from "@tensorflow/tfjs";
 import * as facemesh from "@tensorflow-models/face-landmarks-detection";
 import Webcam from "react-webcam";
 import { drawMesh } from "./utilities";
 
-function FaceApi({onPlayVideo, onPauseVideo}) {
+function FaceApi({ onPlayVideo, onPauseVideo }) {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
 
   const runFacemesh = async () => {
-    const net = await facemesh.load(facemesh.SupportedPackages.mediapipeFacemesh);
+    const net = await facemesh.load(
+      facemesh.SupportedPackages.mediapipeFacemesh
+    );
     setInterval(() => {
       detect(net);
     }, 1000);
@@ -33,41 +34,44 @@ function FaceApi({onPlayVideo, onPauseVideo}) {
       canvasRef.current.width = videoWidth;
       canvasRef.current.height = videoHeight;
 
-     
-      const face = await net.estimateFaces({input:video});
+      const face = await net.estimateFaces({ input: video });
       if (face.length > 0) {
         onPlayVideo();
       } else {
         onPauseVideo();
       }
+
       const ctx = canvasRef.current.getContext("2d");
-      requestAnimationFrame(()=>{drawMesh(face, ctx)});
+      requestAnimationFrame(() => {
+        drawMesh(face, ctx);
+      });
     }
   };
 
-  useEffect(()=>{runFacemesh()}, []);
+  useEffect(() => {
+    runFacemesh();
+  }, []);
 
   return (
     <div className="face-api">
-        <Webcam
-          ref={webcamRef}
-          style={{
+      <Webcam
+        ref={webcamRef}
+        style={{
           position: "absolute",
           zindex: 9,
-            width: 80,
-            height: 60,
-          }}
-        />
-
-        <canvas
-          ref={canvasRef}
-          style={{
+          width: 80,
+          height: 60,
+        }}
+      />
+      <canvas
+        ref={canvasRef}
+        style={{
           position: "absolute",
           zindex: 9,
-            width: 80,
-            height: 60,
-          }}
-        />
+          width: 80,
+          height: 60,
+        }}
+      />
     </div>
   );
 }
