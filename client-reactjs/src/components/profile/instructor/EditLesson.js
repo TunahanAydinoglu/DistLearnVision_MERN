@@ -1,13 +1,17 @@
 import Axios from "axios";
 import React, { useEffect, useState } from "react";
 import "./editLesson.scss";
-import { getAllAsArrayAxios,putAxiosWithConfirmPop } from "../../../helpers/axiosHelpers";
+import {
+  getAllAsArrayAxios,
+  putAxiosWithConfirmPop,
+} from "../../../helpers/axiosHelpers";
+import { BASE_URL } from "../../../constant";
 
 const EditLesson = (props) => {
   const lessonId = props.lesson;
   const [lesson, setLesson] = useState([]);
   const [categories, setCategories] = useState([]);
-  const url = "http://localhost:5000/api/lessons/" + lessonId;
+  const url = BASE_URL + "api/lessons/" + lessonId;
 
   useEffect(() => {
     getLessonById(url);
@@ -19,7 +23,7 @@ const EditLesson = (props) => {
       .then((data) => setLesson(data));
   };
   const getCategories = async () => {
-    let categoryUrl = "http://localhost:5000/api/categories";
+    let categoryUrl = BASE_URL + "api/categories";
     const data = await getAllAsArrayAxios(categoryUrl);
     setCategories(data);
   };
@@ -35,7 +39,7 @@ const EditLesson = (props) => {
       instructor: e.target[4].value,
       category: e.target[5].value,
     };
-    putAxiosWithConfirmPop(putLessonUrl,item)
+    putAxiosWithConfirmPop(putLessonUrl, item);
   };
 
   return (

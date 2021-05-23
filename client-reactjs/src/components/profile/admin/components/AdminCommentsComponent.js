@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { BASE_URL } from "../../../../constant";
 import {
   getAxiosWithToken,
   deleteAxiosWithConfirmPop,
@@ -11,20 +12,20 @@ function AdminCommentsComponent() {
   }, []);
 
   const getCommentsForAdmin = async () => {
-    const commentsUrl = "http://localhost:5000/api/admin/comments";
+    const commentsUrl = BASE_URL+"api/admin/comments";
     let response = await getAxiosWithToken(commentsUrl);
     setComments([...response.data]);
   };
   const searchAxios = async (value = "") => {
     const searchUserUrl =
-      "http://localhost:5000/api/admin/search/comments?content=" + value;
+      BASE_URL+"api/admin/search/comments?content=" + value;
     const response = await getAxiosWithToken(searchUserUrl);
     setComments([...response.data]);
   };
 
   const deleteCommentHandler = async (e, id, index) => {
     e.preventDefault();
-    const deleteUrl = `http://localhost:5000/api/admin/comments/${id}/delete`;
+    const deleteUrl = BASE_URL+`api/admin/comments/${id}/delete`;
     const successMessage = "Yorum başarıyla silindi.";
     const errorMessage = "Bir şeyler yanlış gitmiş olmalı yorum silinemedi.";
     const result = await deleteAxiosWithConfirmPop(deleteUrl, successMessage, errorMessage);

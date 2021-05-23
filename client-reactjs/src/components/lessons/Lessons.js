@@ -3,13 +3,14 @@ import "./lessons.scss";
 import * as Icons from "../icons/index";
 import LessonCart from "./LessonCart";
 import { getAllAsArrayAxios } from "../../helpers/axiosHelpers";
+import { BASE_URL } from "../../constant";
 
 const Lessons = () => {
   const [lessons, setLessons] = useState([]);
   const [categories, setCategories] = useState([]);
   const [active, setActive] = useState("1");
 
-  let url = "http://localhost:5000/api/lessons";
+  let url = BASE_URL + "api/lessons";
   const categoryId = window.location.href.split("dersler/")[1];
   useEffect(() => {
     categoryId === undefined ? getLessons(url) : changeCategory(categoryId);
@@ -18,7 +19,7 @@ const Lessons = () => {
 
   const changeCategory = async (selected) => {
     setActive(selected);
-    let categoryUrl = "http://localhost:5000/api/lessons/category/";
+    let categoryUrl = BASE_URL + "api/lessons/category/";
     selected === "1"
       ? (categoryUrl = url)
       : (categoryUrl = categoryUrl + selected);
@@ -33,14 +34,14 @@ const Lessons = () => {
     setLessons(data);
     setActive("1");
   };
-  
+
   const getLessons = async (url) => {
     const data = await getAllAsArrayAxios(url);
     setLessons(data);
   };
 
   const getCategories = async () => {
-    let categoryUrl = "http://localhost:5000/api/categories";
+    let categoryUrl = BASE_URL + "api/categories";
     const data = await getAllAsArrayAxios(categoryUrl);
     setCategories(data);
   };

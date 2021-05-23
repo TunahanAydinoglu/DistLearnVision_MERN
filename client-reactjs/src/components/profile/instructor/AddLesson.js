@@ -4,17 +4,18 @@ import {
   getAllAsArrayAxios,
   postAxiosWithAlertPop,
 } from "../../../helpers/axiosHelpers";
+import { BASE_URL } from "../../../constant";
 
 const AddLesson = () => {
   const [categories, setCategories] = useState([]);
-  const url = "http://localhost:5000/api/lessons/add";
+  const url = BASE_URL + "api/lessons/add";
 
   useEffect(() => {
     getCategories();
   }, []);
 
   const getCategories = async () => {
-    let categoriesUrl = "http://localhost:5000/api/categories";
+    let categoriesUrl = BASE_URL + "api/categories";
     const data = await getAllAsArrayAxios(categoriesUrl);
     setCategories(data);
   };

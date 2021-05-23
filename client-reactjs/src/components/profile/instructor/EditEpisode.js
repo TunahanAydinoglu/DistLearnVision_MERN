@@ -6,11 +6,12 @@ import {
   deleteAxiosWithConfirmPop,
   putAxiosWithConfirmPop,
 } from "../../../helpers/axiosHelpers";
+import { BASE_URL } from "../../../constant";
 
 function EditEpisode(props) {
   const [episodes, setEpisodes] = useState([]);
   const lesson = props.lesson;
-  const url = "http://localhost:5000/api/lessons/" + lesson + "/episodes/";
+  const url = BASE_URL + "api/lessons/" + lesson + "/episodes/";
   const [display, setDisplay] = useState("none");
 
   useEffect(() => {

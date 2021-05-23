@@ -12,6 +12,7 @@ import {
   deleteAxiosWithConfirmPop,
   getAllAsArrayAxios,
 } from "../../../helpers/axiosHelpers";
+import { BASE_URL } from "../../../constant";
 
 function InstructorPage(props) {
   const [categories, setCategories] = useState([]);
@@ -51,7 +52,7 @@ function InstructorPage(props) {
   };
 
   const deleteLessonHandler = (lessonId) => {
-    let deleteUrl = "http://localhost:5000/api/lessons/" + lessonId + "/delete";
+    let deleteUrl = BASE_URL + "api/lessons/" + lessonId + "/delete";
     deleteAxiosWithConfirmPop(
       deleteUrl,
       "Ders tamamen kaldırıldı.",
@@ -60,12 +61,12 @@ function InstructorPage(props) {
   };
 
   const getCategories = async () => {
-    let categoryUrl = "http://localhost:5000/api/categories";
+    let categoryUrl = BASE_URL + "api/categories";
     const data = await getAllAsArrayAxios(categoryUrl);
     setCategories(data);
   };
   const getLessonByUserId = async (userId) => {
-    let lessonsUrl = "http://localhost:5000/api/lessons/user/" + userId;
+    let lessonsUrl = BASE_URL + "api/lessons/user/" + userId;
     const data = await getAllAsArrayAxios(lessonsUrl);
     setLessons(data);
   };

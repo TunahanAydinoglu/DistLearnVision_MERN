@@ -1,7 +1,8 @@
 import Axios from "axios";
 import { useState } from "react";
+import { BASE_URL } from "../../constant";
 
-import {successPop,errorPop} from '../../helpers/alertHelpers'
+import { successPop, errorPop } from "../../helpers/alertHelpers";
 import "./contact.scss";
 
 const Contact = () => {
@@ -12,7 +13,7 @@ const Contact = () => {
 
   const contactSubmitHandler = (e) => {
     e.preventDefault();
-    const contactUrl = "http://localhost:5000/api/contact/new";
+    const contactUrl = BASE_URL + "api/contact/new";
     const item = {
       name,
       email,
@@ -32,7 +33,7 @@ const Contact = () => {
         errorPop("Bir hata oluştu bilgileri kontrol ediniz.");
       });
   };
-  
+
   return (
     <div className="contact">
       <div className="map">

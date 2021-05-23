@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./updateImage.scss";
 import { postAxiosWithAlertPop } from "../../helpers/axiosHelpers";
+import { BASE_URL } from "../../constant";
 //FORMAT DOC NOT
 export default function UpdateImage(props) {
   const [path, setPath] = useState('Geçerli formatlar ".jpg, .jpeg, .png"');
@@ -10,7 +11,7 @@ export default function UpdateImage(props) {
     e.preventDefault();
     let fd = new FormData();
     fd.append("profile_image", image);
-    let uploadUrl = "http://localhost:5000/api/auth/upload";
+    let uploadUrl = BASE_URL + "api/auth/upload";
 
     postAxiosWithAlertPop(
       uploadUrl,

@@ -10,6 +10,7 @@ import {
   getSingleAxios,
 } from "../../helpers/axiosHelpers";
 import Admin from "./admin/Admin";
+import { BASE_URL } from "../../constant";
 
 const ProfilePage = () => {
   const [user, setUser] = useState({});
@@ -26,7 +27,7 @@ const ProfilePage = () => {
 
   const getProfile = () => {
     let prof = "";
-    let getUserUrl = "http://localhost:5000/api/users/profile/";
+    let getUserUrl = BASE_URL + "api/users/profile/";
     getAuthProfileAxios().then((data) => {
       getSingleAxios(getUserUrl + data.id)
         .then((data) => {
@@ -34,7 +35,7 @@ const ProfilePage = () => {
           setRole(data.role);
           prof = data.profile_image;
         })
-        .then(() => setImage("http://localhost:5000/uploads/" + prof));
+        .then(() => setImage(BASE_URL + "uploads/" + prof));
     });
   };
   return (
@@ -100,9 +101,7 @@ const ProfilePage = () => {
                       onClick={() => changePage("/profil/admin")}
                     >
                       <li
-                        className={
-                          active === "/profil/admin" ? "active" : null
-                        }
+                        className={active === "/profil/admin" ? "active" : null}
                       >
                         Admin Paneli
                       </li>
@@ -133,8 +132,8 @@ const ProfilePage = () => {
                   <InstructorPage user={user} />
                 </Route>
                 <Route path="/profil/admin">
-                <Admin user={user} />
-              </Route>
+                  <Admin user={user} />
+                </Route>
                 <Route path="/profil/">
                   <DefaultProfile />
                 </Route>

@@ -6,12 +6,14 @@ import {
   getAllAsArrayAxios,
   postAxiosWithAlertPop,
 } from "../../helpers/axiosHelpers";
+import { BASE_URL } from "../../constant";
 const AnswerPopup = (props) => {
   const [formDisplay, setFormDisplay] = useState("none");
   const [answers, setAnswers] = useState([]);
   const question = props.question;
   const answerUrl =
-    "http://localhost:5000/api/lessons/" +
+    BASE_URL +
+    "api/lessons/" +
     question.lessonId +
     "/questions/" +
     question.id +
@@ -43,7 +45,7 @@ const AnswerPopup = (props) => {
   const formDisplayHandler = () => {
     formDisplay === "none" ? setFormDisplay("flex") : setFormDisplay("none");
   };
- 
+
   return (
     <div className="answer-popup">
       <aside className="left-side">
@@ -76,7 +78,11 @@ const AnswerPopup = (props) => {
         </form>
         <div className="answers">
           {answers.map((answer) => (
-            <AnswerCard key={answer._ıd} answer={answer} answerUrl={answerUrl} />
+            <AnswerCard
+              key={answer._ıd}
+              answer={answer}
+              answerUrl={answerUrl}
+            />
           ))}
         </div>
       </div>

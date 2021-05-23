@@ -1,11 +1,12 @@
 import "./mainCard.scss";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { BASE_URL } from "../../constant";
 
 export default class MainCard extends Component {
   render() {
     let category = this.props.category;
-    let imgUrl = "http://localhost:5000/categories/" + category.image;
+    let imgUrl = BASE_URL + "categories/" + category.image;
     let categoryPath = "/dersler/" + category._id;
     return (
       <Link to={categoryPath}>

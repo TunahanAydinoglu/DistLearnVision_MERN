@@ -5,6 +5,7 @@ import * as Icons from "../icons/index";
 import "./sign.scss";
 import Axios from "axios";
 import { errorPop, successPop } from "../../helpers/alertHelpers";
+import { BASE_URL } from "../../constant";
 
 const Sign = () => {
   const [emailLogin, setEmailLogin] = useState("");
@@ -13,13 +14,13 @@ const Sign = () => {
   const [emailRegister, setEmailRegister] = useState("");
   const [passwordRegister, setPasswordRegister] = useState("");
 
-  let urlLogin = "http://localhost:5000/api/auth/login";
-  let urlRegister = "http://localhost:5000/api/auth/register";
+  let urlLogin = BASE_URL + "api/auth/login";
+  let urlRegister = BASE_URL + "api/auth/register";
 
   const handleSubmitLogin = (event) => {
     event.preventDefault();
 
-   const userLogin = {
+    const userLogin = {
       email: emailLogin,
       password: passwordLogin,
     };
@@ -32,11 +33,15 @@ const Sign = () => {
       })
       .then((data) => authenticate(data))
       .then(() => successPop("Giriş işlemi başarılı, Yönlendiriliyorsunuz."))
-      .catch(() => errorPop("Bir şeyler yanlış gitmiş olmalı bilgilerinizi kontrol ediniz."));
+      .catch(() =>
+        errorPop(
+          "Bir şeyler yanlış gitmiş olmalı bilgilerinizi kontrol ediniz."
+        )
+      );
   };
   const handleSubmitRegister = (event) => {
     event.preventDefault();
-   const userRegister = {
+    const userRegister = {
       name: nameRegister,
       email: emailRegister,
       password: passwordRegister,
@@ -44,7 +49,9 @@ const Sign = () => {
     Axios.post(urlRegister, userRegister)
       .then((res) => res)
       .then(() => successPop("Kayıt işlemi başarılı, Giriş Yapabilirsiniz."))
-      .catch(() => errorPop("Bir şeyler yanlış gitmiş olmalı kayıt eklenemedi."));
+      .catch(() =>
+        errorPop("Bir şeyler yanlış gitmiş olmalı kayıt eklenemedi.")
+      );
   };
 
   return (

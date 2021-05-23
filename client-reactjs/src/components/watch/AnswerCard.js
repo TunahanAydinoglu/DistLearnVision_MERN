@@ -6,6 +6,7 @@ import {
   getLikeOrUndoLikeWithToast,
   getDislikeOrUndoDislikeWithToast,
 } from "../../helpers/axiosHelpers";
+import { BASE_URL } from "../../constant";
 
 const AnswerCard = (props) => {
   const answer = props.answer;
@@ -18,17 +19,25 @@ const AnswerCard = (props) => {
     return () => {};
   }, [answer.user]);
   const getUser = (userId) => {
-    const url = "http://localhost:5000/api/users/profile/" + userId;
+    const url = BASE_URL + "api/users/profile/" + userId;
     getSingleAxios(url).then((data) => {
-      setUserImage("http://localhost:5000/uploads/" + data.profile_image);
+      setUserImage(BASE_URL + "uploads/" + data.profile_image);
     });
   };
   const likeButtonHandler = async () => {
-    let rate = await getLikeOrUndoLikeWithToast(itemUrl,"Cevap puanı arttırıldı :) ","Cevap puaniniz geri alındı.");
+    let rate = await getLikeOrUndoLikeWithToast(
+      itemUrl,
+      "Cevap puanı arttırıldı :) ",
+      "Cevap puaniniz geri alındı."
+    );
     setRankingCount(rankingCount + rate);
   };
   const dislikeHandler = async () => {
-    let rate = await getDislikeOrUndoDislikeWithToast(itemUrl,"Cevap puanı azaltildi.","Cevap puaniniz geri alındı :) ");
+    let rate = await getDislikeOrUndoDislikeWithToast(
+      itemUrl,
+      "Cevap puanı azaltildi.",
+      "Cevap puaniniz geri alındı :) "
+    );
     setRankingCount(rankingCount - rate);
   };
 

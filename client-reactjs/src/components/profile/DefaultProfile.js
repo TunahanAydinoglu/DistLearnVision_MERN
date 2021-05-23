@@ -4,12 +4,13 @@ import {
   getAuthProfileAxios,
   getSingleAxios,
 } from "../../helpers/axiosHelpers";
+import { BASE_URL } from "../../constant";
 
 export default function DefaultProfile() {
   const [user, setUser] = useState({});
 
   useEffect(() => {
-    let getUserUrl = "http://localhost:5000/api/users/profile/";
+    let getUserUrl = BASE_URL + "api/users/profile/";
     getAuthProfileAxios().then((data) =>
       getSingleAxios(getUserUrl + data.id).then((data) => setUser(data))
     );

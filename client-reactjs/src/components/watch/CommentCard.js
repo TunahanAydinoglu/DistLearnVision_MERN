@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import * as Icons from "../icons/index";
 import "./commentCard.scss";
 import StarRatingComponent from "react-star-rating-component";
-import { getDislikeOrUndoDislikeWithToast, getLikeOrUndoLikeWithToast, getSingleAxios } from "../../helpers/axiosHelpers";
+import {
+  getDislikeOrUndoDislikeWithToast,
+  getLikeOrUndoLikeWithToast,
+  getSingleAxios,
+} from "../../helpers/axiosHelpers";
+import { BASE_URL } from "../../constant";
 
 const CommentCard = (props) => {
   const userId = props.user;
@@ -12,8 +17,7 @@ const CommentCard = (props) => {
   const [like, setLike] = useState(props.likeCount);
   const [dislike, setDislike] = useState(props.dislikeCount);
   const [userImage, setUserImage] = useState("");
-  let itemUrl =
-    "http://localhost:5000/api/lessons/" + lessonId + "/comments/" + commentId;
+  let itemUrl = BASE_URL + "api/lessons/" + lessonId + "/comments/" + commentId;
   let comment = {
     id: props.commentId,
     title: props.title,
@@ -31,10 +35,10 @@ const CommentCard = (props) => {
   }, [userId]);
 
   const getUser = (userId) => {
-    const url = "http://localhost:5000/api/users/profile/" + userId;
+    const url = BASE_URL + "api/users/profile/" + userId;
     getSingleAxios(url).then((data) => {
       setUser(data);
-      setUserImage("http://localhost:5000/uploads/" + data.profile_image);
+      setUserImage(BASE_URL + "uploads/" + data.profile_image);
     });
   };
 

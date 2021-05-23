@@ -3,11 +3,12 @@ import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import { errorPop, infoPop, successPop } from "./alertHelpers";
 import { getCookie } from "./auth";
+import { BASE_URL } from "../constant";
 
 const token = getCookie("token");
 
 const getAuthProfileAxios = async () => {
-  let getProfileUrl = "http://localhost:5000/api/auth/user";
+  let getProfileUrl = BASE_URL + "api/auth/user";
   const data = await Axios.get(getProfileUrl, {
     headers: {
       Authorization: token,

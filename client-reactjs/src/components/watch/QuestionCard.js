@@ -8,6 +8,7 @@ import {
   getLikeOrUndoLikeWithToast,
   getSingleAxios,
 } from "../../helpers/axiosHelpers";
+import { BASE_URL } from "../../constant";
 
 const QuestionCard = (props) => {
   const userId = props.user;
@@ -20,10 +21,7 @@ const QuestionCard = (props) => {
   const [isOpenAnswerModal, setIsOpenAnswerModal] = useState(false);
   const [userImage, setUserImage] = useState("");
   const itemUrl =
-    "http://localhost:5000/api/lessons/" +
-    lessonId +
-    "/questions/" +
-    questionId;
+    BASE_URL + "api/lessons/" + lessonId + "/questions/" + questionId;
 
   let question = {
     id: props.questionId,
@@ -38,7 +36,7 @@ const QuestionCard = (props) => {
     getUser(userId);
     getQuestionByIdForLikeHandler(itemUrl);
     return () => {};
-  }, [userId,itemUrl]);
+  }, [userId, itemUrl]);
 
   const getQuestionByIdForLikeHandler = (itemUrl) => {
     getSingleAxios(itemUrl).then((data) => {
@@ -58,10 +56,10 @@ const QuestionCard = (props) => {
   };
 
   const getUser = (userId) => {
-    const url = "http://localhost:5000/api/users/profile/" + userId;
+    const url = BASE_URL + "api/users/profile/" + userId;
     getSingleAxios(url).then((data) => {
       setUser(data);
-      setUserImage("http://localhost:5000/uploads/" + data.profile_image);
+      setUserImage(BASE_URL + "uploads/" + data.profile_image);
     });
   };
   const likeHandler = async () => {

@@ -11,6 +11,7 @@ import {
 } from "../../helpers/axiosHelpers";
 import FaceApi from "../faceapi/FaceApi";
 import "./watch.scss";
+import { BASE_URL } from "../../constant";
 
 function Watch() {
   const [episodes, setEpisodes] = useState([]);
@@ -37,7 +38,7 @@ function Watch() {
     getQuestionsAndCommentsByLesson(id);
   };
   const getQuestionsAndCommentsByLesson = async (lessonId) => {
-    let defaultUrl = "http://localhost:5000/api/lessons/" + lessonId;
+    let defaultUrl = BASE_URL + "api/lessons/" + lessonId;
     let urlQuestions = defaultUrl + "/questions/";
     let urlComments = defaultUrl + "/comments/";
 
@@ -48,21 +49,20 @@ function Watch() {
     setComments(commentsData);
   };
   const getLessonById = (lessonId) => {
-    let urlLesson = "http://localhost:5000/api/lessons/" + lessonId;
+    let urlLesson = BASE_URL + "api/lessons/" + lessonId;
     getSingleAxios(urlLesson).then((data) => {
       setVideo(data.url);
       setLessonData(data);
     });
   };
   const getEpisodesByLesson = async (lessonId) => {
-    let urlEpisodes =
-      "http://localhost:5000/api/lessons/" + lessonId + "/episodes";
+    let urlEpisodes = BASE_URL + "api/lessons/" + lessonId + "/episodes";
     const episodesData = await getAllAsArrayAxios(urlEpisodes);
     setEpisodes(episodesData);
   };
   const questionAddHandler = (e) => {
     e.preventDefault();
-    let askUrl = "http://localhost:5000/api/lessons/" + id + "/questions/ask";
+    let askUrl = BASE_URL + "api/lessons/" + id + "/questions/ask";
     const item = {
       title: e.target[0].value,
       content: e.target[1].value,
@@ -81,8 +81,7 @@ function Watch() {
   };
   const commentAddHandler = (e) => {
     e.preventDefault();
-    let addCommentUrl =
-      "http://localhost:5000/api/lessons/" + id + "/comments/add";
+    let addCommentUrl = BASE_URL + "api/lessons/" + id + "/comments/add";
     const item = {
       content: e.target[0].value,
       mark: rateStar,
@@ -139,6 +138,7 @@ function Watch() {
     display: "initial",
     id: "myId",
   };
+
   return (
     <div className="watch">
       <div className="left">
@@ -164,18 +164,17 @@ function Watch() {
                 Yorumlar
               </li>
               <li onClick={() => lessonHandler()}>
-                  Yüz Takibi {lessonState ? "Durdur" : "Baslat"}
+                Yüz Takibi {lessonState ? "Durdur" : "Baslat"}
               </li>
               {lessonState ? (
                 <FaceApi
                   onPlayVideo={onPlayVideo}
                   onPauseVideo={onPauseVideo}
                 />
-            ) : (
-              <div></div>
-            )}
+              ) : (
+                <div></div>
+              )}
             </ul>
-            
           </div>
           <div
             className="question-content-wrapper"

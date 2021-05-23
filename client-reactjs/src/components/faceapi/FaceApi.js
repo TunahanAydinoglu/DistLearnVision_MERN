@@ -5,7 +5,7 @@ import * as facemesh from "@tensorflow-models/face-landmarks-detection";
 import Webcam from "react-webcam";
 import { drawMesh } from "./utilities";
 
-function FaceApi({ onPlayVideo, onPauseVideo }) {
+function FaceApi({ onPlayVideo, onPauseVideo, setTracingPercent }) {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
 

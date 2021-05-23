@@ -3,6 +3,7 @@ import {
   putAxiosWithConfirmPop,
 } from "../../../../helpers/axiosHelpers";
 import React, { useEffect, useState } from "react";
+import { BASE_URL } from "../../../../constant";
 
 const AdminUsersComponent = () => {
   const [users, setUsers] = useState([]);
@@ -12,20 +13,19 @@ const AdminUsersComponent = () => {
   }, []);
 
   const getUserForAdmin = async () => {
-    const userUrl = "http://localhost:5000/api/admin/users";
+    const userUrl = BASE_URL + "api/admin/users";
     let response = await getAxiosWithToken(userUrl);
     setUsers([...response.data]);
   };
 
   const searchAxios = async (value = "") => {
-    const searchUserUrl =
-      "http://localhost:5000/api/admin/search/users?name=" + value;
+    const searchUserUrl = BASE_URL + "api/admin/search/users?name=" + value;
     const response = await getAxiosWithToken(searchUserUrl);
     setUsers([...response.data]);
   };
   const updateUserHandler = (e, id) => {
     e.preventDefault();
-    const updateUrl = `http://localhost:5000/api/admin/users/${id}`;
+    const updateUrl = BASE_URL + `api/admin/users/${id}`;
     let item = {
       name: e.target[0].value,
       role: e.target[1].value,
@@ -34,7 +34,7 @@ const AdminUsersComponent = () => {
   };
   const changeBlockHandler = async (e, id, index) => {
     e.preventDefault();
-    const blockUrl = `http://localhost:5000/api/admin/users/${id}/block`;
+    const blockUrl = BASE_URL + `api/admin/users/${id}/block`;
     const response = await getAxiosWithToken(blockUrl);
     if (response.success) {
       users[index].blocked = !users[index].blocked;
