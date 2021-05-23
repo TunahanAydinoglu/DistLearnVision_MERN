@@ -47,6 +47,9 @@ function Header() {
                 <li>
                   <Link to="/iletisim"> İLETİŞİM </Link>
                 </li>
+                <li>
+                <Link to="/faceapi"> Face Api </Link>
+              </li>
               </ul>
             </nav>
           </div>

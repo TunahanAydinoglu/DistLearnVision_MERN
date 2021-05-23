@@ -1,9 +1,7 @@
-import Iframe from "react-iframe";
 import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import StarRatingComponent from "react-star-rating-component";
-
-import "./watch.scss";
+import YouTube from "react-youtube";
 import QuestionCard from "./QuestionCard";
 import CommentCard from "./CommentCard";
 import {
@@ -11,6 +9,8 @@ import {
   getSingleAxios,
   postAxiosWithAlertPop,
 } from "../../helpers/axiosHelpers";
+import FaceApi from "../faceapi/FaceApi";
+import "./watch.scss";
 
 function Watch() {
   const [episodes, setEpisodes] = useState([]);
@@ -25,11 +25,14 @@ function Watch() {
   const [rateStar, setRateStar] = useState(null);
   const id = window.location.search.split("=")[1];
 
+  const [player, setPlayer] = useState(null);
+  const [lessonState, setLessonState] = useState(false);
+  const [tracing, setTracing] = useState(0);
+
 
   useEffect(() => {
     pageLoad();
   }, []);
-
   const pageLoad = () => {
     getLessonById(id);
     getEpisodesByLesson(id);
@@ -80,7 +83,8 @@ function Watch() {
   };
   const commentAddHandler = (e) => {
     e.preventDefault();
-    let addCommentUrl = "http://localhost:5000/api/lessons/" + id + "/comments/add";
+    let addCommentUrl =
+      "http://localhost:5000/api/lessons/" + id + "/comments/add";
     const item = {
       content: e.target[0].value,
       mark: rateStar,
@@ -90,12 +94,11 @@ function Watch() {
       item,
       "Yorumunuz başarıyla eklendi.",
       "Bir şeyler yanlış gitmiş olmalı yorumunuz eklenemedi."
-    )
-      .then(() => {
-        pageLoad();
-        setAddCommentDisplay("none");
-        e.target[0].value = "";
-      })
+    ).then(() => {
+      pageLoad();
+      setAddCommentDisplay("none");
+      e.target[0].value = "";
+    });
   };
   const addQuestionOrCommentDisplayHandler = (item) => {
     if (item === "question") {
@@ -119,21 +122,34 @@ function Watch() {
   const onStarClick = (nextValue, prevValue, name) => {
     setRateStar(nextValue);
   };
+  const onReady = (event) => {
+    setPlayer(event.target);
+  };
+  const onPlayVideo = () => {
+    player.playVideo();
+  };
+  const onPauseVideo = () => {
+    player.pauseVideo();
+  };
+  const lessonHandler = () => {
+    setLessonState(!lessonState);
+  };
+  const videoOpts = {
+    width: "100%",
+    allow: "fullscreen",
+    position: "relative",
+    display: "initial",
+    id: "myId",
+  };
   return (
     <div className="watch">
       <div className="left">
-        <div className="video">
-          <Iframe
-            url={video}
-            width="100%"
-            height="100%"
-            id="myId"
-            className="myClassname"
-            display="initial"
-            allow="fullscreen"
-            position="relative"
-          />
-        </div>
+        <YouTube
+          className="video"
+          videoId={video}
+          opts={videoOpts}
+          onReady={(e) => onReady(e)}
+        />
         <div className="questions-wrapper">
           <div className="wrapper-header">
             <ul>
@@ -149,7 +165,20 @@ function Watch() {
               >
                 Yorumlar
               </li>
+              <li onClick={() => lessonHandler()}>
+                  Yüz Takibi {lessonState ? "Durdur" : "Baslat"}{tracing}
+              </li>
+              {lessonState ? (
+                <FaceApi
+                  onPlayVideo={onPlayVideo}
+                  onPauseVideo={onPauseVideo}
+                  setTracing={setTracing}
+                />
+            ) : (
+              <div></div>
+            )}
             </ul>
+            
           </div>
           <div
             className="question-content-wrapper"

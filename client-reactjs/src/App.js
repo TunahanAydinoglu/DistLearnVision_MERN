@@ -9,6 +9,7 @@ import Lessons from "./components/lessons/Lessons";
 import MainPage from "./components/mainPage/MainPage";
 import Watch from "./components/watch/Watch";
 import Footer from "./components/footer/Footer";
+import FaceApi from "./components/faceapi/FaceApi";
 
 function App() {
   return (
@@ -32,6 +33,9 @@ function App() {
             <Route path="/profil">
               <ProfilePage />
             </Route>
+            <Route path="/faceapi">
+            <FaceApi />
+          </Route>
             <Route path="/">
               <MainPage />
             </Route>
