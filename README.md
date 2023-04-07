@@ -1,5 +1,4 @@
 # DistLearnVision
-Bitirme Projesi
 
 # Example config.env file for RestApi. path= RestApi/config/env/config.env
 
